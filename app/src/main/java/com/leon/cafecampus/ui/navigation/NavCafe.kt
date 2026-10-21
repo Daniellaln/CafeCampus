@@ -38,7 +38,7 @@ import com.leon.cafecampus.ui.theme.CafeTheme
     val cliente: PedidosClienteViewModel=viewModel(key="pedidos_cliente_${usuario?.id ?: 0}",factory=CafeViewModelFactory { PedidosClienteViewModel(app.repository,usuario?.id ?: 0,prefs) })
     val panel: PanelAdminViewModel=viewModel(factory=CafeViewModelFactory { PanelAdminViewModel(app.repository) })
     val pedidosAdmin: PedidosAdminViewModel=viewModel(factory=CafeViewModelFactory { PedidosAdminViewModel(app.repository) })
-    
+    val menuAdmin: MenuAdminViewModel=viewModel(factory=CafeViewModelFactory { MenuAdminViewModel(app.repository) })
     fun raiz(destino: String) { nav.navigate(destino) { popUpTo(nav.graph.id) { inclusive=true }; launchSingleTop=true } }
     var identidadAnterior by androidx.compose.runtime.saveable.rememberSaveable { mutableStateOf<Int?>(null) }
     LaunchedEffect(usuario?.id, entry != null, cargando) {
@@ -66,9 +66,9 @@ import com.leon.cafecampus.ui.theme.CafeTheme
                 composable(Rutas.PERFIL) { Column { AppTopBar("Perfil"); CafeButton("Cambiar de perfil") { sesion.cambiarPerfil() }; TextButton(onClick=sesion::cerrarSesion) { Text("Cerrar sesión") } } }
                 composable(Rutas.PANEL) { PanelScreen(panel,pedidosAdmin,{nav.navigate("admin_detalle/$it")},{nav.navigate(Rutas.ADMIN_PEDIDOS)}) }
                 composable(Rutas.ADMIN_PEDIDOS) { PedidosAdminScreen(pedidosAdmin) { nav.navigate("admin_detalle/$it") } }
-                
-                composable(Rutas.ADMIN_MENU) { Column { AppTopBar("Gestión del menú"); Text("Se implementa en la siguiente entrega") } }
-                composable(Rutas.ADMIN_DETALLE) { Column { AppTopBar("Detalle del pedido",{nav.popBackStack()}); Text("Se implementa en la siguiente entrega") } }
+                composable(Rutas.ADMIN_DETALLE,arguments=listOf(navArgument("id") { type=NavType.IntType })) { DetallePedidoAdminScreen(it.arguments?.getInt("id") ?: 0,pedidosAdmin) { nav.popBackStack() } }
+                composable(Rutas.ADMIN_MENU) { MenuAdminScreen(menuAdmin,{nav.navigate("formulario?id=$it")},{nav.navigate("formulario")}) }
+                composable(Rutas.FORMULARIO,arguments=listOf(navArgument("id") { type=NavType.IntType;defaultValue=0 })) { FormularioProductoScreen((it.arguments?.getInt("id") ?: 0).takeIf { id -> id>0 },menuAdmin) { nav.popBackStack() } }
                 composable(Rutas.AJUSTES) { Column { AppTopBar("Perfil"); CafeButton("Cambiar de perfil") { sesion.cambiarPerfil() }; TextButton(onClick=sesion::cerrarSesion) { Text("Cerrar sesión") } } }
             }
         }
