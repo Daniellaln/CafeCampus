@@ -63,13 +63,13 @@ import com.leon.cafecampus.ui.theme.CafeTheme
                 composable(Rutas.CONFIRMAR) { ConfirmarPedidoScreen(menu,cliente,abierto,{nav.popBackStack()}) { nav.navigate("seguimiento/$it") { popUpTo(Rutas.CONFIRMAR) { inclusive=true } } } }
                 composable(Rutas.SEGUIMIENTO,arguments=listOf(navArgument("id") { type=NavType.IntType })) { SeguimientoScreen(it.arguments?.getInt("id") ?: 0,cliente) { if(!nav.popBackStack()) raiz(Rutas.MENU) } }
                 composable(Rutas.PEDIDOS) { MisPedidosScreen(cliente) { nav.navigate("seguimiento/$it") } }
-                composable(Rutas.PERFIL) { Column { AppTopBar("Perfil"); CafeButton("Cambiar de perfil") { sesion.cambiarPerfil() }; TextButton(onClick=sesion::cerrarSesion) { Text("Cerrar sesión") } } }
+                composable(Rutas.PERFIL) { AjustesScreen(sesion,cliente=true) }
                 composable(Rutas.PANEL) { PanelScreen(panel,pedidosAdmin,{nav.navigate("admin_detalle/$it")},{nav.navigate(Rutas.ADMIN_PEDIDOS)}) }
                 composable(Rutas.ADMIN_PEDIDOS) { PedidosAdminScreen(pedidosAdmin) { nav.navigate("admin_detalle/$it") } }
                 composable(Rutas.ADMIN_DETALLE,arguments=listOf(navArgument("id") { type=NavType.IntType })) { DetallePedidoAdminScreen(it.arguments?.getInt("id") ?: 0,pedidosAdmin) { nav.popBackStack() } }
                 composable(Rutas.ADMIN_MENU) { MenuAdminScreen(menuAdmin,{nav.navigate("formulario?id=$it")},{nav.navigate("formulario")}) }
                 composable(Rutas.FORMULARIO,arguments=listOf(navArgument("id") { type=NavType.IntType;defaultValue=0 })) { FormularioProductoScreen((it.arguments?.getInt("id") ?: 0).takeIf { id -> id>0 },menuAdmin) { nav.popBackStack() } }
-                composable(Rutas.AJUSTES) { Column { AppTopBar("Perfil"); CafeButton("Cambiar de perfil") { sesion.cambiarPerfil() }; TextButton(onClick=sesion::cerrarSesion) { Text("Cerrar sesión") } } }
+                composable(Rutas.AJUSTES) { AjustesScreen(sesion) }
             }
         }
     }
