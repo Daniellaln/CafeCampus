@@ -1,0 +1,27 @@
+{
+  "reinicio": "perfil CLIENTE restaurado sin login",
+  "pedido": [
+    "CANCELADO",
+    11.5
+  ],
+  "detalle_historico": [
+    [
+      "Café americano",
+      2,
+      4.0
+    ],
+    [
+      "Chicha morada",
+      1,
+      3.5
+    ]
+  ],
+  "producto_actual": [
+    7.0,
+    0
+  ],
+  "producto_nuevo": [
+    6.0
+  ],
+  "fuente": "130 %"
+}
