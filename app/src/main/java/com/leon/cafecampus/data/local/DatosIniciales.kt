@@ -1,9 +1,17 @@
 package com.leon.cafecampus.data.local
 import androidx.room.withTransaction
-import com.leon.cafecampus.data.local.entity.Producto
+import com.leon.cafecampus.data.local.entity.*
+import com.leon.cafecampus.model.Rol
 object DatosIniciales {
     suspend fun sembrar(db: CafeDatabase) = db.withTransaction {
-        if (db.productoDao().contar() == 0) productos().forEach { db.productoDao().insertar(it) }
+        if(db.usuarioDao().contar()==0) {
+            if(db.productoDao().contar()==0) productos().forEach { db.productoDao().insertar(it) }
+            db.usuarioDao().insertar(Usuario(nombre="Daniella",correo="daniella@campus.test",clave="1234",rol=Rol.CLIENTE.name))
+            db.usuarioDao().insertar(Usuario(nombre="Administrador",correo="admin@cafe.test",clave="admin",rol=Rol.ADMIN.name))
+        }
+        db.openHelper.writableDatabase.execSQL(
+            "UPDATE usuarios SET nombre = 'Daniella', correo = 'daniella@campus.test' WHERE correo = 'juan@campus.test' AND nombre = 'Juan Pérez' AND rol = 'CLIENTE'"
+        )
     }
     fun productos() = listOf(
     Producto(nombre="Café americano", descripcion="Café recién preparado, intenso y aromático.", categoria="Bebidas", precio=4.0, icono="cafe"),
