@@ -1,0 +1,5 @@
+package com.leon.cafecampus.model
+import com.leon.cafecampus.data.local.entity.Producto
+data class ItemCarrito(val producto: Producto, val cantidad: Int, val nota: String = "") {
+    val subtotal: Double get() = producto.precio * cantidad
+}

@@ -1,58 +1,39 @@
 package com.leon.cafecampus.ui.theme
-
-import android.app.Activity
-import android.os.Build
-import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.darkColorScheme
-import androidx.compose.material3.dynamicDarkColorScheme
-import androidx.compose.material3.dynamicLightColorScheme
-import androidx.compose.material3.lightColorScheme
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.platform.LocalContext
-
-private val DarkColorScheme = darkColorScheme(
-    primary = Purple80,
-    secondary = PurpleGrey80,
-    tertiary = Pink80
-)
-
-private val LightColorScheme = lightColorScheme(
-    primary = Purple40,
-    secondary = PurpleGrey40,
-    tertiary = Pink40
-
-    /* Other default colors to override
-    background = Color(0xFFFFFBFE),
-    surface = Color(0xFFFFFBFE),
-    onPrimary = Color.White,
-    onSecondary = Color.White,
-    onTertiary = Color.White,
-    onBackground = Color(0xFF1C1B1F),
-    onSurface = Color(0xFF1C1B1F),
-    */
-)
-
-@Composable
-fun CafeCampusTheme(
-    darkTheme: Boolean = isSystemInDarkTheme(),
-    // Dynamic color is available on Android 12+
-    dynamicColor: Boolean = true,
-    content: @Composable () -> Unit
-) {
-    val colorScheme = when {
-        dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
-            val context = LocalContext.current
-            if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
-        }
-
-        darkTheme -> DarkColorScheme
-        else -> LightColorScheme
-    }
-
-    MaterialTheme(
-        colorScheme = colorScheme,
-        typography = Typography,
-        content = content
+import androidx.compose.runtime.SideEffect
+import androidx.compose.ui.platform.LocalView
+import android.app.Activity
+import androidx.core.view.WindowCompat
+import androidx.compose.ui.graphics.Color
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.ui.unit.dp
+import com.leon.cafecampus.model.Rol
+@Composable fun CafeTheme(rol: Rol = Rol.CLIENTE, oscuro: Boolean = false, content: @Composable () -> Unit) {
+    val admin = rol == Rol.ADMIN
+    val esquema = if(oscuro) darkColorScheme(
+        primary=if(admin) Color(0xFFC4B5FD) else Color(0xFFFFB783),
+        onPrimary=Color(0xFF27133A), primaryContainer=if(admin) Color(0xFF37306B) else Color(0xFF653415),
+        background=Color(0xFF17151B), surface=Color(0xFF211F26)
+    ) else lightColorScheme(
+        primary=if(admin) AdminPrimario else ClientePrimario, onPrimary=Color.White,
+        primaryContainer=if(admin) Color(0xFFE0E7FF) else Color(0xFFFFEDD5),
+        onPrimaryContainer=if(admin) Color(0xFF312E81) else Color(0xFF7C2D12),
+        background=if(admin) AdminFondo else ClienteFondo, surface=Color.White,
+        onBackground=Color(0xFF202733), onSurface=Color(0xFF202733),
+        onSurfaceVariant=Color(0xFF626871), outlineVariant=Color(0xFFE3E3E8)
     )
+    val view=LocalView.current
+    if(!view.isInEditMode) SideEffect {
+        (view.context as? Activity)?.window?.let { window ->
+            WindowCompat.getInsetsController(window,view).apply {
+                isAppearanceLightStatusBars=!oscuro
+                isAppearanceLightNavigationBars=!oscuro
+            }
+        }
+    }
+    val colores=esquema.copy(secondary=esquema.primary, onSecondary=esquema.onPrimary,
+        secondaryContainer=esquema.primary, onSecondaryContainer=esquema.onPrimary,
+        surfaceVariant=if(oscuro) Color(0xFF343137) else Color(0xFFF0EEEC))
+    MaterialTheme(colorScheme=colores, typography=Typography, shapes=Shapes(small=RoundedCornerShape(10.dp),medium=RoundedCornerShape(12.dp),large=RoundedCornerShape(16.dp)), content=content)
 }
