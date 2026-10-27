@@ -1,14 +1,9 @@
-# Revisión visual independiente · cafetería blanca
+# Revisión independiente de los interiores
 
-21 de octubre de2026. Agente cafe_finish_reviewer, protocolo Impeccable, capturas nativas de teléfono; no detector web ni medición comp-diff compatibles con esta adaptación. La última instrucción de Daniella prevalece sobre el fondo rosa de referencia.
+Agente interiores_finish_reviewer,21oct2026. Nueve capturas nativas requeridas válidas; referencias de detalle, bolsa y perfil. Sin detector web ni comp-diff/QUALITY BAR compatibles con esta adaptación Android.
 
-Disposición inicial literal: **fix**.
+Disposición inicial: fix. Persistencia pass. Composición, tipografía adaptada, café blanco, avatar112dp, administración azul, registro y reporte representados. Único hallazgo material: huellas rectangulares de capas ópticas/indicación/sombra que sobresalían del contorno de Perfil/Ajustes y Volver.
 
-Persistencia: pass. PRODUCT.md, DESIGN.md y contrato coherentes; selección directa documentada y siete capturas válidas.
-Fidelidad: composición, fotografía, material e iconos conformes. Adaptaciones justificadas: fondo blanco de cafetería, tarjetas sin texto auxiliar y administrador azul. No tarjetas interiores. Texto nítido e inset de gestos conservado.
+Primer veredicto acotado: partial/fix. Navegación y Volver de detalle/bolsa resueltos; quedaba una sombra cortada por el AppTopBar nativo en Registro. Se preservó lente, brillo y geometría, suprimiendo solo la sombra exterior del botón Volver y recapturando reposo/pulsación. El veredicto posterior está en VEREDICTO_FINAL.md.
 
-Único hallazgo material: la bolsa mostraba10:30,11:00 y11:30 a las12:31. Se pidió generar opciones futuras, retirar vencidas y marcar mañana cuando correspondiera.
-
-Corrección: HorariosRecojo calcula tres citas futuras con margen15min, redondeo30 y día Hoy/Mañana. Refresco30s y validación previa a confirmar evitan comprar con elección vencida. Se añadió prueba de mediodía y cruce de fin de año. El resultado y la recaptura se registran en VEREDICTO_FINAL.md.
-
-La revisión conserva cafetería blanca, fotografía rosa de producto, tarjetas uniformes, gestión azul y difusión localizada del cristal. No acredita rendimiento físico.
+Conservar Menú, fondos completos, fotografía aportada de Daniella exclusiva de su cuenta, papel mate funcional, administración azul y botones transparentes brillantes. No se afirma rendimiento físico ni revisión independiente de la lógica a partir de imágenes.

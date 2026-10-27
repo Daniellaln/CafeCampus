@@ -1,0 +1,136 @@
+{
+  "estudiante": [
+    [
+      "Bienvenida",
+      "00_bienvenida"
+    ],
+    [
+      "Inicio de sesión",
+      "01_login_cliente"
+    ],
+    [
+      "Menú",
+      "02_menu_cliente"
+    ],
+    [
+      "Detalle de producto",
+      "03_detalle_producto"
+    ],
+    [
+      "Confirmar pedido",
+      "04_confirmar_pedido"
+    ],
+    [
+      "Seguimiento",
+      "05_seguimiento"
+    ],
+    [
+      "Mis pedidos",
+      "06_mis_pedidos"
+    ],
+    [
+      "Mi perfil",
+      "18_perfil"
+    ],
+    [
+      "Registro de estudiante",
+      "24_registro_estudiante"
+    ]
+  ],
+  "administrador": [
+    [
+      "Inicio de sesión de administrador",
+      "01b_login_admin"
+    ],
+    [
+      "Panel de control",
+      "07_panel_admin"
+    ],
+    [
+      "Pedidos por estado",
+      "08_pedidos_admin"
+    ],
+    [
+      "Detalle del pedido",
+      "09_detalle_pedido_admin"
+    ],
+    [
+      "Gestión del menú",
+      "10_menu_admin"
+    ],
+    [
+      "Nuevo producto",
+      "11b_nuevo_producto"
+    ],
+    [
+      "Ajustes del administrador",
+      "12_ajustes_admin"
+    ],
+    [
+      "Reporte del día",
+      "25_reporte_diario"
+    ]
+  ],
+  "variantes_y_estados": [
+    [
+      "Editar producto · mismo formulario",
+      "11_formulario_producto"
+    ],
+    [
+      "Favoritos",
+      "22_favoritos"
+    ],
+    [
+      "Búsqueda",
+      "17_busqueda"
+    ],
+    [
+      "Repetir pedido",
+      "16_repetir_pedido"
+    ],
+    [
+      "Selector de categorías",
+      "20_categorias"
+    ],
+    [
+      "Estado vacío",
+      "06b_estado_vacio"
+    ],
+    [
+      "Administrador oscuro",
+      "13_modo_oscuro"
+    ],
+    [
+      "Menú oscuro y texto130%",
+      "21_catalogo_oscuro"
+    ],
+    [
+      "Menú texto130%",
+      "23_fuente_130"
+    ],
+    [
+      "Perfil texto130%",
+      "26_perfil_fuente_130"
+    ],
+    [
+      "Volver pulsado",
+      "27_volver_presionado"
+    ],
+    [
+      "Navegación pulsada",
+      "28_navegacion_presionada"
+    ],
+    [
+      "Seguimiento actualizado",
+      "14_seguimiento_actualizado"
+    ],
+    [
+      "Historial cancelado",
+      "15_historial_cancelado"
+    ],
+    [
+      "Gráfico actualizado",
+      "19_grafico_actualizado"
+    ]
+  ]
+}

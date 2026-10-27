@@ -1,13 +1,15 @@
-# Veredicto independiente posterior a la corrección
+# Veredicto independiente final
+
+Agente interiores_finish_reviewer, 21 de octubre de 2026.
 
 ## verdict
 
-resolved — phone-bolsa.png muestra reloj12:43 y opciones futuras «Hoy,13:00», «Hoy,13:30» y «Hoy,14:00». Desaparecieron los horarios vencidos; las etiquetas caben sin recorte. Sin regresiones visibles introducidas por este cambio.
+resolved. phone-register.png ya no muestra el parche rectangular detrás de Volver; conserva el contorno circular y los reflejos. Esta aprobación cubre el fix puntuado.
 
 ## remaining
 
-clear. Este ship cubre únicamente el fix puntuado de horarios de recogida.
+clear
 
 disposition: ship
 
-El primer pase completo y su único hallazgo constan en REVISION_FINAL.md. El segundo pase puntúa esa corrección; no afirma una nueva auditoría completa ni rendimiento físico.
+La revisión inicial identificó un único hallazgo material de recorte en controles. Esta ronda final verifica su corrección en Registro; no representa una nueva auditoría funcional ni una medición en teléfono físico. Las pruebas instrumentadas se documentan por separado.

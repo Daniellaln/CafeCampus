@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-10-21T12:31:28.336847+00:00",
+  "generatedAt": "2026-10-21T14:14:00.944322+00:00",
   "title": "Design System: CafeCampus",
   "extensions": {
     "colorMeta": {
@@ -187,7 +187,7 @@
         ]
       },
       "dark-admin-on-secondary-container": {
-        "role": "secondary",
+        "role": "neutral",
         "displayName": "dark admin on secondary container",
         "tonalRamp": [
           "oklch(15% 0.0390 261.5)",
@@ -1277,6 +1277,20 @@
           "oklch(84% 0.0000 89.9 / 0.04)",
           "oklch(95% 0.0000 89.9 / 0.04)"
         ]
+      },
+      "interior-paper": {
+        "role": "neutral",
+        "displayName": "interior paper",
+        "tonalRamp": [
+          "oklch(15% 0.0013 106.4 / 0.96)",
+          "oklch(26% 0.0013 106.4 / 0.96)",
+          "oklch(38% 0.0013 106.4 / 0.96)",
+          "oklch(49% 0.0013 106.4 / 0.96)",
+          "oklch(61% 0.0013 106.4 / 0.96)",
+          "oklch(72% 0.0013 106.4 / 0.96)",
+          "oklch(84% 0.0013 106.4 / 0.96)",
+          "oklch(95% 0.0013 106.4 / 0.96)"
+        ]
       }
     },
     "typographyMeta": {
@@ -1351,6 +1365,31 @@
         "name": "campus-exterior-dark",
         "value": "same geometry; ARGB 0x78000000 and 0x163F4C62; CLEAR interior",
         "purpose": "Variante nocturna de SombraCampus."
+      },
+      {
+        "name": "campus-control-light",
+        "value": "SombraCampus(intensidad=.65,luz=false): radius 11dp offset(6dp,8dp), ARGB 0x2A3E4653; CLEAR interior; no exterior highlight",
+        "purpose": "CristalRosa y sus botones derivados; conservar reflejo interior."
+      },
+      {
+        "name": "campus-control-dark",
+        "value": "SombraCampus(intensidad=.65,luz=false): radius 11dp offset(6dp,8dp), ARGB 0x4E000000; CLEAR interior; no exterior highlight",
+        "purpose": "Controles claros en modo oscuro."
+      },
+      {
+        "name": "campus-paper-light",
+        "value": "SombraCampus(intensidad=.45,luz=true): main ARGB 0x1D3E4653, highlight ARGB 0x61FFFFFF; original geometry and CLEAR interior",
+        "purpose": "PapelInterior mate de elevación suave."
+      },
+      {
+        "name": "campus-paper-dark",
+        "value": "SombraCampus(intensidad=.45,luz=true): main ARGB 0x36000000, highlight ARGB 0x093F4C62; original geometry and CLEAR interior",
+        "purpose": "PapelInterior nocturno."
+      },
+      {
+        "name": "campus-back-none",
+        "value": "none; VolverCampus -> BotonCristal(sombra=false)",
+        "purpose": "Excepción del botón Volver para evitar recorte de sombra exterior en AppTopBar; mantiene lente, reflejos interiores y presión. Los demás controles conservan intensidad .65 y luz=false."
       }
     ],
     "motion": [
@@ -1368,23 +1407,25 @@
         "name": "search",
         "value": "spring(dampingRatio=.72,stiffness=350)",
         "purpose": "Círculo de búsqueda a cápsula."
-      },
-      {
-        "name": "scene-float",
-        "value": "-3dp to 3dp; tween(4400,FastOutSlowInEasing), reverse",
-        "purpose": "Flotación de HeroCampus con escala de animación habilitada."
       }
     ],
     "breakpoints": [],
     "implementation": {
-      "source": "Fuente Compose actual: Color.kt, Theme.kt, Type.kt, FondoCristal.kt, CristalRosa.kt, LiquidoCampus.kt, Componentes.kt, SombraCampus.kt, IconosCafe.kt, MenuScreen.kt y NavCafe.kt.",
-      "previewLimits": "Snippets HTML/CSS aproximados. Servir la raíz para fuentes e imágenes locales. SVG inline originales; sin base64, GraphicsLayer, AGSL, persistencia o física Compose.",
+      "source": "Fuente actual del proyecto CafeCampus-fase2-interiores: theme, Interiores.kt, Componentes.kt, FondoCristal.kt, CristalRosa.kt, LiquidoCampus.kt, IconosCafe.kt, MenuScreen.kt y pantallas de detalle/bolsa/perfil/acceso/registro/reporte.",
+      "previewLimits": "Snippets HTML/CSS aproximados, con fuentes e imágenes locales al servir la raíz y SVG originales inline. Sin base64, GraphicsLayer, AGSL, sesión, persistencia, consultas Room o física Compose. Ejemplo de avatar local sujeto a la regla de identidad.",
       "rampLimits": "Rampas OKLCH sintetizadas para inspección del panel; no son tokens de ejecución Android.",
-      "evidenceLimits": "Sin capturas antiguas ni afirmaciones de revisión visual actual o pruebas instrumentadas finalizadas; sin medición física, de toda escala de fuente o equivalencia óptica.",
-      "notCanonized": "Velo lila heredado de BarraCampus y algunos roles nocturnos del administrador compartidos con rosa; fuera del límite documental.",
+      "evidenceLimits": "La coordinación comunica 19 pruebas instrumentadas aprobadas y 32 capturas reales. Esta pasada documenta fuente sin usar capturas antiguas ni inspeccionar las imágenes actuales; no certifica revisión física, toda escala de fuente o rendimiento. El veredicto del único ajuste sigue pendiente.",
+      "notCanonized": "Velo lila heredado de BarraCampus y onSecondary/onPrimaryContainer nocturnos administrativos compartidos con rosa. PapelInterior claro usa alfa 96%, no opacidad matemática total.",
       "reducedMotion": "ANIMATOR_DURATION_SCALE se lee al recordarse la composición, sin observador posterior explícito.",
       "backdrop": "Controles muestrean FondoCampus; producto graba exclusivamente foto y papel, sin sus letras o controles; navegación muestrea página y fondo reales.",
-      "iconography": "35 SVG originales en design/icons-svg; geometría compartida con IconosCafe.kt. Viewport 24, trazo 1.7, extremos y uniones redondeados. Favorite es relleno."
+      "iconography": "35 SVG originales en design/icons-svg; geometría compartida con IconosCafe.kt. Viewport 24, trazo 1.7, extremos y uniones redondeados. Favorite es relleno.",
+      "interiorPhotography": "Siete ambientes completos por tarea, con utilería integrada; menú preservado. No añadir recortes decorativos flotantes en interiores.",
+      "profileIdentity": "Avatar 112 dp de estudiante: daniella_perfil.png únicamente para daniella@campus.test; otras cuentas inicial. Gestor avatar 88 dp.",
+      "dataSurfaces": "Registro con correo único Room y sesión por id; reporte diario con pagos y unidades reales, sin cancelados. Estados carga/error/vacío no implican pruebas aprobadas.",
+      "opticalClipping": "CristalRosa recorta la captura a su forma antes de componer óptica; lenteCampus aplica clip=true; navegación recorta capa y Row a radio 30 dp y usa selectable con interactionSource propio e indication=null. Blur de navegación claro 14 dp / oscuro 0 dp.",
+      "shadowVariants": "SombraCampus multiplica/trunca alfa por intensidad y habilita realce exterior con luz. CristalRosa y BotonCristal tienen sombra=true por defecto (.65/luz=false); VolverCampus usa sombra=false, conservando lente, reflejos y presión. PapelInterior .45/luz=true.",
+      "profilePhotoProvenance": "docs/arte/FOTO_PERFIL_ORIGEN.json: foto adjunta de Daniella, generada_por_ia=false, archivo_retouchado=false; recorte circular Compose, solo cuenta semilla.",
+      "disabledControls": "CristalRosa enabled=false desactiva clickable; ya no aplica alfa global .38."
     }
   },
   "components": [
@@ -1394,7 +1435,7 @@
       "refersTo": "button-cliente",
       "description": "CafeButton claro: etiqueta y flecha del perfil; CSS aproxima el material nativo.",
       "html": "<button class=\"ds-button ds-control\">Continuar<svg width=\"22\" height=\"22\" aria-hidden=\"true\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.7\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M4 12 H20 M13 5 L20 12 L13 19\"/></svg></button>",
-      "css": "@font-face{font-family:Manrope;src:url(\"app/src/main/res/font/manrope_regular.ttf\");font-weight:400}@font-face{font-family:Manrope;src:url(\"app/src/main/res/font/manrope_semibold.ttf\");font-weight:600}@font-face{font-family:Manrope;src:url(\"app/src/main/res/font/manrope_bold.ttf\");font-weight:700}.ds-button{display:flex;align-items:center;justify-content:space-between;font:700 14px/20px Manrope,sans-serif;color:#c0065c;border-radius:28px;padding:17px 20px;height:56px;width:100%;background-color:rgba(255,255,255,.025);border:1.5px solid rgba(255,255,255,.94);background-image:radial-gradient(ellipse at 10% 0%,#ffffffb3 0%,#ffffff00 36%),linear-gradient(#ffffff85,#ffffff05 50%,#ffffff2e);box-shadow:6px 8px 11px #3e465342,-5px -5px 8px #ffffffd9;}.ds-control:hover{filter:brightness(1.035)}.ds-control:focus-visible{outline:2px solid currentColor;outline-offset:3px}.ds-control:active{transform:scaleX(1.025) scaleY(.952)}.ds-control:disabled{opacity:.38;pointer-events:none}"
+      "css": "@font-face{font-family:Manrope;src:url(\"app/src/main/res/font/manrope_regular.ttf\");font-weight:400}@font-face{font-family:Manrope;src:url(\"app/src/main/res/font/manrope_semibold.ttf\");font-weight:600}@font-face{font-family:Manrope;src:url(\"app/src/main/res/font/manrope_bold.ttf\");font-weight:700}.ds-button{display:flex;align-items:center;justify-content:space-between;font:700 14px/20px Manrope,sans-serif;color:#c0065c;border-radius:28px;padding:17px 20px;height:56px;width:100%;background-color:rgba(255,255,255,.025);border:1.5px solid rgba(255,255,255,.94);background-image:radial-gradient(ellipse at 10% 0%,#ffffffb3 0%,#ffffff00 36%),linear-gradient(#ffffff85,#ffffff05 50%,#ffffff2e);box-shadow:6px 8px 11px #3e46532a;}.ds-control:hover{filter:brightness(1.035)}.ds-control:focus-visible{outline:2px solid currentColor;outline-offset:3px}.ds-control:active{transform:scaleX(1.025) scaleY(.952)}.ds-control:disabled{pointer-events:none}"
     },
     {
       "name": "Acción gestor",
@@ -1402,7 +1443,7 @@
       "refersTo": "button-admin",
       "description": "CafeButton claro: etiqueta y flecha del perfil; CSS aproxima el material nativo.",
       "html": "<button class=\"ds-button ds-control\">Continuar<svg width=\"22\" height=\"22\" aria-hidden=\"true\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.7\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M4 12 H20 M13 5 L20 12 L13 19\"/></svg></button>",
-      "css": "@font-face{font-family:Manrope;src:url(\"app/src/main/res/font/manrope_regular.ttf\");font-weight:400}@font-face{font-family:Manrope;src:url(\"app/src/main/res/font/manrope_semibold.ttf\");font-weight:600}@font-face{font-family:Manrope;src:url(\"app/src/main/res/font/manrope_bold.ttf\");font-weight:700}.ds-button{display:flex;align-items:center;justify-content:space-between;font:700 14px/20px Manrope,sans-serif;color:#2455d8;border-radius:28px;padding:17px 20px;height:56px;width:100%;background-color:rgba(255,255,255,.025);border:1.5px solid rgba(255,255,255,.94);background-image:radial-gradient(ellipse at 10% 0%,#ffffffb3 0%,#ffffff00 36%),linear-gradient(#ffffff85,#ffffff05 50%,#ffffff2e);box-shadow:6px 8px 11px #3e465342,-5px -5px 8px #ffffffd9;}.ds-control:hover{filter:brightness(1.035)}.ds-control:focus-visible{outline:2px solid currentColor;outline-offset:3px}.ds-control:active{transform:scaleX(1.025) scaleY(.952)}.ds-control:disabled{opacity:.38;pointer-events:none}"
+      "css": "@font-face{font-family:Manrope;src:url(\"app/src/main/res/font/manrope_regular.ttf\");font-weight:400}@font-face{font-family:Manrope;src:url(\"app/src/main/res/font/manrope_semibold.ttf\");font-weight:600}@font-face{font-family:Manrope;src:url(\"app/src/main/res/font/manrope_bold.ttf\");font-weight:700}.ds-button{display:flex;align-items:center;justify-content:space-between;font:700 14px/20px Manrope,sans-serif;color:#2455d8;border-radius:28px;padding:17px 20px;height:56px;width:100%;background-color:rgba(255,255,255,.025);border:1.5px solid rgba(255,255,255,.94);background-image:radial-gradient(ellipse at 10% 0%,#ffffffb3 0%,#ffffff00 36%),linear-gradient(#ffffff85,#ffffff05 50%,#ffffff2e);box-shadow:6px 8px 11px #3e46532a;}.ds-control:hover{filter:brightness(1.035)}.ds-control:focus-visible{outline:2px solid currentColor;outline-offset:3px}.ds-control:active{transform:scaleX(1.025) scaleY(.952)}.ds-control:disabled{pointer-events:none}"
     },
     {
       "name": "Campo de texto",
@@ -1418,7 +1459,7 @@
       "refersTo": "quick-category-selected",
       "description": "Tinte primario ligero; icono y texto primary conservan transparencia.",
       "html": "<button class=\"ds-chip ds-control\" aria-pressed=\"true\"><svg width=\"21\" height=\"21\" aria-hidden=\"true\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.7\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M5 3 H19 L17 21 H7 Z M6 7 H18 M13 3 L17 1\"/></svg>Bebidas</button>",
-      "css": "@font-face{font-family:Manrope;src:url(\"app/src/main/res/font/manrope_regular.ttf\");font-weight:400}@font-face{font-family:Manrope;src:url(\"app/src/main/res/font/manrope_semibold.ttf\");font-weight:600}@font-face{font-family:Manrope;src:url(\"app/src/main/res/font/manrope_bold.ttf\");font-weight:700}.ds-chip{display:flex;align-items:center;gap:7px;font:600 12px/18px Manrope,sans-serif;color:#c0065c;border-radius:22px;height:44px;padding:0 15px;background-color:rgba(255,255,255,.025);border:1.5px solid rgba(255,255,255,.94);background-image:radial-gradient(ellipse at 10% 0%,#ffffffb3 0%,#ffffff00 36%),linear-gradient(#ffffff85,#ffffff05 50%,#ffffff2e);box-shadow:6px 8px 11px #3e465342,-5px -5px 8px #ffffffd9;background-color:rgba(192,6,92,.075)}.ds-control:hover{filter:brightness(1.035)}.ds-control:focus-visible{outline:2px solid currentColor;outline-offset:3px}.ds-control:active{transform:scaleX(1.025) scaleY(.952)}.ds-control:disabled{opacity:.38;pointer-events:none}"
+      "css": "@font-face{font-family:Manrope;src:url(\"app/src/main/res/font/manrope_regular.ttf\");font-weight:400}@font-face{font-family:Manrope;src:url(\"app/src/main/res/font/manrope_semibold.ttf\");font-weight:600}@font-face{font-family:Manrope;src:url(\"app/src/main/res/font/manrope_bold.ttf\");font-weight:700}.ds-chip{display:flex;align-items:center;gap:7px;font:600 12px/18px Manrope,sans-serif;color:#c0065c;border-radius:22px;height:44px;padding:0 15px;background-color:rgba(255,255,255,.025);border:1.5px solid rgba(255,255,255,.94);background-image:radial-gradient(ellipse at 10% 0%,#ffffffb3 0%,#ffffff00 36%),linear-gradient(#ffffff85,#ffffff05 50%,#ffffff2e);box-shadow:6px 8px 11px #3e46532a;background-color:rgba(192,6,92,.075)}.ds-control:hover{filter:brightness(1.035)}.ds-control:focus-visible{outline:2px solid currentColor;outline-offset:3px}.ds-control:active{transform:scaleX(1.025) scaleY(.952)}.ds-control:disabled{pointer-events:none}"
     },
     {
       "name": "Control circular",
@@ -1426,15 +1467,15 @@
       "refersTo": "glass-control",
       "description": "BotonCristal claro con SVG original y luz curva.",
       "html": "<button class=\"ds-round ds-control\" aria-label=\"Mi bolsa\"><svg width=\"24\" height=\"24\" aria-hidden=\"true\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.7\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M5 7.5 H19 L20 20.5 H4 Z M8.5 9 V6 A3.5 3.5 0 0 1 15.5 6 V9\"/></svg></button>",
-      "css": "@font-face{font-family:Manrope;src:url(\"app/src/main/res/font/manrope_regular.ttf\");font-weight:400}@font-face{font-family:Manrope;src:url(\"app/src/main/res/font/manrope_semibold.ttf\");font-weight:600}@font-face{font-family:Manrope;src:url(\"app/src/main/res/font/manrope_bold.ttf\");font-weight:700}.ds-round{display:grid;place-items:center;width:56px;height:56px;color:#c0065c;border-radius:28px;background-color:rgba(255,255,255,.025);border:1.5px solid rgba(255,255,255,.94);background-image:radial-gradient(ellipse at 10% 0%,#ffffffb3 0%,#ffffff00 36%),linear-gradient(#ffffff85,#ffffff05 50%,#ffffff2e);box-shadow:6px 8px 11px #3e465342,-5px -5px 8px #ffffffd9;}.ds-control:hover{filter:brightness(1.035)}.ds-control:focus-visible{outline:2px solid currentColor;outline-offset:3px}.ds-control:active{transform:scaleX(1.025) scaleY(.952)}.ds-control:disabled{opacity:.38;pointer-events:none}"
+      "css": "@font-face{font-family:Manrope;src:url(\"app/src/main/res/font/manrope_regular.ttf\");font-weight:400}@font-face{font-family:Manrope;src:url(\"app/src/main/res/font/manrope_semibold.ttf\");font-weight:600}@font-face{font-family:Manrope;src:url(\"app/src/main/res/font/manrope_bold.ttf\");font-weight:700}.ds-round{display:grid;place-items:center;width:56px;height:56px;color:#c0065c;border-radius:28px;background-color:rgba(255,255,255,.025);border:1.5px solid rgba(255,255,255,.94);background-image:radial-gradient(ellipse at 10% 0%,#ffffffb3 0%,#ffffff00 36%),linear-gradient(#ffffff85,#ffffff05 50%,#ffffff2e);box-shadow:6px 8px 11px #3e46532a;}.ds-control:hover{filter:brightness(1.035)}.ds-control:focus-visible{outline:2px solid currentColor;outline-offset:3px}.ds-control:active{transform:scaleX(1.025) scaleY(.952)}.ds-control:disabled{pointer-events:none}"
     },
     {
-      "name": "Flecha de producto",
+      "name": "Opción interior",
       "kind": "button",
-      "refersTo": "product-action",
-      "description": "Acción por icono con objetivo 48 dp y descripción accesible.",
-      "html": "<button class=\"ds-arrow ds-control\" aria-label=\"Ver detalles de Café\"><svg width=\"25\" height=\"25\" aria-hidden=\"true\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.7\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M4 12 H20 M13 5 L20 12 L13 19\"/></svg></button>",
-      "css": "@font-face{font-family:Manrope;src:url(\"app/src/main/res/font/manrope_regular.ttf\");font-weight:400}@font-face{font-family:Manrope;src:url(\"app/src/main/res/font/manrope_semibold.ttf\");font-weight:600}@font-face{font-family:Manrope;src:url(\"app/src/main/res/font/manrope_bold.ttf\");font-weight:700}.ds-arrow{display:grid;place-items:center;width:48px;height:48px;border-radius:24px;color:#c0065c;background-color:rgba(255,255,255,.025);border:1.5px solid rgba(255,255,255,.94);background-image:radial-gradient(ellipse at 10% 0%,#ffffffb3 0%,#ffffff00 36%),linear-gradient(#ffffff85,#ffffff05 50%,#ffffff2e);box-shadow:6px 8px 11px #3e465342,-5px -5px 8px #ffffffd9;}.ds-control:hover{filter:brightness(1.035)}.ds-control:focus-visible{outline:2px solid currentColor;outline-offset:3px}.ds-control:active{transform:scaleX(1.025) scaleY(.952)}.ds-control:disabled{opacity:.38;pointer-events:none}"
+      "refersTo": "interior-option",
+      "description": "OpcionCristal de 48 dp para horario o pago; tintado ligero, texto de selección y material claro.",
+      "html": "<button class=\"ds-option\" aria-pressed=\"true\"><svg width=\"21\" height=\"21\" aria-hidden=\"true\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.7\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M2 5 H22 V19 H2 Z M15 12 A3 3 0 1 1 9 12 A3 3 0 1 1 15 12 M5 9 H6 M18 15 H19\"/></svg>Pagar en caja</button>",
+      "css": "@font-face{font-family:Manrope;src:url(\"app/src/main/res/font/manrope_regular.ttf\");font-weight:400}@font-face{font-family:Manrope;src:url(\"app/src/main/res/font/manrope_semibold.ttf\");font-weight:600}@font-face{font-family:Manrope;src:url(\"app/src/main/res/font/manrope_bold.ttf\");font-weight:700}.ds-option{display:flex;align-items:center;gap:8px;height:48px;padding:0 16px;border:1.5px solid #ffffffef;border-radius:24px;color:#c0065c;font:700 14px/20px Manrope,sans-serif;background:radial-gradient(ellipse at 10% 0%,#ffffffb3,transparent 36%),linear-gradient(#ffffff85,#ffffff05 50%,#ffffff2e),rgba(192,6,92,.075);box-shadow:6px 8px 11px #3e46532a}.ds-option:hover{filter:brightness(1.035)}.ds-option:focus-visible{outline:2px solid currentColor;outline-offset:3px}.ds-option:active{transform:scaleX(1.025) scaleY(.952)}"
     },
     {
       "name": "Producto",
@@ -1442,26 +1483,43 @@
       "refersTo": "product",
       "description": "Foto 154 dp, nombre, precio, corazón y flecha; preview local sin captura GraphicsLayer.",
       "html": "<article class=\"ds-product\"><div class=\"ds-photo\"><button class=\"ds-heart ds-control\" aria-label=\"Guardar café en favoritos\"><svg width=\"24\" height=\"24\" aria-hidden=\"true\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.7\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M12 21 C9 18 3 14 3 8.5 C3 2 10 1.5 12 6 C14 1.5 21 2 21 8.5 C21 14 15 18 12 21 Z\"/></svg></button></div><div class=\"ds-foot\"><strong class=\"ds-name\">Café</strong><div class=\"ds-product-bottom\"><strong class=\"ds-price\">S/ 5.00</strong><button class=\"ds-arrow ds-control\" aria-label=\"Ver detalles de Café\"><svg width=\"25\" height=\"25\" aria-hidden=\"true\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.7\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M4 12 H20 M13 5 L20 12 L13 19\"/></svg></button></div></div></article>",
-      "css": "@font-face{font-family:Manrope;src:url(\"app/src/main/res/font/manrope_regular.ttf\");font-weight:400}@font-face{font-family:Manrope;src:url(\"app/src/main/res/font/manrope_semibold.ttf\");font-weight:600}@font-face{font-family:Manrope;src:url(\"app/src/main/res/font/manrope_bold.ttf\");font-weight:700}.ds-product{width:180px;height:260px;overflow:hidden;color:#0d153e;background:#fdfcfc;border:1.2px solid #fffffff2;border-radius:20px;box-shadow:6px 8px 11px #3e465342,-5px -5px 8px #ffffffd9;}.ds-photo{height:154px;background:#f6f1f3 url(\"app/src/main/res/drawable-nodpi/cafe_rosa.png\") center/cover;position:relative}.ds-heart{position:absolute;right:5px;top:5px;display:grid;place-items:center;width:48px;height:48px;border-radius:24px;color:#c0065c;background-color:rgba(255,255,255,.025);border:1.5px solid rgba(255,255,255,.94);background-image:radial-gradient(ellipse at 10% 0%,#ffffffb3 0%,#ffffff00 36%),linear-gradient(#ffffff85,#ffffff05 50%,#ffffff2e);box-shadow:6px 8px 11px #3e465342,-5px -5px 8px #ffffffd9;}.ds-foot{display:flex;flex-direction:column;height:92px;padding:7px 12px}.ds-name{font:700 16px/23px Manrope,sans-serif}.ds-product-bottom{display:flex;align-items:center;justify-content:space-between;margin-top:auto}.ds-price{font:700 21px/28px Manrope,sans-serif;color:#c0065c}.ds-arrow{display:grid;place-items:center;width:48px;height:48px;border-radius:24px;color:#c0065c;background-color:rgba(255,255,255,.025);border:1.5px solid rgba(255,255,255,.94);background-image:radial-gradient(ellipse at 10% 0%,#ffffffb3 0%,#ffffff00 36%),linear-gradient(#ffffff85,#ffffff05 50%,#ffffff2e);box-shadow:6px 8px 11px #3e465342,-5px -5px 8px #ffffffd9;}.ds-control:hover{filter:brightness(1.035)}.ds-control:focus-visible{outline:2px solid currentColor;outline-offset:3px}.ds-control:active{transform:scaleX(1.025) scaleY(.952)}.ds-control:disabled{opacity:.38;pointer-events:none}"
+      "css": "@font-face{font-family:Manrope;src:url(\"app/src/main/res/font/manrope_regular.ttf\");font-weight:400}@font-face{font-family:Manrope;src:url(\"app/src/main/res/font/manrope_semibold.ttf\");font-weight:600}@font-face{font-family:Manrope;src:url(\"app/src/main/res/font/manrope_bold.ttf\");font-weight:700}.ds-product{width:180px;height:260px;overflow:hidden;color:#0d153e;background:#fdfcfc;border:1.2px solid #fffffff2;border-radius:20px;box-shadow:6px 8px 11px #3e465342,-5px -5px 8px #ffffffd9;}.ds-photo{height:154px;background:#f6f1f3 url(\"app/src/main/res/drawable-nodpi/cafe_rosa.png\") center/cover;position:relative}.ds-heart{position:absolute;right:5px;top:5px;display:grid;place-items:center;width:48px;height:48px;border-radius:24px;color:#c0065c;background-color:rgba(255,255,255,.025);border:1.5px solid rgba(255,255,255,.94);background-image:radial-gradient(ellipse at 10% 0%,#ffffffb3 0%,#ffffff00 36%),linear-gradient(#ffffff85,#ffffff05 50%,#ffffff2e);box-shadow:6px 8px 11px #3e46532a;}.ds-foot{display:flex;flex-direction:column;height:92px;padding:7px 12px}.ds-name{font:700 16px/23px Manrope,sans-serif}.ds-product-bottom{display:flex;align-items:center;justify-content:space-between;margin-top:auto}.ds-price{font:700 21px/28px Manrope,sans-serif;color:#c0065c}.ds-arrow{display:grid;place-items:center;width:48px;height:48px;border-radius:24px;color:#c0065c;background-color:rgba(255,255,255,.025);border:1.5px solid rgba(255,255,255,.94);background-image:radial-gradient(ellipse at 10% 0%,#ffffffb3 0%,#ffffff00 36%),linear-gradient(#ffffff85,#ffffff05 50%,#ffffff2e);box-shadow:6px 8px 11px #3e46532a;}.ds-control:hover{filter:brightness(1.035)}.ds-control:focus-visible{outline:2px solid currentColor;outline-offset:3px}.ds-control:active{transform:scaleX(1.025) scaleY(.952)}.ds-control:disabled{pointer-events:none}"
     },
     {
       "name": "Navegación líquida",
       "kind": "nav",
       "refersTo": "navigation",
-      "description": "Destinos del estudiante; CSS aproxima velo y selección sin arrastre, captura o AGSL.",
+      "description": "Navegación con fila recortada a 30 dp y destinos sin indicación rectangular; CSS aproxima velo/selección sin captura, arrastre o AGSL.",
       "html": "<nav class=\"ds-nav\" aria-label=\"Principal\"><button class=\"ds-tab ds-control\" aria-current=\"page\"><svg width=\"24\" height=\"24\" aria-hidden=\"true\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.7\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M3 10.5 L12 3 L21 10.5 M5.5 9 V21 H9.5 V14 H14.5 V21 H18.5 V9\"/></svg>Menú</button><button class=\"ds-tab ds-control\"><svg width=\"24\" height=\"24\" aria-hidden=\"true\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.7\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M5 3 H19 V21 L15.5 19 L12 21 L8.5 19 L5 21 Z M8.5 7 H15.5 M8.5 11 H15.5 M8.5 15 H12.5\"/></svg>Pedidos</button><button class=\"ds-tab ds-control\"><svg width=\"24\" height=\"24\" aria-hidden=\"true\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.7\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M16 7 A4 4 0 1 1 8 7 A4 4 0 1 1 16 7 M4.5 21 V19 C4.5 12 19.5 12 19.5 19 V21 Z\"/></svg>Perfil</button></nav>",
-      "css": "@font-face{font-family:Manrope;src:url(\"app/src/main/res/font/manrope_regular.ttf\");font-weight:400}@font-face{font-family:Manrope;src:url(\"app/src/main/res/font/manrope_semibold.ttf\");font-weight:600}@font-face{font-family:Manrope;src:url(\"app/src/main/res/font/manrope_bold.ttf\");font-weight:700}.ds-nav{display:flex;height:72px;border-radius:30px;padding:0 7px;background:#ffffff14;border:1.5px solid #ffffffdd;box-shadow:6px 8px 11px #3e465342,-5px -5px 8px #ffffffd9;}.ds-tab{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;flex:1;margin:8px 0;border:0;background:transparent;border-radius:28px;color:#6c526c;font:600 11px/16px Manrope,sans-serif}.ds-tab[aria-current]{background:linear-gradient(#ffffffcc,#c0065c1a);color:#c0065c}.ds-control:hover{filter:brightness(1.035)}.ds-control:focus-visible{outline:2px solid currentColor;outline-offset:3px}.ds-control:active{transform:scaleX(1.025) scaleY(.952)}.ds-control:disabled{opacity:.38;pointer-events:none}"
+      "css": "@font-face{font-family:Manrope;src:url(\"app/src/main/res/font/manrope_regular.ttf\");font-weight:400}@font-face{font-family:Manrope;src:url(\"app/src/main/res/font/manrope_semibold.ttf\");font-weight:600}@font-face{font-family:Manrope;src:url(\"app/src/main/res/font/manrope_bold.ttf\");font-weight:700}.ds-nav{overflow:hidden;display:flex;height:72px;border-radius:30px;padding:0 7px;background:#ffffff14;border:1.5px solid #ffffffdd;box-shadow:6px 8px 11px #3e465342,-5px -5px 8px #ffffffd9;}.ds-tab{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;flex:1;margin:8px 0;border:0;background:transparent;border-radius:28px;color:#6c526c;font:600 11px/16px Manrope,sans-serif}.ds-tab[aria-current]{background:linear-gradient(#ffffffcc,#c0065c1a);color:#c0065c}.ds-control:hover{filter:brightness(1.035)}.ds-control:focus-visible{outline:2px solid currentColor;outline-offset:3px}.ds-control:active{transform:scaleX(1.025) scaleY(.952)}.ds-control:disabled{pointer-events:none}"
+    },
+    {
+      "name": "Papel interior",
+      "kind": "card",
+      "refersTo": "interior-paper",
+      "description": "PapelInterior mate para lectura y decisiones; no tiene lente ni reflejos de cristal.",
+      "html": "<section class=\"ds-paper\"><strong class=\"ds-paper-title\">Hora de recojo</strong><span class=\"ds-paper-copy\">Elige cuándo pasar por tu pedido.</span></section>",
+      "css": "@font-face{font-family:Manrope;src:url(\"app/src/main/res/font/manrope_regular.ttf\");font-weight:400}@font-face{font-family:Manrope;src:url(\"app/src/main/res/font/manrope_semibold.ttf\");font-weight:600}@font-face{font-family:Manrope;src:url(\"app/src/main/res/font/manrope_bold.ttf\");font-weight:700}.ds-paper{display:flex;flex-direction:column;gap:14px;padding:18px;border-radius:22px;background:rgba(253,253,252,.96);color:#0d153e;box-shadow:6px 8px 11px #3e46531d,-5px -5px 8px #ffffff61}.ds-paper-title{font:700 16px/23px Manrope,sans-serif}.ds-paper-copy{font:400 12px/18px Manrope,sans-serif;color:#6c526c}"
+    },
+    {
+      "name": "Avatar de perfil",
+      "kind": "custom",
+      "refersTo": "profile-avatar",
+      "description": "Foto aportada solo para cuenta semilla Daniella. El resto de cuentas muestra inicial; este ejemplo local no autentica identidad.",
+      "html": "<div class=\"ds-avatar\" role=\"img\" aria-label=\"Foto de perfil de Daniella\"><span class=\"ds-avatar-photo\"></span></div>",
+      "css": ".ds-avatar{box-sizing:border-box;display:grid;place-items:center;width:112px;height:112px;border-radius:50%;background:#f9e7ef;border:3px solid #ffffffe6;box-shadow:6px 8px 11px #3e465342,-5px -5px 8px #ffffffd9}.ds-avatar-photo{width:104px;height:104px;border-radius:50%;background:url(\"app/src/main/res/drawable-nodpi/daniella_perfil.png\") left center/cover}"
     }
   ],
   "narrative": {
     "northStar": "Cafetería blanca y cristal",
-    "overview": "CafeCampus se sitúa en una cafetería real y luminosa: ambiente neutro, luz natural, cerámica y flores blancas. Café describe el negocio, sin imponer marrón a la interfaz. La última instrucción de Daniella sustituye el fondo rosa dominante; el estudiante conserva rosa suave en acabados y fotografías, con fucsia en acciones. Administración tiene identidad azul, fondo propio y utilería de gestión.\n\nLa carta se reconoce por fotografías grandes y tarjetas uniformes con nombre, precio y acciones por iconos, añadiendo Agotado cuando corresponde. Los controles son cristal claro con reflejos blancos curvos y fondo real capturado. El material es una adaptación Android: refracción AGSL desde API 33 y respuesta geométrica en API 24–32. Texto e iconos se componen nítidos por encima.",
+    "overview": "CafeCampus se sitúa en una cafetería real y luminosa: ambiente neutro, luz natural, cerámica y flores blancas. Café describe el negocio, sin imponer marrón a la interfaz. La última instrucción de Daniella sustituye el fondo rosa dominante; el estudiante conserva rosa suave en acabados y fotografías, con fucsia en acciones. Administración tiene identidad azul, fondo propio y utilería de gestión.\n\nLa carta se reconoce por fotografías grandes y tarjetas uniformes con nombre, precio y acciones por iconos, añadiendo Agotado cuando corresponde. Los controles son cristal claro con reflejos blancos curvos y fondo real capturado. El material es una adaptación Android: refracción AGSL desde API 33 y respuesta geométrica en API 24–32. Texto e iconos se componen nítidos por encima.\n\nLos interiores usan fondos fotográficos completos por tarea, con utilería integrada y sin recortes decorativos flotantes. El menú conserva su composición aprobada. Las superficies de papel mate ordenan identidad, bolsa y preferencias; los botones claros conservan el tacto y los reflejos del cristal. La foto aportada de Daniella pertenece exclusivamente a su cuenta semilla.",
     "keyCharacteristics": [
       "Ambiente de cafetería blanco y neutro, luz natural y flores blancas.",
       "Acabados rosas del estudiante e identidad azul sobria del administrador.",
       "Manrope local e iconos SVG originales compartidos con ImageVector.",
       "Fotografía, nombre, precio, corazón y flecha en tarjetas uniformes.",
-      "Cristal claro que muestrea el fondo real, con luz curva y tacto líquido."
+      "Cristal claro que muestrea el fondo real, con luz curva y tacto líquido.",
+      "Interiores fotográficos por tarea y papel mate para identidad y decisiones."
     ],
     "rules": [
       {
@@ -1501,7 +1559,9 @@
       "Do mantener cristal claro con fondo real capturado, reflejos blancos y texto nativo por encima.",
       "Do reducir las tarjetas a foto, nombre, precio, corazón y flecha, añadiendo Agotado cuando corresponda.",
       "Do reutilizar geometría SVG/ImageVector y mantener etiquetas accesibles en acciones por iconos.",
-      "Do conservar favoritos persistentes separados por usuario y estados acompañados de texto."
+      "Do conservar favoritos persistentes separados por usuario y estados acompañados de texto.",
+      "Do integrar utilería en fondos interiores completos y ordenar lectura con PapelInterior mate.",
+      "Do limitar la foto de Daniella a su cuenta semilla y mostrar inicial para otras cuentas."
     ],
     "donts": [
       "Don't devolver rosa dominante al fondo ni interpretar café como obligación de marrón.",
@@ -1509,6 +1569,8 @@
       "Don't trasladar flores y escenas personales del estudiante al gestor como identidad administrativa.",
       "Don't capturar letras o botones del propio producto para usarlos como su fondo óptico.",
       "Don't recuperar descripciones, categoría o texto Ver detalles en el pie de la tarjeta del catálogo.",
+      "Don't superponer recortes decorativos flotantes en los interiores.",
+      "Don't adoptar rellenos opacos de las referencias para sustituir los botones de cristal aprobados.",
       "Don't afirmar material Apple nativo, equivalencia óptica entre versiones, pruebas finalizadas o rendimiento físico sin evidencia."
     ]
   }

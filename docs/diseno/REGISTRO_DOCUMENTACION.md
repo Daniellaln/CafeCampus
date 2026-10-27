@@ -1,7 +1,5 @@
-# Registro de documentación del rediseño
+# Documentación final de diseño
 
-El agente rosa_documenter escribió DESIGN.md y .impeccable/design.json desde la fuente final y cotejó los35 SVG con IconosCafe.kt: misma geometría, sin discrepancias. JSON válido de esquema2, ocho ejemplos de componentes y quince roles Manrope. Los ejemplos HTML del sidecar son aproximaciones de inspección, no ejecutan la física de Compose.
+El agente rosa_documenter actualizó únicamente DESIGN.md y .impeccable/design.json desde fuente real de esta ampliación. Quince roles Manrope,35SVG con geometría compartida, siete ambientes integrados, papel mate y controles de cristal. Avatar112dp con fotografía aportada, origen noAI y checksum contrastado. Diez ejemplos compactos; JSON válido sin imágenes base64.
 
-Este registro documenta cafetería blanca con cristal claro y estudiante rosa, gestor azul con assets propios, tarjetas260dp/foto154dp y favoritos persistentes por usuario. Se conservaron como límites los roles nocturnos secundarios compartidos y el componente histórico BarraCampus; no se canonizaron como nueva dirección.
-
-Las pruebas y capturas actuales se informan por separado en VERIFICACION_REDISENIO.md. No hay medición de rendimiento físico ni equivalencia óptica entre Android24–32 y33+.
+El último ajuste conserva brillo interior y recorta fuentes/lentes/indicaciones a su geometría. Los ejemplos de inspección no ejecutan Compose, AGSL ni persistencia. La evidencia de19pruebas y32capturas se atribuye a la ejecución principal. El veredicto de revisión y los límites de emulación constan por separado.

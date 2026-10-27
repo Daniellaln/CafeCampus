@@ -1,13 +1,9 @@
 {
-  "fecha": "2026-10-21",
-  "version": "rediseño cafetería blanca y cristal",
-  "dispositivo": "Pixel 8 Pro emulado, Android 17/API37",
-  "tests": 16,
+  "tests": 19,
   "failures": 0,
-  "lint": {
-    "Error": 0,
-    "Warning": 67
-  },
-  "capturas_recorrido": 25,
+  "lint_errors": 0,
+  "lint_warnings": 77,
+  "capturas": 32,
+  "dispositivo": "Pixel8Pro emulado Android17/API37",
   "hardware_fisico": false
 }

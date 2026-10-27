@@ -1,0 +1,27 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<testsuite name="com.leon.cafecampus.DatosAceptacionTest" tests="19" failures="0" errors="0" skipped="0" time="133.345" timestamp="2026-10-21T14:07:28" hostname="localhost">
+  <properties>
+    <property name="device" value="Pixel_8_Pro_2(AVD) - 17" />
+    <property name="flavor" value="" />
+    <property name="project" value=":app" />
+  </properties>
+  <testcase name="migracionTresConservaCuentaYPedido" classname="com.leon.cafecampus.DatosAceptacionTest" time="0.124" />
+  <testcase name="horariosFuturosIncluyenDiaAlCruzarMedianoche" classname="com.leon.cafecampus.DatosAceptacionTest" time="0.004" />
+  <testcase name="graficoAgrupaHoraYRespetaLimitesYCancelados" classname="com.leon.cafecampus.DatosAceptacionTest" time="0.035" />
+  <testcase name="repetirUsaPrecioActualYOmitidosSinCrearCompra" classname="com.leon.cafecampus.DatosAceptacionTest" time="0.047" />
+  <testcase name="busquedaIgnoraTildesYCombinaCategoria" classname="com.leon.cafecampus.DatosAceptacionTest" time="0.04" />
+  <testcase name="registroNormalizaCorreoYRechazaDuplicados" classname="com.leon.cafecampus.DatosAceptacionTest" time="0.004" />
+  <testcase name="detallesInvalidosHacenRollbackCompleto" classname="com.leon.cafecampus.DatosAceptacionTest" time="0.004" />
+  <testcase name="flujoReflejaEstadoYSumaExcluyeCancelados" classname="com.leon.cafecampus.DatosAceptacionTest" time="0.005" />
+  <testcase name="eliminarPedidoBorraSusDetalles" classname="com.leon.cafecampus.DatosAceptacionTest" time="0.04" />
+  <testcase name="pedidoConDosProductosYRelacion" classname="com.leon.cafecampus.DatosAceptacionTest" time="0.005" />
+  <testcase name="precioHistoricoTrasEditarYEliminarProducto" classname="com.leon.cafecampus.DatosAceptacionTest" time="0.005" />
+  <testcase name="cargaNoSeConfundeConCatalogoVacio" classname="com.leon.cafecampus.DatosAceptacionTest" time="0.289" />
+  <testcase name="ordenDescendenteYDatosPersistidos" classname="com.leon.cafecampus.DatosAceptacionTest" time="0.005" />
+  <testcase name="agotadoNoCreaPedido" classname="com.leon.cafecampus.DatosAceptacionTest" time="0.034" />
+  <testcase name="reporteUsaUnidadesPreciosHistoricosYPagosDelDia" classname="com.leon.cafecampus.DatosAceptacionTest" time="0.003" />
+  <testcase name="semillaIdempotenteYLogin" classname="com.leon.cafecampus.DatosAceptacionTest" time="0.037" />
+  <testcase name="favoritosPersistenSeparadosPorUsuario" classname="com.leon.cafecampus.DatosAceptacionTest" time="0.076" />
+  <testcase name="useAppContext" classname="com.leon.cafecampus.ExampleInstrumentedTest" time="0.002" />
+  <testcase name="faseUnoCompleta" classname="com.leon.cafecampus.FlujoAceptacionTest" time="125.629" />
+</testsuite>
