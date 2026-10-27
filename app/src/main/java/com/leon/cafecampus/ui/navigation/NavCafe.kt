@@ -30,6 +30,9 @@ import com.leon.cafecampus.ui.theme.CafeTheme
     val cargando by sesion.cargando.collectAsStateWithLifecycle()
     val oscuro by sesion.modoOscuro.collectAsStateWithLifecycle()
     val abierto by sesion.recibirPedidos.collectAsStateWithLifecycle()
+    val repetido by menu.repetido.collectAsStateWithLifecycle()
+    val avisoRepetir by menu.error.collectAsStateWithLifecycle()
+    val repitiendo by menu.repitiendo.collectAsStateWithLifecycle()
     val carrito by menu.carrito.collectAsStateWithLifecycle()
     val admin=usuario?.rol==Rol.ADMIN.name
     val nav=rememberNavController()
@@ -48,6 +51,7 @@ import com.leon.cafecampus.ui.theme.CafeTheme
             else { menu.vaciar(); raiz(Rutas.LOGIN) }
         }
     }
+    LaunchedEffect(repetido) { if(repetido) { nav.navigate(Rutas.CONFIRMAR);menu.consumirRepetido() } }
     CafeTheme(if(admin) Rol.ADMIN else Rol.CLIENTE,oscuro) {
         val destinos=if(admin) listOf(Triple(Rutas.PANEL,"Panel",Icons.Default.BarChart),Triple(Rutas.ADMIN_PEDIDOS,"Pedidos",Icons.Default.ReceiptLong),Triple(Rutas.ADMIN_MENU,"Menú",Icons.Default.Coffee),Triple(Rutas.AJUSTES,"Ajustes",Icons.Default.Settings))
             else listOf(Triple(Rutas.MENU,"Menú",Icons.Default.Home),Triple(Rutas.PEDIDOS,"Pedidos",Icons.Default.ReceiptLong),Triple(Rutas.PERFIL,"Perfil",Icons.Default.PersonOutline))
@@ -62,7 +66,7 @@ import com.leon.cafecampus.ui.theme.CafeTheme
                 composable(Rutas.PRODUCTO,arguments=listOf(navArgument("id") { type=NavType.IntType })) { DetalleProductoScreen(it.arguments?.getInt("id") ?: 0,menu) { nav.popBackStack() } }
                 composable(Rutas.CONFIRMAR) { ConfirmarPedidoScreen(menu,cliente,abierto,{nav.popBackStack()}) { nav.navigate("seguimiento/$it") { popUpTo(Rutas.CONFIRMAR) { inclusive=true } } } }
                 composable(Rutas.SEGUIMIENTO,arguments=listOf(navArgument("id") { type=NavType.IntType })) { SeguimientoScreen(it.arguments?.getInt("id") ?: 0,cliente) { if(!nav.popBackStack()) raiz(Rutas.MENU) } }
-                composable(Rutas.PEDIDOS) { MisPedidosScreen(cliente) { nav.navigate("seguimiento/$it") } }
+                composable(Rutas.PEDIDOS) { MisPedidosScreen(cliente,abrir={nav.navigate("seguimiento/$it")},repetir={menu.repetir(it)},aviso=avisoRepetir,ocupado=repitiendo) }
                 composable(Rutas.PERFIL) { AjustesScreen(sesion,cliente=true) }
                 composable(Rutas.PANEL) { PanelScreen(panel,pedidosAdmin,{nav.navigate("admin_detalle/$it")},{nav.navigate(Rutas.ADMIN_PEDIDOS)}) }
                 composable(Rutas.ADMIN_PEDIDOS) { PedidosAdminScreen(pedidosAdmin) { nav.navigate("admin_detalle/$it") } }

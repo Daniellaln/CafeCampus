@@ -24,6 +24,7 @@ import com.leon.cafecampus.data.local.entity.*
 
 @Composable fun ConfirmarPedidoScreen(menu: MenuViewModel,vm: PedidosClienteViewModel,abierto: Boolean,volver: ()->Unit,seguir: (Long)->Unit) {
     val items by menu.carrito.collectAsStateWithLifecycle()
+    val avisoBolsa by menu.error.collectAsStateWithLifecycle()
     val error by vm.error.collectAsStateWithLifecycle()
     val enviando by vm.enviando.collectAsStateWithLifecycle()
     val creado by vm.creado.collectAsStateWithLifecycle()
@@ -51,6 +52,7 @@ import com.leon.cafecampus.data.local.entity.*
             CafeTextField(nota,{nota=it},"Nota para la cocina")
             Tarjeta { Text("Subtotal: ${dinero(menu.total())}"); Text("Servicio: S/ 0.00"); Text("Total: ${dinero(menu.total())}",fontWeight=FontWeight.Bold,color=MaterialTheme.colorScheme.primary) }
             if(!abierto) ErrorTexto("Cafetería cerrada")
+            ErrorTexto(avisoBolsa)
             ErrorTexto(error)
             CafeButton(if(enviando) "Confirmando…" else "Confirmar pedido",items.isNotEmpty() && abierto && !enviando) { vm.confirmar(items,hora,pago,nota) }
             OutlinedButton(onClick=volver,enabled=!enviando,modifier=Modifier.fillMaxWidth()) { Text("Seguir pidiendo") }

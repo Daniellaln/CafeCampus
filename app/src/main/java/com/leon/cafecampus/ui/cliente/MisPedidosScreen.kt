@@ -22,15 +22,16 @@ import com.leon.cafecampus.viewmodel.*
 import com.leon.cafecampus.model.*
 import com.leon.cafecampus.data.local.entity.*
 
-@Composable fun MisPedidosScreen(vm: PedidosClienteViewModel,abrir: (Int)->Unit) {
+@Composable fun MisPedidosScreen(vm: PedidosClienteViewModel,abrir: (Int)->Unit,repetir: (com.leon.cafecampus.data.local.relation.PedidoConDetalle)->Unit={},aviso: String?=null,ocupado: Boolean=false) {
     val historial by vm.historial.collectAsStateWithLifecycle()
     val pedidos by vm.visibles.collectAsStateWithLifecycle()
     Column(Modifier.fillMaxSize()) {
         AppTopBar("Mis pedidos")
         SingleChoiceSegmentedButtonRow(Modifier.fillMaxWidth().padding(horizontal=16.dp)) { listOf(false to "Activos",true to "Historial").forEachIndexed { i,(b,t) -> SegmentedButton(selected=historial==b,onClick={vm.historial(b)},shape=SegmentedButtonDefaults.itemShape(i,2)) { Text(t) } } }
+        ErrorTexto(aviso)
         LazyColumn(contentPadding=PaddingValues(16.dp),verticalArrangement=Arrangement.spacedBy(12.dp)) {
             if(pedidos.isEmpty()) item { Vacio(if(historial) "Aún no tienes pedidos en el historial" else "No tienes pedidos activos") }
-            items(pedidos,key={it.pedido.id}) { p -> PedidoCard(p,abrir={abrir(p.pedido.id)}) }
+            items(pedidos,key={it.pedido.id}) { p -> PedidoCard(p,abrir={abrir(p.pedido.id)}) { if(historial) OutlinedButton(onClick={repetir(p)},enabled=!ocupado) { Icon(Icons.Default.Replay,null); Spacer(Modifier.width(8.dp)); Text("Repetir pedido") } } }
         }
     }
 }

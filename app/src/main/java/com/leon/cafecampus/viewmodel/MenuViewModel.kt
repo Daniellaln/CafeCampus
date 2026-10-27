@@ -46,6 +46,26 @@ class MenuViewModel(private val repo: CafeRepository, private val saved: SavedSt
         _carrito.value=if(anterior==null) _carrito.value+ItemCarrito(producto,cantidad,nota) else _carrito.value.map { if(it.producto.id==producto.id) it.copy(cantidad=it.cantidad+cantidad,nota=listOf(it.nota,nota).filter { n -> n.isNotBlank() }.distinct().joinToString("; ")) else it }
         recordar(); return true
     }
+    private val _repetido=MutableStateFlow(false)
+    val repetido=_repetido.asStateFlow()
+    private val _repitiendo=MutableStateFlow(false)
+    val repitiendo=_repitiendo.asStateFlow()
+    fun consumirRepetido() { _repetido.value=false }
+    fun repetir(pedido: com.leon.cafecampus.data.local.relation.PedidoConDetalle) {
+        if(_repitiendo.value) return
+        _repitiendo.value=true; _error.value=null
+        viewModelScope.launch {
+            try {
+                val actuales=repo.observarProductos().first().associateBy { it.id }
+                val disponibles=pedido.detalles.mapNotNull { d -> actuales[d.productoId]?.takeIf { it.disponible }?.let { ItemCarrito(it,d.cantidad.coerceIn(1,99)) } }
+                require(disponibles.isNotEmpty()) { "Los productos de ese pedido ya no están disponibles" }
+                _carrito.value=disponibles; recordar()
+                _error.value=if(disponibles.size<pedido.detalles.size) "Se omitieron productos que ya no están disponibles" else null
+                _repetido.value=true
+            } catch(e: Exception) { _error.value=e.message ?: "No se pudo repetir el pedido" }
+            finally { _repitiendo.value=false }
+        }
+    }
     fun quitar(productoId: Int) { _carrito.value=_carrito.value.filterNot { it.producto.id==productoId }; recordar() }
     fun vaciar() { _carrito.value=emptyList(); recordar() }
     fun total(): Double = _carrito.value.sumOf { it.subtotal }

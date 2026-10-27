@@ -88,6 +88,23 @@ class DatosAceptacionTest {
         val categoria=kotlinx.coroutines.withTimeout(5000) { vm.filtrados.first { it.isNotEmpty() } }
         assertTrue(categoria.all { it.categoria=="Snacks" })
     }
+    @Test fun repetirUsaPrecioActualYOmitidosSinCrearCompra() = runBlocking {
+        val ps=repo.observarProductos().first().take(2)
+        val id=repo.crearPedido(1,ps.map { ItemCarrito(it,2) },"Ahora","CAJA","").toInt()
+        val anterior=repo.observarPedido(id).first()!!
+        repo.guardarProducto(ps[0].copy(precio=23.0));repo.cambiarDisponibilidad(ps[1].id,false)
+        lateinit var vm: com.leon.cafecampus.viewmodel.MenuViewModel
+        InstrumentationRegistry.getInstrumentation().runOnMainSync { vm=com.leon.cafecampus.viewmodel.MenuViewModel(repo,androidx.lifecycle.SavedStateHandle());vm.repetir(anterior) }
+        kotlinx.coroutines.withTimeout(5000) { vm.repetido.first { it } }
+        assertEquals(1,vm.carrito.value.size);assertEquals(46.0,vm.total(),.001)
+        assertTrue(vm.error.value!!.contains("omitieron"))
+        assertEquals(1,repo.observarPedidosCliente(1).first().size)
+        repo.cambiarDisponibilidad(ps[0].id,false)
+        InstrumentationRegistry.getInstrumentation().runOnMainSync { vm.consumirRepetido();vm.repetir(anterior) }
+        kotlinx.coroutines.withTimeout(5000) { vm.repitiendo.first { !it } }
+        assertFalse(vm.repetido.value);assertTrue(vm.error.value!!.contains("ya no están disponibles"))
+    }
+
     @Test fun cargaNoSeConfundeConCatalogoVacio() = runBlocking {
         val original=repo
         val lento=object: CafeRepository by original {
