@@ -1,12 +1,9 @@
 package com.leon.cafecampus.ui.admin
 
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
-import androidx.compose.foundation.horizontalScroll
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.*
+import androidx.compose.foundation.shape.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
@@ -28,22 +25,23 @@ import com.leon.cafecampus.data.local.entity.*
     val error by vm.error.collectAsStateWithLifecycle()
     val ocupado by vm.ocupado.collectAsStateWithLifecycle()
     var eliminar by remember { mutableStateOf<Producto?>(null) }
-    Scaffold(containerColor=MaterialTheme.colorScheme.background,topBar={AppTopBar("Gestión del menú")},floatingActionButton={FloatingActionButton(onClick=nuevo) { Icon(Icons.Default.Add,"Agregar producto") }}) { padding ->
-        Column(Modifier.padding(padding).padding(horizontal=16.dp)) {
-            Categorias(categoria,vm::categoria)
-            ErrorTexto(error)
-            LazyColumn(verticalArrangement=Arrangement.spacedBy(12.dp),contentPadding=PaddingValues(bottom=88.dp)) {
-                if(productos.isEmpty()) item { Vacio("No hay productos en esta categoría") }
-                items(productos,key={it.id}) { p -> Tarjeta {
-                    Row(horizontalArrangement=Arrangement.spacedBy(8.dp),verticalAlignment=Alignment.CenterVertically) {
-                        ProductoIcono(p.icono,Modifier.size(56.dp))
-                        Column(Modifier.weight(1f),verticalArrangement=Arrangement.spacedBy(4.dp)) { Text(p.nombre,fontWeight=FontWeight.Bold); Text("${p.categoria} · ${dinero(p.precio)}",style=MaterialTheme.typography.bodySmall); DisponibilidadChip(p.disponible,!ocupado) { vm.alternarDisponibilidad(p) } }
-                        IconButton(onClick={editar(p.id)},enabled=!ocupado) { Icon(Icons.Default.Edit,"Editar ${p.nombre}",tint=MaterialTheme.colorScheme.primary) }
-                        IconButton(onClick={eliminar=p},enabled=!ocupado) { Icon(Icons.Default.Delete,"Eliminar ${p.nombre}",tint=MaterialTheme.colorScheme.error) }
-                    }
-
-                } }
-            }
+    Scaffold(containerColor=MaterialTheme.colorScheme.background,topBar={AppTopBar("Gestión del menú")},floatingActionButton={ExtendedFloatingActionButton(onClick=nuevo,icon={Icon(Icons.Default.Add,"Agregar producto")},text={Text("Nuevo producto")},containerColor=MaterialTheme.colorScheme.primary,contentColor=MaterialTheme.colorScheme.onPrimary)}) { padding ->
+        LazyColumn(Modifier.padding(padding),contentPadding=PaddingValues(start=20.dp,end=20.dp,bottom=96.dp),verticalArrangement=Arrangement.spacedBy(14.dp)) {
+            item { Seccion("Un menú para disfrutar.","Disponibilidad, precios y detalles al día.") }
+            item { Categorias(categoria,vm::categoria);ErrorTexto(error) }
+            if(productos.isEmpty()) item { Vacio("No hay productos en esta categoría") }
+            items(productos,key={it.id}) { p -> Tarjeta {
+                Row(horizontalArrangement=Arrangement.spacedBy(14.dp),verticalAlignment=Alignment.CenterVertically) {
+                    ProductoIcono(p.icono,Modifier.size(90.dp))
+                    Column(Modifier.weight(1f),verticalArrangement=Arrangement.spacedBy(5.dp)) { Text(p.nombre,style=MaterialTheme.typography.titleMedium);Text(p.categoria,style=MaterialTheme.typography.bodySmall,color=MaterialTheme.colorScheme.onSurfaceVariant);Text(dinero(p.precio),style=MaterialTheme.typography.titleMedium,color=MaterialTheme.colorScheme.primary) }
+                }
+                Row(Modifier.fillMaxWidth(),verticalAlignment=Alignment.CenterVertically) {
+                    DisponibilidadChip(p.disponible,!ocupado) { vm.alternarDisponibilidad(p) }
+                    Spacer(Modifier.weight(1f))
+                    IconButton(onClick={editar(p.id)},enabled=!ocupado) { Icon(Icons.Default.Edit,"Editar ${p.nombre}",tint=MaterialTheme.colorScheme.primary) }
+                    IconButton(onClick={eliminar=p},enabled=!ocupado) { Icon(Icons.Default.DeleteOutline,"Eliminar ${p.nombre}",tint=MaterialTheme.colorScheme.error) }
+                }
+            } }
         }
     }
     eliminar?.let { p -> AlertDialog(onDismissRequest={eliminar=null},title={Text("Eliminar producto")},text={Text("¿Eliminar ${p.nombre}? Los pedidos anteriores conservarán sus datos.")},confirmButton={TextButton(onClick={vm.eliminar(p);eliminar=null}) { Text("Eliminar") }},dismissButton={TextButton(onClick={eliminar=null}) { Text("Cancelar") }}) }

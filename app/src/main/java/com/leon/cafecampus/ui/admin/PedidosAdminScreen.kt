@@ -29,11 +29,12 @@ import com.leon.cafecampus.data.local.entity.*
     val ocupado by vm.ocupado.collectAsStateWithLifecycle()
     Column {
         AppTopBar("Pedidos")
+        EscenaCampus("Todo en su momento.","Organiza cada pedido, desde recibido hasta entregado.","cocina",Modifier.padding(horizontal=20.dp,vertical=12.dp))
         Row(Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()).padding(horizontal=16.dp),horizontalArrangement=Arrangement.spacedBy(8.dp)) {
             EstadoPedido.entries.forEach { e -> FilterChip(selected=estado==e,onClick={vm.estadoSeleccionado.value=e},label={Text(if(e==EstadoPedido.RECIBIDO) "Nuevos" else e.etiqueta)}) }
         }
         ErrorTexto(error)
-        LazyColumn(contentPadding=PaddingValues(16.dp),verticalArrangement=Arrangement.spacedBy(12.dp)) {
+        LazyColumn(contentPadding=PaddingValues(20.dp),verticalArrangement=Arrangement.spacedBy(12.dp)) {
             if(pedidos.isEmpty()) item { Vacio("No hay pedidos en este estado") }
             items(pedidos,key={it.pedido.id}) { p -> PedidoCard(p,admin=true,abrir={abrir(p.pedido.id)}) {
                 Row(horizontalArrangement=Arrangement.spacedBy(8.dp)) {

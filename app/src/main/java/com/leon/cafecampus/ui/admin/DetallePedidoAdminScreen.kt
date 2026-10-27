@@ -29,10 +29,11 @@ import com.leon.cafecampus.data.local.entity.*
     val ocupado by vm.ocupado.collectAsStateWithLifecycle()
     Column {
         AppTopBar("Detalle del pedido",volver)
-        Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(16.dp),verticalArrangement=Arrangement.spacedBy(16.dp)) {
+        Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(20.dp),verticalArrangement=Arrangement.spacedBy(16.dp)) {
             val p=pedido
             if(p==null) Vacio("Cargando pedido…") else {
-                Tarjeta { Text("Pedido #${p.pedido.id.toString().padStart(4,'0')}",style=MaterialTheme.typography.titleLarge); EstadoChip(EstadoPedido.valueOf(p.pedido.estado)); Text("Recojo ${p.pedido.horaRecojo} · ${p.pedido.pago}") }
+                EscenaCampus("Listo para preparar.","Cada detalle cuenta.","cocina")
+                Tarjeta { Text("Pedido #${p.pedido.id.toString().padStart(4,'0')}",style=MaterialTheme.typography.headlineMedium); EstadoChip(EstadoPedido.valueOf(p.pedido.estado)); Text("Recojo ${p.pedido.horaRecojo} · ${p.pedido.pago}") }
                 Tarjeta {
                     Text("Cliente",style=MaterialTheme.typography.labelMedium)
                     Text("${p.cliente.nombre} · Estudiante",fontWeight=FontWeight.Bold)
@@ -40,8 +41,8 @@ import com.leon.cafecampus.data.local.entity.*
                     p.detalles.forEach { d -> Row(Modifier.fillMaxWidth(),horizontalArrangement=Arrangement.spacedBy(8.dp)) { Text(d.nombreProducto,Modifier.weight(1f)); Text("×${d.cantidad}"); Text(dinero(d.cantidad*d.precioUnitario)) } }
                     Text("Total ${dinero(p.pedido.total)}",fontWeight=FontWeight.Bold,color=MaterialTheme.colorScheme.primary)
                 }
-                if(p.pedido.nota.isNotBlank()) Surface(color=MaterialTheme.colorScheme.tertiaryContainer,shape=MaterialTheme.shapes.medium) { Column(Modifier.fillMaxWidth().padding(16.dp)) { Text("Nota del cliente",fontWeight=FontWeight.Bold); Text(p.pedido.nota) } }
-                Text("Cambiar estado",fontWeight=FontWeight.Bold)
+                if(p.pedido.nota.isNotBlank()) Surface(color=MaterialTheme.colorScheme.tertiaryContainer,shape=MaterialTheme.shapes.medium) { Column(Modifier.fillMaxWidth().padding(20.dp)) { Text("Nota del cliente",fontWeight=FontWeight.Bold); Text(p.pedido.nota) } }
+                Seccion("El siguiente paso.","Actualiza el estado para que el estudiante lo vea al instante.")
                 Row(Modifier.horizontalScroll(rememberScrollState()),horizontalArrangement=Arrangement.spacedBy(8.dp)) { EstadoPedido.entries.filterNot { it==EstadoPedido.CANCELADO }.forEach { e -> FilterChip(selected=p.pedido.estado==e.name,onClick={vm.cambiar(p,e)},enabled=!ocupado && vm.puedeCambiar(p,e),label={Text(e.etiqueta)}) } }
                 ErrorTexto(error)
                 vm.siguiente(p)?.let { siguiente -> CafeButton("Pasar a ${siguiente.etiqueta}",!ocupado) { vm.avanzar(p) } }

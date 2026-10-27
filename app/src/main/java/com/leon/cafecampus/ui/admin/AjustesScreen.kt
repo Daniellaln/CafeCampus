@@ -1,18 +1,16 @@
 package com.leon.cafecampus.ui.admin
 
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
-import androidx.compose.foundation.horizontalScroll
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.*
+import androidx.compose.foundation.shape.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.*
+import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
@@ -29,24 +27,32 @@ import com.leon.cafecampus.data.local.entity.*
     val error by vm.error.collectAsStateWithLifecycle()
     Column {
         AppTopBar(if(cliente) "Mi perfil" else "Ajustes")
-        Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(16.dp),verticalArrangement=Arrangement.spacedBy(16.dp)) {
-            Tarjeta { Row(verticalAlignment=Alignment.CenterVertically,horizontalArrangement=Arrangement.spacedBy(14.dp)) {
-                Icon(Icons.Default.AccountCircle,null,Modifier.size(48.dp),tint=MaterialTheme.colorScheme.primary)
-                Column { Text(usuario?.nombre ?: "",fontWeight=FontWeight.Bold); Text(usuario?.correo ?: "",style=MaterialTheme.typography.bodySmall); Text("Perfil activo",color=MaterialTheme.colorScheme.primary,style=MaterialTheme.typography.labelSmall) }
-            } }
-            CafeButton("Cambiar de perfil") { vm.cambiarPerfil() }
-            Text(if(cliente) "Modo práctica: ir a vista Administrador" else "Modo práctica: ir a vista Estudiante",style=MaterialTheme.typography.bodySmall,color=MaterialTheme.colorScheme.onSurfaceVariant)
-            Text("Preferencias",style=MaterialTheme.typography.titleMedium)
+        Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(20.dp),verticalArrangement=Arrangement.spacedBy(22.dp)) {
+            EscenaCampus(if(cliente) "Tu espacio." else "A tu manera.","Una pausa que va contigo.",if(cliente) "perfil" else "cocina")
             Tarjeta {
-                Row(Modifier.fillMaxWidth(),verticalAlignment=Alignment.CenterVertically) { Column(Modifier.weight(1f)) { Text("Modo oscuro",fontWeight=FontWeight.Bold); Text("Cambia el tema de toda la app",style=MaterialTheme.typography.bodySmall) }; Switch(checked=oscuro,onCheckedChange=vm::modoOscuro) }
-                if(!cliente) {
-                    HorizontalDivider()
-                    Row(Modifier.fillMaxWidth(),verticalAlignment=Alignment.CenterVertically) { Column(Modifier.weight(1f)) { Text("Recibir pedidos",fontWeight=FontWeight.Bold); Text("Abrir o cerrar la cafetería",style=MaterialTheme.typography.bodySmall) }; Switch(checked=recibir,onCheckedChange=vm::recibirPedidos) }
+                Row(verticalAlignment=Alignment.CenterVertically,horizontalArrangement=Arrangement.spacedBy(16.dp)) {
+                    Surface(modifier=Modifier.sombraCampus(32.dp,MaterialTheme.colorScheme.background.luminance()<.2f),shape=CircleShape,color=MaterialTheme.colorScheme.secondaryContainer) { Box(Modifier.size(64.dp),contentAlignment=Alignment.Center) { Text(usuario?.nombre?.take(1) ?: "C",style=MaterialTheme.typography.headlineMedium,color=MaterialTheme.colorScheme.onSecondaryContainer) } }
+                    Column(Modifier.weight(1f),verticalArrangement=Arrangement.spacedBy(4.dp)) { FlorPorcelana(Modifier.size(32.dp));Text(usuario?.nombre ?: "",style=MaterialTheme.typography.titleLarge);Text(usuario?.correo ?: "",style=MaterialTheme.typography.bodySmall);Text(if(cliente) "Estudiante" else "Administrador",style=MaterialTheme.typography.labelMedium,color=MaterialTheme.colorScheme.primary) }
                 }
             }
-            Text("Tus preferencias se guardan en este dispositivo.",style=MaterialTheme.typography.bodySmall,color=MaterialTheme.colorScheme.onSurfaceVariant)
+            Seccion("Preferencias","Pequeños ajustes para tu día a día.")
+            Tarjeta {
+                Row(Modifier.fillMaxWidth(),verticalAlignment=Alignment.CenterVertically,horizontalArrangement=Arrangement.spacedBy(12.dp)) {
+                    Icon(Icons.Default.DarkMode,null,tint=MaterialTheme.colorScheme.primary)
+                    Column(Modifier.weight(1f)) { Text("Modo oscuro",style=MaterialTheme.typography.titleMedium);Text("Una luz más suave para la noche",style=MaterialTheme.typography.bodySmall) }
+                    Switch(checked=oscuro,onCheckedChange=vm::modoOscuro)
+                }
+                if(!cliente) { HorizontalDivider();Row(Modifier.fillMaxWidth(),verticalAlignment=Alignment.CenterVertically,horizontalArrangement=Arrangement.spacedBy(12.dp)) {
+                    Icon(Icons.Default.Storefront,null,tint=MaterialTheme.colorScheme.primary)
+                    Column(Modifier.weight(1f)) { Text("Recibir pedidos",style=MaterialTheme.typography.titleMedium);Text(if(recibir) "La cafetería está abierta" else "La cafetería está cerrada",style=MaterialTheme.typography.bodySmall) };Switch(checked=recibir,onCheckedChange=vm::recibirPedidos)
+                } }
+            }
+            Seccion("Explora CafeCampus","En este laboratorio puedes probar los dos perfiles.")
+            OutlinedButton(onClick=vm::cambiarPerfil,modifier=Modifier.fillMaxWidth().heightIn(min=54.dp),shape=RoundedCornerShape(16.dp)) { Icon(Icons.Default.SwapHoriz,null);Spacer(Modifier.width(10.dp));Text("Cambiar de perfil") }
+            Text(if(cliente) "Modo práctica: ir a vista Administrador" else "Modo práctica: ir a vista Estudiante",style=MaterialTheme.typography.bodySmall,color=MaterialTheme.colorScheme.onSurfaceVariant)
             ErrorTexto(error)
-            OutlinedButton(onClick=vm::cerrarSesion,modifier=Modifier.fillMaxWidth()) { Text("Cerrar sesión",color=MaterialTheme.colorScheme.error) }
+            TextButton(onClick=vm::cerrarSesion,modifier=Modifier.fillMaxWidth().heightIn(min=48.dp)) { Icon(Icons.Default.Logout,null,tint=MaterialTheme.colorScheme.error);Spacer(Modifier.width(10.dp));Text("Cerrar sesión",color=MaterialTheme.colorScheme.error) }
+            Text("Tus preferencias se guardan en este dispositivo.",style=MaterialTheme.typography.bodySmall,color=MaterialTheme.colorScheme.onSurfaceVariant)
         }
     }
 }

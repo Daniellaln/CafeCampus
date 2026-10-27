@@ -31,14 +31,14 @@ import com.leon.cafecampus.data.local.entity.*
     val recientes by vm.recientes.collectAsStateWithLifecycle()
     val error by pedidos.error.collectAsStateWithLifecycle()
     val ocupado by pedidos.ocupado.collectAsStateWithLifecycle()
-    LazyColumn(contentPadding=PaddingValues(16.dp),verticalArrangement=Arrangement.spacedBy(16.dp)) {
-        item { Text("Panel de control",style=MaterialTheme.typography.headlineSmall,fontWeight=FontWeight.Bold); Text("Cafetería · Hoy",color=MaterialTheme.colorScheme.onSurfaceVariant) }
+    LazyColumn(contentPadding=PaddingValues(20.dp),verticalArrangement=Arrangement.spacedBy(20.dp)) {
+        item { EscenaCampus("Buen día, campus.","Panel de control · Hoy","panel") }
         item { Row(horizontalArrangement=Arrangement.spacedBy(8.dp)) {
             listOf(Triple(nuevos,"Nuevos",EstadoPedido.RECIBIDO),Triple(preparando,"Preparando",EstadoPedido.PREPARANDO),Triple(listos,"Listos",EstadoPedido.LISTO)).forEach { (n,t,e) ->
                 EstadoContador(n,e,Modifier.weight(1f)) { pedidos.estadoSeleccionado.value=e;verTodos() }
             }
         } }
-        item { Surface(color=MaterialTheme.colorScheme.primary,shape=MaterialTheme.shapes.medium) { Column(Modifier.fillMaxWidth().padding(18.dp)) { Text("Ventas del día"); Text(dinero(ventas),style=MaterialTheme.typography.headlineMedium,fontWeight=FontWeight.Bold) } } }
+        item { Surface(color=MaterialTheme.colorScheme.primary,shape=MaterialTheme.shapes.medium) { Row(Modifier.fillMaxWidth().padding(22.dp),verticalAlignment=Alignment.CenterVertically) { Column(Modifier.weight(1f),verticalArrangement=Arrangement.spacedBy(8.dp)) { Text("Ventas del día",style=MaterialTheme.typography.bodyMedium); Text(dinero(ventas),style=MaterialTheme.typography.displaySmall);Text("Pedidos de hoy · sin cancelados",style=MaterialTheme.typography.bodySmall) };Icon(Icons.Default.Coffee,null,Modifier.size(52.dp),tint=MaterialTheme.colorScheme.onPrimary.copy(alpha=.7f)) } } }
         item { GraficoPedidos(horas) }
         item { Row(Modifier.fillMaxWidth(),horizontalArrangement=Arrangement.SpaceBetween,verticalAlignment=Alignment.CenterVertically) { Text("Nuevos pedidos",style=MaterialTheme.typography.titleMedium); TextButton(onClick={pedidos.estadoSeleccionado.value=EstadoPedido.RECIBIDO;verTodos()}) { Text("Ver todos") } }; ErrorTexto(error) }
         if(recientes.isEmpty()) item { Vacio("No hay nuevos pedidos") }

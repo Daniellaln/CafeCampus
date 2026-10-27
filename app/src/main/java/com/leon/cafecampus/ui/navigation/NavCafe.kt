@@ -6,6 +6,8 @@ import androidx.compose.ui.graphics.layer.drawLayer
 import androidx.compose.ui.graphics.rememberGraphicsLayer
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.layout.positionInRoot
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.ui.unit.dp
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
@@ -64,7 +66,9 @@ import com.leon.cafecampus.ui.theme.CafeTheme
         val plano=rememberGraphicsLayer()
         var origen by remember { mutableStateOf(Offset.Zero) }
         val barra=usuario!=null && ruta in listOf(Rutas.MENU,Rutas.PEDIDOS,Rutas.PERFIL,Rutas.SEGUIMIENTO,Rutas.PANEL,Rutas.ADMIN_PEDIDOS,Rutas.ADMIN_MENU,Rutas.AJUSTES)
-        Scaffold(containerColor=MaterialTheme.colorScheme.background,bottomBar={ if(barra) NavegacionLiquida(destinos.map { it.second to it.third },destinos.indexOfFirst { ruta==it.first || (it.first==Rutas.PEDIDOS && ruta==Rutas.SEGUIMIENTO) }.coerceAtLeast(0),{ indice ->
+        Box(Modifier.fillMaxSize()) {
+        FondoCampus(Modifier.matchParentSize())
+        Scaffold(containerColor=androidx.compose.ui.graphics.Color.Transparent,contentColor=MaterialTheme.colorScheme.onBackground,bottomBar={ if(barra) NavegacionLiquida(destinos.map { it.second to it.third },destinos.indexOfFirst { ruta==it.first || (it.first==Rutas.PEDIDOS && ruta==Rutas.SEGUIMIENTO) }.coerceAtLeast(0),{ indice ->
             nav.navigate(destinos[indice].first) { popUpTo(if(admin) Rutas.PANEL else Rutas.MENU) { inclusive=false };launchSingleTop=true }
         },plano,origen) }) { padding ->
             NavHost(nav,startDestination=Rutas.SPLASH,modifier=Modifier.padding(padding)) {
@@ -83,6 +87,7 @@ import com.leon.cafecampus.ui.theme.CafeTheme
                 composable(Rutas.FORMULARIO,arguments=listOf(navArgument("id") { type=NavType.IntType;defaultValue=0 })) { FormularioProductoScreen((it.arguments?.getInt("id") ?: 0).takeIf { id -> id>0 },menuAdmin) { nav.popBackStack() } }
                 composable(Rutas.AJUSTES) { AjustesScreen(sesion) }
             }
+        }
         }
     }
 }

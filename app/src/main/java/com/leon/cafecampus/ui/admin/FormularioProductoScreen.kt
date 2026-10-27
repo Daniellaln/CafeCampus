@@ -40,10 +40,11 @@ import com.leon.cafecampus.data.local.entity.*
     LaunchedEffect(guardado) { if(guardado) { vm.prepararFormulario(); volver() } }
     Column {
         AppTopBar(if(id==null) "Nuevo producto" else "Editar producto",volver)
-        Column(Modifier.fillMaxSize().imePadding().verticalScroll(rememberScrollState()).padding(16.dp),verticalArrangement=Arrangement.spacedBy(14.dp)) {
+        Column(Modifier.fillMaxSize().imePadding().verticalScroll(rememberScrollState()).padding(20.dp),verticalArrangement=Arrangement.spacedBy(14.dp)) {
             if(id!=null && p==null) Vacio("Cargando producto…") else {
-                ProductoIcono(icono,Modifier.fillMaxWidth().height(90.dp))
-                Row(Modifier.horizontalScroll(rememberScrollState()),horizontalArrangement=Arrangement.spacedBy(8.dp)) { listOf("cafe","plato","jugo","pan","botella","dulce").forEach { i -> FilterChip(selected=icono==i,onClick={icono=i},label={Text(i)}) } }
+                Seccion(if(id==null) "Algo nuevo para el menú." else "Cuida cada detalle.","Elige su foto y completa la información.")
+                ProductoIcono(icono,Modifier.fillMaxWidth().height(170.dp))
+                Row(Modifier.horizontalScroll(rememberScrollState()),horizontalArrangement=Arrangement.spacedBy(8.dp)) { listOf("cafe","plato","jugo","pan","botella","dulce").forEach { i -> FilterChip(selected=icono==i,onClick={icono=i},label={Text(mapOf("cafe" to "Café","plato" to "Almuerzo","jugo" to "Jugo","pan" to "Sándwich","botella" to "Chicha","dulce" to "Empanadas")[i] ?: i)}) } }
                 CafeTextField(nombre,{nombre=it},"Nombre del producto")
                 Text("Categoría",style=MaterialTheme.typography.labelMedium)
                 Row(Modifier.horizontalScroll(rememberScrollState()),horizontalArrangement=Arrangement.spacedBy(8.dp)) { listOf("Desayunos","Almuerzos","Bebidas","Snacks").forEach { c -> FilterChip(selected=categoria==c,onClick={categoria=c},label={Text(c)}) } }

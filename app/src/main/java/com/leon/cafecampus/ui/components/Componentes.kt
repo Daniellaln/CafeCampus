@@ -146,7 +146,7 @@ fun coloresEstado(e: EstadoPedido): Pair<Color,Color> = when(e) {
 @Composable fun DisponibilidadChip(disponible: Boolean,enabled: Boolean=true,click: ()->Unit) {
     FilterChip(selected=disponible,onClick=click,enabled=enabled,label={Text(if(disponible) "Disponible" else "Agotado")},shape=RoundedCornerShape(10.dp),colors=FilterChipDefaults.filterChipColors(containerColor=Color(0xFFFFE5E1),labelColor=Color(0xFF922F29),selectedContainerColor=Color(0xFFE9F3D9),selectedLabelColor=Color(0xFF39541C)))
 }
-@Composable fun Seccion(titulo: String,subtitulo: String?=null) { Column(verticalArrangement=Arrangement.spacedBy(5.dp)) { Text(titulo,style=MaterialTheme.typography.titleMedium);if(subtitulo!=null) Text(subtitulo,style=MaterialTheme.typography.bodySmall,color=MaterialTheme.colorScheme.onSurfaceVariant) } }
+@Composable fun Seccion(titulo: String,subtitulo: String?=null,modifier: Modifier=Modifier) { Column(modifier,verticalArrangement=Arrangement.spacedBy(5.dp)) { Text(titulo,style=MaterialTheme.typography.titleMedium);if(subtitulo!=null) Text(subtitulo,style=MaterialTheme.typography.bodySmall,color=MaterialTheme.colorScheme.onSurfaceVariant) } }
 
 // Native text and generated cutouts share a compact contextual header.
 @Composable fun EscenaCampus(titulo: String,subtitulo: String,escena: String,modifier: Modifier=Modifier) {

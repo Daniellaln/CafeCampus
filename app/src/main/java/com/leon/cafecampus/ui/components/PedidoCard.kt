@@ -26,13 +26,14 @@ import com.leon.cafecampus.data.local.relation.PedidoConDetalle
 @Composable fun PedidoCard(p: PedidoConDetalle,admin: Boolean=false,abrir: ()->Unit,acciones: @Composable ()->Unit = {}) {
     Tarjeta(Modifier.clickable(onClick=abrir)) {
         Row(Modifier.fillMaxWidth(),horizontalArrangement=Arrangement.SpaceBetween,verticalAlignment=Alignment.CenterVertically) {
-            Text("Pedido #${p.pedido.id.toString().padStart(4,'0')}",fontWeight=FontWeight.Bold)
+            Text("Pedido #${p.pedido.id.toString().padStart(4,'0')}",style=MaterialTheme.typography.titleMedium)
             EstadoChip(EstadoPedido.valueOf(p.pedido.estado))
         }
         if(admin) Text(p.cliente.nombre,fontWeight=FontWeight.Medium)
         Text(p.detalles.joinToString(" · ") { "${it.cantidad} × ${it.nombreProducto}" },style=MaterialTheme.typography.bodySmall,color=MaterialTheme.colorScheme.onSurfaceVariant)
+        HorizontalDivider(color=MaterialTheme.colorScheme.outlineVariant.copy(alpha=.6f))
         Row(Modifier.fillMaxWidth(),horizontalArrangement=Arrangement.SpaceBetween) {
-            Text("Recojo ${p.pedido.horaRecojo}",style=MaterialTheme.typography.bodySmall)
+            Row(horizontalArrangement=Arrangement.spacedBy(6.dp),verticalAlignment=Alignment.CenterVertically) { Icon(Icons.Default.Schedule,null,Modifier.size(16.dp),tint=MaterialTheme.colorScheme.primary);Text("Recojo ${p.pedido.horaRecojo}",style=MaterialTheme.typography.bodySmall) }
             Text(dinero(p.pedido.total),color=MaterialTheme.colorScheme.primary,fontWeight=FontWeight.Bold)
         }
         if(admin && p.pedido.nota.isNotBlank()) Text("Nota: ${p.pedido.nota}",style=MaterialTheme.typography.bodySmall)
