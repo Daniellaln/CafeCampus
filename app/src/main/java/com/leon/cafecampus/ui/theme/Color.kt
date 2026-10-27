@@ -1,6 +1,10 @@
 package com.leon.cafecampus.ui.theme
 import androidx.compose.ui.graphics.Color
-val ClientePrimario = Color(0xFFEA580C)
-val AdminPrimario = Color(0xFF4F46E5)
-val ClienteFondo = Color(0xFFFFFBF7)
-val AdminFondo = Color(0xFFF7F7FD)
+val ClientePrimario=Color(0xFF2455D8)
+val AdminPrimario=Color(0xFF23428B)
+val ClienteFondo=Color(0xFFF8F9F2)
+val AdminFondo=Color(0xFFF3F6FB)
+val CampusInk=Color(0xFF142D4F)
+val CampusCitron=Color(0xFFDFED99)
+val CampusBlue=Color(0xFF2455D8)
+val CampusIvory=Color(0xFFF8F9F2)

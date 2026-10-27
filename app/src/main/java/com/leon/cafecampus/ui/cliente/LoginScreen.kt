@@ -14,7 +14,7 @@ import com.leon.cafecampus.model.Rol
 import com.leon.cafecampus.viewmodel.SesionViewModel
 import com.leon.cafecampus.ui.components.*
 import com.leon.cafecampus.ui.theme.CafeTheme
-@Composable fun LoginScreen(vm: SesionViewModel) {
+@Composable fun LoginScreen(vm: SesionViewModel,volver: ()->Unit={}) {
     var rol by rememberSaveable { mutableStateOf(Rol.CLIENTE) }
     var correo by rememberSaveable { mutableStateOf("") }
     var clave by rememberSaveable { mutableStateOf("") }

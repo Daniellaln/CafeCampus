@@ -61,7 +61,7 @@ import com.leon.cafecampus.ui.theme.CafeTheme
         } }) { padding ->
             NavHost(nav,startDestination=Rutas.SPLASH,modifier=Modifier.padding(padding)) {
                 composable(Rutas.SPLASH) { if(cargando) Box(Modifier.fillMaxSize(),contentAlignment=Alignment.Center) { CircularProgressIndicator() } else SplashScreen { nav.navigate(Rutas.LOGIN) } }
-                composable(Rutas.LOGIN) { LoginScreen(sesion) }
+                composable(Rutas.LOGIN) { LoginScreen(sesion) { if(!nav.popBackStack()) nav.navigate(Rutas.SPLASH) { popUpTo(Rutas.LOGIN) { inclusive=true } } } }
                 composable(Rutas.MENU) { MenuScreen(menu,{nav.navigate("producto/$it")},usuario?.nombre ?: "Estudiante",carrito.sumOf { it.cantidad },abierto) { nav.navigate(Rutas.CONFIRMAR) } }
                 composable(Rutas.PRODUCTO,arguments=listOf(navArgument("id") { type=NavType.IntType })) { DetalleProductoScreen(it.arguments?.getInt("id") ?: 0,menu) { nav.popBackStack() } }
                 composable(Rutas.CONFIRMAR) { ConfirmarPedidoScreen(menu,cliente,abierto,{nav.popBackStack()}) { nav.navigate("seguimiento/$it") { popUpTo(Rutas.CONFIRMAR) { inclusive=true } } } }

@@ -1,0 +1,142 @@
+[
+  {
+    "name": "campus_fresco_hero",
+    "prompt": "Create a photorealistic art-directed contemporary cafe still life, wide landscape 3:2 image for a premium campus food-ordering app. Bright airy ivory matte table with a sculptural cobalt blue ceramic saucer and an ivory espresso cup, a chilled orange juice in a clear glass, one fresh lemon wedge, subtle soft foliage shadow across the table, a folded cobalt linen corner. Composition: food and cup grouped in right half, the left half is clean bright ivory negative space for semantic interface text added later. Real sunlight, gentle long shadows, tactile porcelain and clear condensation, editorial luxury food magazine photography, fresh confident youthful intelligent rather than rustic. Palette ivory, electric cobalt, saturated natural citrus orange and pale lemon, restrained. No text, no logos, no people, no devices, no illustrated background, no gradients, no fake particles. Everything believable and appetizing.",
+    "transparent": false,
+    "local_original": "campus_fresco_hero.png",
+    "app_resource": "app/src/main/res/drawable-nodpi/campus_fresco_hero.png"
+  },
+  {
+    "name": "cafe_foto",
+    "prompt": "Photorealistic premium food catalog cutout of a single beautiful ivory ceramic cup containing black americano coffee, coffee surface with delicate crema ring, short subtle curl of real steam, cup handle visible to the right, elegant three-quarter overhead view from about 35 degrees, camera 85mm food editorial photograph, bright soft morning side lighting, crisp beautiful natural detail, cup entirely visible centered with 12 percent breathing space around it, perfectly isolated on genuinely transparent alpha background, minimal natural contact shadow only, no table, no background, no saucer, no text, no logo, no other items. For a luminous ivory/cobalt/citrus campus cafe app.",
+    "transparent": true,
+    "local_original": "cafe_foto.png",
+    "app_resource": "app/src/main/res/drawable-nodpi/cafe_foto.png"
+  },
+  {
+    "name": "pan_foto",
+    "prompt": "Photorealistic premium food catalog cutout of an appetizing fresh Peruvian chicken sandwich, golden lightly toasted artisan bread, visible shredded chicken with creamy light dressing, vibrant crisp green lettuce and a restrained tomato slice. A single generously filled sandwich, cut into two halves arranged closely together, sculptural three-quarter overhead view from 35 degrees, editorial food magazine photography, 85mm camera, bright natural side lighting, crisp natural bread texture, golden highlights. Entire food centered with 12 percent breathing room, perfectly isolated on genuinely transparent alpha background, subtle natural contact shadow only. No plate, no table, no background, no wrapping, no words, no logo, no hands.",
+    "transparent": true,
+    "local_original": "pan_foto.png",
+    "app_resource": "app/src/main/res/drawable-nodpi/pan_foto.png"
+  },
+  {
+    "name": "plato_foto",
+    "prompt": "Photorealistic premium food catalog cutout, one contemporary ivory ceramic round plate with a beautifully arranged realistic Peruvian campus lunch: tender golden grilled chicken breast, neat mound of white rice, fresh green salad with tomato, small golden potato pieces. Appetizing refined but honest portions, fresh ingredients, three-quarter overhead 35 degree camera view, editorial food photography, realistic porcelain rim fully visible, bright natural morning soft side light, delicate believable shadows. Entire plate centered with 10 percent breathing room, isolated on genuinely transparent alpha background, no table, no background, no text, no logo, no cutlery, no human, no fake 3D illustration.",
+    "transparent": true,
+    "local_original": "plato_foto.png",
+    "app_resource": "app/src/main/res/drawable-nodpi/plato_foto.png"
+  },
+  {
+    "name": "jugo_foto",
+    "prompt": "Photorealistic premium beverage cutout of one tall clear glass of fresh orange juice, rich real natural orange color with slight fine pulp, two ice cubes, delicate condensation, a fresh orange half and a small green leaf at its base as one compact product composition. Three-quarter overhead 35 degree camera angle, contemporary editorial food photograph with luminous natural side light, accurate glass refraction, appetizing fresh citrus. Entire glass and orange fully visible centered with generous 12 percent margins. Genuinely transparent alpha background, no table, no backdrop, no writing, no logos, no straws, no hands, no vector art.",
+    "transparent": true,
+    "local_original": "jugo_foto.png",
+    "app_resource": "app/src/main/res/drawable-nodpi/jugo_foto.png"
+  },
+  {
+    "name": "dulce_foto",
+    "prompt": "Photorealistic premium bakery product cutout of two golden baked Peruvian empanadas, one whole with beautiful crimped edge and one half revealing a small amount of savory filling, extremely appetizing natural flaky golden brown pastry texture. Three-quarter overhead 35 degree camera view, 85mm editorial culinary photography, luminous soft side light, a few realistic pastry crumbs close to the food, refined composition. All food centered with 12 percent clear margins and no cropping. Isolated on genuinely transparent alpha background, subtle contact shadow only, no plate, no table, no background, no words, no logo, no hands, no illustration.",
+    "transparent": true,
+    "local_original": "dulce_foto.png",
+    "app_resource": "app/src/main/res/drawable-nodpi/dulce_foto.png"
+  },
+  {
+    "name": "botella_foto",
+    "prompt": "Photorealistic premium Peruvian drink product cutout of one contemporary clear tumbler filled with deep ruby-purple chicha morada and a few translucent ice cubes, a very thin lime wheel on the rim, slight condensation, beautiful rich real beverage translucency. Three-quarter overhead 35 degree camera view, bright soft natural side light, precise believable glass and refraction, editorial food magazine photograph, fresh and sophisticated. Complete glass centered with 12 percent breathing space around it, isolated on genuinely transparent alpha background, no table, no background, no wording, no logo, no hands, no illustration.",
+    "transparent": true,
+    "local_original": "botella_foto.png",
+    "app_resource": "app/src/main/res/drawable-nodpi/botella_foto.png"
+  },
+  {
+    "name": "citrus_particulas",
+    "prompt": "Photorealistic editorial ingredient composition for a transparent decorative foreground layer in a premium cafe app. A very sparse diagonal arrangement of one small fresh lemon wedge near upper right, two small green citrus leaves around the right edge and six tiny golden citrus zest flecks trailing toward the lower left; center and most of left side completely empty. Bright fresh natural side lighting and realistic botanical detail; restrained high-end culinary art direction, crisp isolated objects, no glow, no bokeh circles. All elements on genuinely transparent alpha background, no surface, no backdrop, no text, no logo. Each individual piece fully visible with generous margins. This is a clean reusable compositing asset, not a full scene.",
+    "transparent": true,
+    "local_original": "citrus_particulas.png",
+    "app_resource": "app/src/main/res/drawable-nodpi/citrus_particulas.png"
+  },
+  {
+    "name": "bolsa_foto",
+    "prompt": "Photorealistic premium editorial product photography, for the Android app CafeCampus. Campus fresco visual identity: rich cobalt blue #2455D8, luminous cool ivory, small fresh citrus green/yellow accents. Soft directional daylight, delicate physically plausible contact shadows, expertly styled objects, realistic materials and appetizing textures. Isolated cutout on a genuinely transparent background, preserve natural subtle shadow alpha, no backdrop, no floor horizon. Landscape 3:2 composition, all objects fully within frame with generous breathing room, one compact still-life grouping. No text, no letters, no logos, no watermark, no UI, no invented interface. A cobalt blue ceramic coffee cup, a small kraft takeaway bag with folded top, one croissant sandwich peeking beside it, and a slim orange juice glass. An art-directed campus café takeaway still life, triangular composition with tactile realistic paper, handmade cobalt ceramics and fresh food.",
+    "transparent": true,
+    "local_original": "bolsa_foto.png",
+    "app_resource": "app/src/main/res/drawable-nodpi/bolsa_foto.png"
+  },
+  {
+    "name": "seguimiento_foto",
+    "prompt": "Photorealistic premium editorial product photography, for the Android app CafeCampus. Campus fresco visual identity: rich cobalt blue #2455D8, luminous cool ivory, small fresh citrus green/yellow accents. Soft directional daylight, delicate physically plausible contact shadows, expertly styled objects, realistic materials and appetizing textures. Isolated cutout on a genuinely transparent background, preserve natural subtle shadow alpha, no backdrop, no floor horizon. Landscape 3:2 composition, all objects fully within frame with generous breathing room, one compact still-life grouping. No text, no letters, no logos, no watermark, no UI, no invented interface. A cobalt blue ceramic cup on a small pale ivory pickup tray beside a folded ivory napkin, a fresh sandwich half and a small lemon slice. Art-directed campus café ready-to-collect order, poised and inviting.",
+    "transparent": true,
+    "local_original": "seguimiento_foto.png",
+    "app_resource": "app/src/main/res/drawable-nodpi/seguimiento_foto.png"
+  },
+  {
+    "name": "historial_foto",
+    "prompt": "Photorealistic premium editorial product photography, for the Android app CafeCampus. Campus fresco visual identity: rich cobalt blue #2455D8, luminous cool ivory, small fresh citrus green/yellow accents. Soft directional daylight, delicate physically plausible contact shadows, expertly styled objects, realistic materials and appetizing textures. Isolated cutout on a genuinely transparent background, preserve natural subtle shadow alpha, no backdrop, no floor horizon. Landscape 3:2 composition, all objects fully within frame with generous breathing room, one compact still-life grouping. No text, no letters, no logos, no watermark, no UI, no invented interface. An open ivory paper notebook with completely blank pages, a cobalt ceramic espresso cup with coffee, a half orange and a small crumb from a pastry. Quiet editorial still life about remembering favorite campus café breaks.",
+    "transparent": true,
+    "local_original": "historial_foto.png",
+    "app_resource": "app/src/main/res/drawable-nodpi/historial_foto.png"
+  },
+  {
+    "name": "perfil_foto",
+    "prompt": "Photorealistic premium editorial product photography, for the Android app CafeCampus. Campus fresco visual identity: rich cobalt blue #2455D8, luminous cool ivory, small fresh citrus green/yellow accents. Soft directional daylight, delicate physically plausible contact shadows, expertly styled objects, realistic materials and appetizing textures. Isolated cutout on a genuinely transparent background, preserve natural subtle shadow alpha, no backdrop, no floor horizon. Landscape 3:2 composition, all objects fully within frame with generous breathing room, one compact still-life grouping. No text, no letters, no logos, no watermark, no UI, no invented interface. A closed cobalt blue notebook with no lettering, simple pale ivory over-ear headphones, a fresh small orange and a fine sprig of green citrus leaves. Calm personal campus study break still life. No person and no face.",
+    "transparent": true,
+    "local_original": "perfil_foto.png",
+    "app_resource": "app/src/main/res/drawable-nodpi/perfil_foto.png"
+  },
+  {
+    "name": "cocina_foto",
+    "prompt": "Photorealistic premium editorial product photography, for the Android app CafeCampus. Campus fresco visual identity: rich cobalt blue #2455D8, luminous cool ivory, small fresh citrus green/yellow accents. Soft directional daylight, delicate physically plausible contact shadows, expertly styled objects, realistic materials and appetizing textures. Isolated cutout on a genuinely transparent background, preserve natural subtle shadow alpha, no backdrop, no floor horizon. Landscape 3:2 composition, all objects fully within frame with generous breathing room, one compact still-life grouping. No text, no letters, no logos, no watermark, no UI, no invented interface. A stainless espresso portafilter with fresh coffee grounds, cobalt blue ceramic cup, a small freshly baked pastry and a folded ivory linen towel. Refined working café editorial still life, careful realistic material textures.",
+    "transparent": true,
+    "local_original": "cocina_foto.png",
+    "app_resource": "app/src/main/res/drawable-nodpi/cocina_foto.png"
+  },
+  {
+    "name": "panel_foto",
+    "prompt": "Photorealistic premium editorial product photography, for the Android app CafeCampus. Campus fresco visual identity: rich cobalt blue #2455D8, luminous cool ivory, small fresh citrus green/yellow accents. Soft directional daylight, delicate physically plausible contact shadows, expertly styled objects, realistic materials and appetizing textures. Isolated cutout on a genuinely transparent background, preserve natural subtle shadow alpha, no backdrop, no floor horizon. Landscape 3:2 composition, all objects fully within frame with generous breathing room, one compact still-life grouping. No text, no letters, no logos, no watermark, no UI, no invented interface. A cobalt blue ceramic pour-over coffee dripper resting on a matching glass server with fresh coffee, a small bright citrus fruit and three green leaves. Precise optimistic campus café morning editorial still life.",
+    "transparent": true,
+    "local_original": "panel_foto.png",
+    "app_resource": "app/src/main/res/drawable-nodpi/panel_foto.png"
+  },
+  {
+    "name": "estudio_cobalto",
+    "prompt": "Create a premium art-directed photographic background plate for CafeCampus, a fresh campus cafe Android app. Wide landscape 3:2 composition. Rich saturated cobalt blue #2455D8 painted plaster studio wall and seamless cobalt table, soft natural afternoon light from upper left, subtle tactile grain that is elegant not dirty. In the lower right a curved ivory porcelain slab enters frame, with an actual small citrus leaf casting a delicate shadow and a sliver of lemon zest on the far right. An angled sheet of deep ultramarine paper creates a quiet diagonal fold and physically believable soft shadow near the bottom. Sophisticated editorial material composition, vivid but restrained, real photographed texture, generous completely quiet cobalt negative space covering the LEFT TWO THIRDS for native app text and composited product photos. No cups, no food products, no words, no letters, no logos, no UI, no gradients pretending to be lighting, no watermark. The color and tactile light are the art, not decorative symbols. Fill the entire frame, opaque.",
+    "transparent": false,
+    "local_original": "estudio_cobalto.png",
+    "app_resource": "app/src/main/res/drawable-nodpi/estudio_cobalto.png"
+  },
+  {
+    "name": "papel_campus",
+    "prompt": "Photorealistic fine-art editorial paper background plate for a modern campus cafe mobile app. Wide landscape 3:2. Cool pale ivory #F0F2E7 thick handmade paper with extremely subtle visible fibers, a real fold of ivory paper entering lower right, delicate fresh citrus branch sunlight shadow confined to the far right and upper right edges. A narrow cobalt blue paper edge and tiny curled lemon peel visible at bottom right, tactile clean porcelain and paper material interplay, very refined composition. The entire left two thirds is quiet nearly uniform pale ivory for native dark blue interface text. Soft daylight, restrained texture, bright cool fresh color temperature, no yellow beige cast. No cups, no food, no people, no text, no letters, no logos, no icons, no UI, no watermark. This is a useful backdrop plate, full bleed opaque, not an interface mockup.",
+    "transparent": false,
+    "local_original": "papel_campus.png",
+    "app_resource": "app/src/main/res/drawable-nodpi/papel_campus.png"
+  },
+  {
+    "name": "ramita_floral",
+    "prompt": "Premium photorealistic art-directed studio cutout, made for CafeCampus Campus fresco. Palette cool ivory, blush pink, pale lilac, sage green and small cobalt accents. Soft natural directional daylight, clean refined styling, subtle physically plausible contact shadow alpha. Genuinely transparent background, no white matte and no rectangular floor plane. Landscape 3:2 composition, generous clear margins around all objects. No text, no letters, no logos, no watermark, no UI. An airy asymmetrical small branch with three delicate pale blush cosmos flowers, one tiny creamy-white bud, fresh soft sage citrus leaves and fine natural stems. The sprig sweeps diagonally from lower-left to upper-right, open airy silhouette, large true transparent gaps, no dense bouquet. Refined feminine editorial botanical cutout for a university student's personal cafe app. All petals fully in frame.",
+    "transparent": true,
+    "local_original": "ramita_floral.png",
+    "app_resource": "app/src/main/res/drawable-nodpi/ramita_floral.png"
+  },
+  {
+    "name": "lazo_lila",
+    "prompt": "Premium photorealistic art-directed studio cutout, made for CafeCampus Campus fresco. Palette cool ivory, blush pink, pale lilac, sage green and small cobalt accents. Soft natural directional daylight, clean refined styling, subtle physically plausible contact shadow alpha. Genuinely transparent background, no white matte and no rectangular floor plane. Landscape 3:2 composition, generous clear margins around all objects. No text, no letters, no logos, no watermark, no UI. One slender flowing pale lilac silk ribbon with one loose small bow and a graceful open loop, soft satin highlights and realistic woven silk texture, understated feminine editorial styling. A wide horizontal S-curve with plenty of transparent space between ribbon loops, no package, no gift box, no dense object. Keep entire ribbon in frame.",
+    "transparent": true,
+    "local_original": "lazo_lila.png",
+    "app_resource": "app/src/main/res/drawable-nodpi/lazo_lila.png"
+  },
+  {
+    "name": "flor_porcelana",
+    "prompt": "Premium photorealistic art-directed studio cutout, made for CafeCampus Campus fresco. Palette cool ivory, blush pink, pale lilac, sage green and small cobalt accents. Soft natural directional daylight, clean refined styling, subtle physically plausible contact shadow alpha. Genuinely transparent background, no white matte and no rectangular floor plane. Landscape 3:2 composition, generous clear margins around all objects. No text, no letters, no logos, no watermark, no UI. One small tactile handmade porcelain flower charm, five softly rounded blush pink ceramic petals, a small cobalt blue ceramic center, subtle white glaze highlights, charming sophisticated feminine desk accessory. Front three-quarter view, sculptural 3D but photographic, beautiful soft ceramic volume, no emoji style. Entire small flower fully in frame, isolated.",
+    "transparent": true,
+    "local_original": "flor_porcelana.png",
+    "app_resource": "app/src/main/res/drawable-nodpi/flor_porcelana.png"
+  },
+  {
+    "name": "petalos_campus",
+    "prompt": "Premium photorealistic art-directed studio cutout, made for CafeCampus Campus fresco. Palette cool ivory, blush pink, pale lilac, sage green and small cobalt accents. Soft natural directional daylight, clean refined styling, subtle physically plausible contact shadow alpha. Genuinely transparent background, no white matte and no rectangular floor plane. Landscape 3:2 composition, generous clear margins around all objects. No text, no letters, no logos, no watermark, no UI. Sparse diagonal scattering of exactly six soft blush pink flower petals, two tiny pale lilac petals and two small fresh sage citrus leaves. An airy editorial botanical foreground cutout with most of the frame truly transparent. Gentle curved diagonal from upper-right toward lower-left, realistic delicate petal texture and soft daylight highlights. No full flowers, no bouquet.",
+    "transparent": true,
+    "local_original": "petalos_campus.png",
+    "app_resource": "app/src/main/res/drawable-nodpi/petalos_campus.png"
+  }
+]
