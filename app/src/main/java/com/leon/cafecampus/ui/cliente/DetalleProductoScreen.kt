@@ -1,26 +1,27 @@
 package com.leon.cafecampus.ui.cliente
 
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
-import androidx.compose.foundation.horizontalScroll
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.*
+import androidx.compose.foundation.lazy.grid.*
+import androidx.compose.foundation.shape.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.*
+import androidx.compose.ui.draw.*
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.leon.cafecampus.ui.components.*
+import com.leon.cafecampus.ui.theme.*
 import com.leon.cafecampus.viewmodel.*
 import com.leon.cafecampus.model.*
-import com.leon.cafecampus.data.local.entity.*
 
 @Composable fun DetalleProductoScreen(id: Int,vm: MenuViewModel,volver: ()->Unit) {
     val productos by vm.productos.collectAsStateWithLifecycle()
@@ -28,21 +29,28 @@ import com.leon.cafecampus.data.local.entity.*
     var cantidad by rememberSaveable(id) { mutableIntStateOf(1) }
     var nota by rememberSaveable(id) { mutableStateOf("") }
     val error by vm.error.collectAsStateWithLifecycle()
-    Column {
-        AppTopBar("Detalle del producto",volver)
-        if(p==null) Vacio("Producto no disponible") else Column(Modifier.fillMaxSize().imePadding().verticalScroll(rememberScrollState()).padding(16.dp),verticalArrangement=Arrangement.spacedBy(16.dp)) {
-            ProductoIcono(p.icono,Modifier.fillMaxWidth().height(180.dp))
-            Row(Modifier.fillMaxWidth(),horizontalArrangement=Arrangement.spacedBy(8.dp)) { Text(p.nombre,Modifier.weight(1f),style=MaterialTheme.typography.headlineSmall,fontWeight=FontWeight.Bold); Text(dinero(p.precio),color=MaterialTheme.colorScheme.primary,fontWeight=FontWeight.Bold) }
-            Row(horizontalArrangement=Arrangement.spacedBy(24.dp),verticalAlignment=Alignment.CenterVertically) { Disponible(p.disponible); Text("10–15 min",color=MaterialTheme.colorScheme.onSurfaceVariant) }
-            Text(p.descripcion,color=MaterialTheme.colorScheme.onSurfaceVariant)
+    Scaffold(containerColor=MaterialTheme.colorScheme.background,topBar={AppTopBar("Detalle del producto",volver)},bottomBar={if(p!=null) Surface(color=MaterialTheme.colorScheme.surface,shadowElevation=6.dp) {
+        Column(Modifier.fillMaxWidth().padding(horizontal=20.dp,vertical=14.dp),verticalArrangement=Arrangement.spacedBy(10.dp)) {
+            Row(Modifier.fillMaxWidth(),horizontalArrangement=Arrangement.SpaceBetween,verticalAlignment=Alignment.CenterVertically) { Text("Total",style=MaterialTheme.typography.bodyMedium,color=MaterialTheme.colorScheme.onSurfaceVariant);Text(dinero(p.precio*cantidad),style=MaterialTheme.typography.titleLarge,color=MaterialTheme.colorScheme.primary) }
+            CafeButton("Agregar al pedido",p.disponible) { if(vm.agregar(p,cantidad,nota)) volver() }
+        }
+    }}) { padding ->
+        if(p==null) Vacio("Producto no disponible") else Column(Modifier.fillMaxSize().padding(padding).imePadding().verticalScroll(rememberScrollState()).padding(horizontal=20.dp),verticalArrangement=Arrangement.spacedBy(20.dp)) {
+            Box(Modifier.fillMaxWidth().height(280.dp).clip(RoundedCornerShape(22.dp)).background(MaterialTheme.colorScheme.primaryContainer.copy(alpha=0.7f)),contentAlignment=Alignment.Center) {
+                androidx.compose.foundation.Image(androidx.compose.ui.res.painterResource(com.leon.cafecampus.R.drawable.estudio_cobalto),null,Modifier.matchParentSize(),contentScale=ContentScale.Crop)
+                Citricos(Modifier.fillMaxSize());FotoLibre(p.icono,Modifier.fillMaxSize().padding(8.dp))
+            }
+            Row(Modifier.fillMaxWidth(),horizontalArrangement=Arrangement.spacedBy(12.dp),verticalAlignment=Alignment.Top) { Text(p.nombre,Modifier.weight(1f),style=MaterialTheme.typography.headlineMedium);Text(dinero(p.precio),style=MaterialTheme.typography.titleLarge,color=MaterialTheme.colorScheme.primary) }
+            Row(horizontalArrangement=Arrangement.spacedBy(18.dp),verticalAlignment=Alignment.CenterVertically) { Disponible(p.disponible);Icon(Icons.Default.Schedule,null,tint=MaterialTheme.colorScheme.onSurfaceVariant,modifier=Modifier.size(17.dp));Text("10–15 min",style=MaterialTheme.typography.bodySmall,color=MaterialTheme.colorScheme.onSurfaceVariant) }
+            Text(p.descripcion,style=MaterialTheme.typography.bodyLarge,color=MaterialTheme.colorScheme.onSurfaceVariant)
             Row(Modifier.fillMaxWidth(),horizontalArrangement=Arrangement.SpaceBetween,verticalAlignment=Alignment.CenterVertically) {
-                Text("Cantidad",fontWeight=FontWeight.Bold)
-                Row(verticalAlignment=Alignment.CenterVertically) { IconButton(onClick={cantidad--},enabled=cantidad>1) { Icon(Icons.Default.Remove,"Disminuir cantidad") }; Text("$cantidad"); IconButton(onClick={cantidad++},enabled=cantidad<99) { Icon(Icons.Default.Add,"Aumentar cantidad") } }
+                Text("Cantidad",style=MaterialTheme.typography.titleMedium)
+                Surface(color=MaterialTheme.colorScheme.surface,shape=RoundedCornerShape(14.dp)) { Row(verticalAlignment=Alignment.CenterVertically) {
+                    IconButton(onClick={cantidad--},enabled=cantidad>1) { Icon(Icons.Default.Remove,"Disminuir cantidad") };Text("$cantidad",style=MaterialTheme.typography.titleMedium,modifier=Modifier.padding(horizontal=12.dp));IconButton(onClick={cantidad++},enabled=cantidad<99) { Icon(Icons.Default.Add,"Aumentar cantidad",tint=MaterialTheme.colorScheme.primary) }
+                } }
             }
             CafeTextField(nota,{nota=it},"Nota para la cocina")
-            Tarjeta { Text("Total",style=MaterialTheme.typography.labelMedium); Text(dinero(p.precio*cantidad),color=MaterialTheme.colorScheme.primary,fontWeight=FontWeight.Bold) }
-            ErrorTexto(error)
-            CafeButton("Agregar al pedido",p.disponible) { if(vm.agregar(p,cantidad,nota)) volver() }
+            ErrorTexto(error);Spacer(Modifier.height(8.dp))
         }
     }
 }

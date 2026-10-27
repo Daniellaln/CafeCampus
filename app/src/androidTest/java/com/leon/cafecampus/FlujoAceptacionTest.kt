@@ -14,31 +14,32 @@ class FlujoAceptacionTest {
     private fun click(t: String) { esperar(t);(if(t=="Confirmar pedido") ui.onAllNodesWithText(t).onLast() else ui.onAllNodesWithText(t).onFirst()).performClick();ui.waitForIdle() }
     private fun foto(nombre: String) {
         ui.waitForIdle()
-        Thread.sleep(250) // Espera el fotograma nativo después de la transición.
+        Thread.sleep(900) // Espera el fotograma nativo después de la transición.
         val instrument=InstrumentationRegistry.getInstrumentation()
         val dir=File(InstrumentationRegistry.getArguments().getString("additionalTestOutputDir") ?: File(instrument.targetContext.getExternalFilesDir(null),"capturas").absolutePath).apply { mkdirs() }
         instrument.uiAutomation.takeScreenshot().let { bmp -> File(dir,"$nombre.png").outputStream().use { bmp.compress(Bitmap.CompressFormat.PNG,100,it) };bmp.recycle() }
     }
-    private fun campo(etiqueta: String,valor: String) { ui.onNodeWithText(etiqueta).performTextReplacement(valor) }
-    private fun subir(t: String) { ui.onAllNodesWithText(t).onLast().performScrollTo();ui.waitForIdle() }
+    private fun campo(etiqueta: String,valor: String) { runCatching { ui.onNodeWithText(etiqueta).performScrollTo() };(if(etiqueta=="Buscar en el menú") ui.onNodeWithContentDescription(etiqueta) else ui.onNodeWithText(etiqueta)).performTextReplacement(valor);ui.activity.runOnUiThread { (ui.activity.getSystemService(android.content.Context.INPUT_METHOD_SERVICE) as android.view.inputmethod.InputMethodManager).hideSoftInputFromWindow(ui.activity.window.decorView.windowToken,0) };ui.waitForIdle() }
+    private fun subir(t: String) { val n=ui.onAllNodesWithText(t).onLast();runCatching { n.assertIsDisplayed() }.onFailure { n.performScrollTo() };ui.waitForIdle() }
+    private fun producto(nombre: String) { ui.onNode(hasScrollToNodeAction()).performScrollToNode(hasContentDescription("Ver $nombre"));ui.onNodeWithContentDescription("Ver $nombre").performClick();ui.waitForIdle() }
     @Test fun faseUnoCompleta() {
-        click("Comenzar");esperar("Bienvenido");foto("01_login_cliente")
+        esperar("Comenzar");foto("00_bienvenida");click("Comenzar");esperar("Bienvenido");ui.onNodeWithContentDescription("Volver").performClick();esperar("Comenzar");click("Comenzar");esperar("Bienvenido");foto("01_login_cliente");click("Administrador");foto("01b_login_admin");click("Estudiante")
         campo("Correo","daniella@campus.test");campo("Contraseña","mala");click("Ingresar")
         esperar("Correo o contraseña incorrectos")
-        campo("Contraseña","1234");click("Ingresar");esperar("¡Hola, Daniella!");foto("02_menu_cliente")
-        ui.onNodeWithContentDescription("Ver Café americano").performClick()
+        campo("Contraseña","1234");click("Ingresar");esperar("¡Hola, Daniella!");esperar("6 opciones");foto("02_menu_cliente")
+        producto("Café americano")
         esperar("Detalle del producto");foto("03_detalle_producto")
         ui.onNodeWithContentDescription("Aumentar cantidad").performClick()
         subir("Agregar al pedido");click("Agregar al pedido")
         esperar("¡Hola, Daniella!")
-        ui.onNodeWithContentDescription("Ver Chicha morada").performClick()
+        producto("Chicha morada")
         subir("Agregar al pedido");click("Agregar al pedido")
         // El carrito debe sobrevivir a la recreación de Activity.
         ui.activityRule.scenario.recreate();esperar("¡Hola, Daniella!")
         ui.onNodeWithContentDescription("Mi bolsa").performClick();esperar("Confirmar pedido");foto("04_confirmar_pedido")
         subir("Confirmar pedido");click("Confirmar pedido");esperar("Seguimiento");foto("05_seguimiento")
-        click("Pedidos");esperar("Mis pedidos");foto("06_mis_pedidos")
-        click("Perfil");esperar("Mi perfil");click("Cambiar de perfil")
+        click("Pedidos");esperar("Mis pedidos");foto("06_mis_pedidos");click("Historial");foto("06b_estado_vacio");click("Activos")
+        click("Perfil");esperar("Mi perfil");subir("Cambiar de perfil");click("Cambiar de perfil")
         esperar("Panel de control");ui.waitUntil(10000) { ui.onAllNodesWithText("S/ 11.50").fetchSemanticsNodes().size>=2 };foto("07_panel_admin")
         click("Pedidos");esperar("Nuevos");foto("08_pedidos_admin")
         click("Pasar a Preparando");click("Preparando")
@@ -50,26 +51,42 @@ class FlujoAceptacionTest {
         // Cambia a agotado y comprueba que el cliente no pueda agregarlo.
         ui.onAllNodesWithText("Disponible").onFirst().performClick()
         ui.onNodeWithContentDescription("Agregar producto").performClick();esperar("Nuevo producto")
-        campo("Nombre del producto","Tostada de prueba");campo("Precio (S/)","6.00");subir("Guardar producto");click("Guardar producto");esperar("Gestión del menú")
+        foto("11b_nuevo_producto");campo("Nombre del producto","Tostada de prueba");campo("Precio (S/)","6.00");subir("Guardar producto");click("Guardar producto");esperar("Gestión del menú")
         click("Ajustes");esperar("Recibir pedidos");foto("12_ajustes_admin")
         // Modo oscuro y cierre de cafetería persisten al recrear.
         ui.onAllNodes(isToggleable()).onFirst().performClick()
         ui.onAllNodes(isToggleable()).onLast().performClick()
         ui.activityRule.scenario.recreate();esperar("Recibir pedidos")
         click("Ajustes");foto("13_modo_oscuro")
-        click("Cambiar de perfil");esperar("¡Hola, Daniella!");esperar("Cafetería cerrada")
-        ui.onNodeWithContentDescription("Ver Café americano").performClick()
+        subir("Cambiar de perfil");click("Cambiar de perfil");esperar("¡Hola, Daniella!");esperar("Cafetería cerrada")
+        producto("Café americano")
         subir("Agregar al pedido");ui.onNodeWithText("Agregar al pedido").assertIsNotEnabled()
         ui.onNodeWithContentDescription("Volver").performClick()
-        ui.onNodeWithText("Snacks").performScrollTo();click("Snacks");esperar("Tostada de prueba")
+        ui.onNodeWithContentDescription("Elegir categoría").performClick();esperar("Elige tu pausa");ui.onNodeWithContentDescription("Filtrar por Snacks").performClick()
+        ui.waitUntil(10000) { ui.onAllNodes(hasScrollToNodeAction()).fetchSemanticsNodes().isNotEmpty() }
+        ui.onNode(hasScrollToNodeAction()).performScrollToNode(hasText("Tostada de prueba"));esperar("Tostada de prueba")
         click("Pedidos");click("Pedido #0001");esperar("Seguimiento")
         ui.onNodeWithText("Preparando").assertExists();foto("14_seguimiento_actualizado")
-        click("Perfil");click("Cambiar de perfil");esperar("Panel de control")
+        click("Perfil");subir("Cambiar de perfil");click("Cambiar de perfil");esperar("Panel de control")
         click("Pedidos");click("Preparando");click("Cancelar")
         click("Ajustes")
         ui.onAllNodes(isToggleable()).onFirst().performClick()
         ui.onAllNodes(isToggleable()).onLast().performClick()
-        click("Cambiar de perfil");esperar("¡Hola, Daniella!")
+        subir("Cambiar de perfil");click("Cambiar de perfil");esperar("¡Hola, Daniella!")
         click("Pedidos");click("Historial");esperar("Cancelado");foto("15_historial_cancelado")
+        click("Repetir pedido");esperar("Confirmar pedido");esperar("Se omitieron productos que ya no están disponibles");foto("16_repetir_pedido")
+        ui.onNodeWithText("Total a pagar").assertExists()
+        click("Confirmar pedido");esperar("Seguimiento")
+        click("Perfil");esperar("Mi perfil");subir("Cambiar de perfil");click("Cambiar de perfil");esperar("Panel de control");foto("19_grafico_actualizado");click("Ajustes");subir("Cambiar de perfil");click("Cambiar de perfil");esperar("¡Hola, Daniella!")
+        ui.onNodeWithContentDescription("Elegir categoría").performClick();esperar("Elige tu pausa");ui.onNodeWithContentDescription("Filtrar por Todo").performClick()
+        ui.onNodeWithContentDescription("Buscar productos").performClick();esperar("Buscar en el menú")
+        campo("Buscar en el menú","CAFE");esperar("Resultados");ui.onNodeWithContentDescription("Ver Café americano").assertExists();foto("17_busqueda")
+        ui.onNodeWithContentDescription("Limpiar búsqueda").performClick()
+        click("Perfil");esperar("Mi perfil");foto("18_perfil")
+        // Direct manipulation must navigate, not just play a decorative animation.
+        ui.onNodeWithTag("navegacion_liquida").performTouchInput { swipe(start=androidx.compose.ui.geometry.Offset(width*.84f,height*.5f),end=androidx.compose.ui.geometry.Offset(width*.12f,height*.5f),durationMillis=380) }
+        esperar("¡Hola, Daniella!")
+        ui.onNodeWithContentDescription("Cerrar búsqueda").performClick();esperar("7 opciones")
+        ui.onNodeWithContentDescription("Elegir categoría").performClick();esperar("Elige tu pausa");foto("20_categorias")
     }
 }

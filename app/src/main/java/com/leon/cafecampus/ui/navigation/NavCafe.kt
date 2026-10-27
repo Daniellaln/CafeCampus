@@ -1,5 +1,11 @@
 package com.leon.cafecampus.ui.navigation
 import androidx.compose.foundation.layout.*
+import androidx.compose.ui.draw.drawWithContent
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.layer.drawLayer
+import androidx.compose.ui.graphics.rememberGraphicsLayer
+import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.layout.positionInRoot
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
@@ -55,10 +61,12 @@ import com.leon.cafecampus.ui.theme.CafeTheme
     CafeTheme(if(admin) Rol.ADMIN else Rol.CLIENTE,oscuro) {
         val destinos=if(admin) listOf(Triple(Rutas.PANEL,"Panel",Icons.Default.BarChart),Triple(Rutas.ADMIN_PEDIDOS,"Pedidos",Icons.Default.ReceiptLong),Triple(Rutas.ADMIN_MENU,"Menú",Icons.Default.Coffee),Triple(Rutas.AJUSTES,"Ajustes",Icons.Default.Settings))
             else listOf(Triple(Rutas.MENU,"Menú",Icons.Default.Home),Triple(Rutas.PEDIDOS,"Pedidos",Icons.Default.ReceiptLong),Triple(Rutas.PERFIL,"Perfil",Icons.Default.PersonOutline))
+        val plano=rememberGraphicsLayer()
+        var origen by remember { mutableStateOf(Offset.Zero) }
         val barra=usuario!=null && ruta in listOf(Rutas.MENU,Rutas.PEDIDOS,Rutas.PERFIL,Rutas.SEGUIMIENTO,Rutas.PANEL,Rutas.ADMIN_PEDIDOS,Rutas.ADMIN_MENU,Rutas.AJUSTES)
-        Scaffold(containerColor=MaterialTheme.colorScheme.background,bottomBar={ if(barra) NavigationBar(containerColor=MaterialTheme.colorScheme.surface) {
-            destinos.forEach { (destino,titulo,icono) -> NavigationBarItem(colors=NavigationBarItemDefaults.colors(selectedIconColor=MaterialTheme.colorScheme.primary,selectedTextColor=MaterialTheme.colorScheme.primary,indicatorColor=androidx.compose.ui.graphics.Color.Transparent),selected=ruta==destino || (destino==Rutas.PEDIDOS && ruta==Rutas.SEGUIMIENTO),onClick={nav.navigate(destino) { popUpTo(if(admin) Rutas.PANEL else Rutas.MENU) { inclusive=false }; launchSingleTop=true }},icon={Icon(icono,null)},label={Text(titulo)}) }
-        } }) { padding ->
+        Scaffold(containerColor=MaterialTheme.colorScheme.background,bottomBar={ if(barra) NavegacionLiquida(destinos.map { it.second to it.third },destinos.indexOfFirst { ruta==it.first || (it.first==Rutas.PEDIDOS && ruta==Rutas.SEGUIMIENTO) }.coerceAtLeast(0),{ indice ->
+            nav.navigate(destinos[indice].first) { popUpTo(if(admin) Rutas.PANEL else Rutas.MENU) { inclusive=false };launchSingleTop=true }
+        },plano,origen) }) { padding ->
             NavHost(nav,startDestination=Rutas.SPLASH,modifier=Modifier.padding(padding)) {
                 composable(Rutas.SPLASH) { if(cargando) Box(Modifier.fillMaxSize(),contentAlignment=Alignment.Center) { CircularProgressIndicator() } else SplashScreen { nav.navigate(Rutas.LOGIN) } }
                 composable(Rutas.LOGIN) { LoginScreen(sesion) { if(!nav.popBackStack()) nav.navigate(Rutas.SPLASH) { popUpTo(Rutas.LOGIN) { inclusive=true } } } }
