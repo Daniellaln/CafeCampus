@@ -152,4 +152,13 @@ class DatosAceptacionTest {
         reloj.set(2026,11,31,23,50,0)
         assertEquals(listOf("Ahora","Mañana, 00:30","Mañana, 01:00","Mañana, 01:30"),opcionesRecojo(reloj.timeInMillis))
     }
+    @Test fun registroNormalizaCorreoYRechazaDuplicados() = runBlocking {
+        val u=repo.registrarEstudiante("Daniella Nueva","  NUEVA@CAMPUS.TEST  ","123456")
+        assertEquals("nueva@campus.test",u.correo);assertEquals("CLIENTE",u.rol)
+        assertEquals(u.id,repo.login("NUEVA@CAMPUS.TEST","123456")!!.id)
+        assertEquals(u,repo.obtenerUsuario(u.id))
+        try { repo.registrarEstudiante("Otra","Nueva@campus.test","abcdef");fail("Correo duplicado") } catch(e: IllegalArgumentException) { assertTrue(e.message!!.contains("registrado")) }
+        try { repo.registrarEstudiante("Daniella","invalido","123456");fail("Correo inválido") } catch(e: IllegalArgumentException) { assertTrue(e.message!!.contains("correo")) }
+        assertEquals(3,db.usuarioDao().contar())
+    }
 }

@@ -23,7 +23,7 @@ import com.leon.cafecampus.ui.theme.*
 import com.leon.cafecampus.viewmodel.*
 import com.leon.cafecampus.model.*
 
-@Composable fun LoginScreen(vm: SesionViewModel,volver: ()->Unit={}) {
+@Composable fun LoginScreen(vm: SesionViewModel,volver: ()->Unit={},registrar: ()->Unit={}) {
     var rol by rememberSaveable { mutableStateOf(Rol.CLIENTE) }
     var correo by rememberSaveable { mutableStateOf("") }
     var clave by rememberSaveable { mutableStateOf("") }
@@ -45,7 +45,7 @@ import com.leon.cafecampus.model.*
                     Icon(IconosCafe.SwapHoriz,null,tint=MaterialTheme.colorScheme.primary,modifier=Modifier.size(20.dp))
                     Text("Modo práctica: cambia entre estudiante y administrador desde tu perfil.",style=MaterialTheme.typography.bodySmall,color=MaterialTheme.colorScheme.onSurfaceVariant)
                 }
-                LazoCampus(Modifier.fillMaxWidth().height(70.dp))
+                if(rol==Rol.CLIENTE) TextButton(onClick={vm.limpiarError();registrar()},modifier=Modifier.fillMaxWidth()) { Text("Crear cuenta de estudiante") }
                 Spacer(Modifier.height(8.dp))
             }
         }

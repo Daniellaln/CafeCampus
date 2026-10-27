@@ -6,7 +6,20 @@ import com.leon.cafecampus.model.*
 import java.math.BigDecimal
 import java.math.RoundingMode
 class CafeRepositoryRoom(private val db: CafeDatabase) : CafeRepository {
-    override suspend fun login(correo: String,clave: String) = db.usuarioDao().login(correo.trim(),clave)
+    override suspend fun login(correo: String,clave: String) = db.usuarioDao().login(correo.trim().lowercase(java.util.Locale.ROOT),clave)
+    override suspend fun obtenerUsuario(id: Int) = db.usuarioDao().buscar(id)
+    override suspend fun registrarEstudiante(nombre: String,correo: String,clave: String): Usuario {
+        val email=correo.trim().lowercase(java.util.Locale.ROOT)
+        require(nombre.trim().length>=2) { "Escribe tu nombre (al menos 2 caracteres)" }
+        require(android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) { "Escribe un correo válido" }
+        require(clave.length>=6) { "La contraseña debe tener al menos 6 caracteres" }
+        return db.withTransaction {
+            require(!db.usuarioDao().existeCorreo(email)) { "Este correo ya está registrado" }
+            val nuevo=Usuario(nombre=nombre.trim(),correo=email,clave=clave,rol=Rol.CLIENTE.name)
+            try { nuevo.copy(id=db.usuarioDao().insertar(nuevo).toInt()) }
+            catch(e: android.database.sqlite.SQLiteConstraintException) { throw IllegalArgumentException("Este correo ya está registrado",e) }
+        }
+    }
     override fun observarProductos() = db.productoDao().observarTodos()
     override suspend fun guardarProducto(p: Producto) {
         require(p.nombre.isNotBlank() && p.precio.isFinite() && p.precio>0) { "Nombre y precio válidos son obligatorios" }

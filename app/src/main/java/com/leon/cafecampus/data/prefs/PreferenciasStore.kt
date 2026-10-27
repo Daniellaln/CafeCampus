@@ -10,6 +10,9 @@ class PreferenciasStore(context: Context) {
     private val store=context.applicationContext.dataStore
     private val datos=store.data.catch { if(it is IOException) emit(emptyPreferences()) else throw it }
     private val perfil=stringPreferencesKey("perfilActivo")
+    private val usuario=intPreferencesKey("usuarioActivoId")
+    val usuarioActivoId=datos.map { it[usuario] }
+    suspend fun guardarSesion(id: Int,rol: Rol) { store.edit { it[usuario]=id;it[perfil]=rol.name } }
     private val oscuro=booleanPreferencesKey("modoOscuro")
     private val recibir=booleanPreferencesKey("recibirPedidos")
     val perfilActivo=datos.map { it[perfil] ?: "" }
@@ -23,5 +26,5 @@ class PreferenciasStore(context: Context) {
         val clave=stringSetPreferencesKey("favoritos_$usuario")
         store.edit { p -> val ids=p[clave] ?: emptySet();p[clave]=if(producto.toString() in ids) ids-producto.toString() else ids+producto.toString() }
     }
-    suspend fun cerrarSesion() { store.edit { it.remove(perfil) } }
+    suspend fun cerrarSesion() { store.edit { it.remove(perfil);it.remove(usuario) } }
 }

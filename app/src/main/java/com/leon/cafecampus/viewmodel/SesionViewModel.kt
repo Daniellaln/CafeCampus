@@ -22,7 +22,7 @@ class SesionViewModel(private val repo: CafeRepository,private val prefs: Prefer
         try {
             preparar()
             val perfil=prefs.perfilActivo.first()
-            if(perfil.isNotBlank()) _usuarioActual.value=cuentaPractica(Rol.valueOf(perfil))
+            if(perfil.isNotBlank()) { val id=prefs.usuarioActivoId.first();_usuarioActual.value=if(id!=null) repo.obtenerUsuario(id)?.takeIf { it.rol==perfil } else cuentaPractica(Rol.valueOf(perfil)) }
         } catch(e: Exception) { _error.value="No se pudo restaurar la sesión. Vuelve a ingresar." }
         finally { _cargando.value=false }
     } }
@@ -40,9 +40,22 @@ class SesionViewModel(private val repo: CafeRepository,private val prefs: Prefer
                 when {
                     u==null -> _error.value="Correo o contraseña incorrectos"
                     u.rol!=rolSeleccionado.name -> _error.value="Selecciona el perfil que corresponde a esta cuenta"
-                    else -> { prefs.guardarPerfil(rolSeleccionado); _usuarioActual.value=u }
+                    else -> { prefs.guardarSesion(u.id,rolSeleccionado); _usuarioActual.value=u }
                 }
             } catch(e: Exception) { _error.value="No se pudo iniciar sesión. Inténtalo de nuevo." }
+            finally { _cargando.value=false }
+        }
+    }
+    fun registrar(nombre: String,correo: String,clave: String,repeticion: String) {
+        if(_cargando.value) return
+        _error.value=null
+        if(clave!=repeticion) { _error.value="Las contraseñas no coinciden";return }
+        _cargando.value=true
+        viewModelScope.launch {
+            try { val u=repo.registrarEstudiante(nombre,correo,clave);prefs.guardarSesion(u.id,Rol.CLIENTE);_usuarioActual.value=u }
+            catch(e: CancellationException) { throw e }
+            catch(e: IllegalArgumentException) { _error.value=e.message }
+            catch(e: Exception) { _error.value="No se pudo crear la cuenta. Inténtalo de nuevo." }
             finally { _cargando.value=false }
         }
     }
@@ -50,7 +63,7 @@ class SesionViewModel(private val repo: CafeRepository,private val prefs: Prefer
         try {
             val rol=if(_usuarioActual.value?.rol==Rol.ADMIN.name) Rol.CLIENTE else Rol.ADMIN
             val u=cuentaPractica(rol) ?: error("No existe la cuenta de práctica")
-            prefs.guardarPerfil(rol); _usuarioActual.value=u
+            prefs.guardarSesion(u.id,rol); _usuarioActual.value=u
         } catch(e: Exception) { _error.value="No se pudo cambiar de perfil" }
     } }
     fun cerrarSesion() { viewModelScope.launch { try { prefs.cerrarSesion(); _usuarioActual.value=null; _error.value=null } catch(e: Exception) { _error.value="No se pudo cerrar la sesión" } } }

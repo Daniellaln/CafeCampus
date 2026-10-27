@@ -5,7 +5,7 @@ import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.leon.cafecampus.data.local.entity.*
 import com.leon.cafecampus.data.local.dao.*
-@Database(entities=[Producto::class,Usuario::class,Pedido::class,DetallePedido::class],version=2,exportSchema=false)
+@Database(entities=[Producto::class,Usuario::class,Pedido::class,DetallePedido::class],version=3,exportSchema=false)
 abstract class CafeDatabase : RoomDatabase() {
     abstract fun productoDao(): ProductoDao
     abstract fun usuarioDao(): UsuarioDao
@@ -20,10 +20,16 @@ abstract class CafeDatabase : RoomDatabase() {
                 db.execSQL("CREATE INDEX IF NOT EXISTS index_detalle_pedido_pedidoId ON detalle_pedido(pedidoId)")
             }
         }
+        val MIGRACION_2_3 = object: Migration(2,3) {
+            override fun migrate(db: SupportSQLiteDatabase) {
+                db.execSQL("UPDATE usuarios SET correo = lower(trim(correo))")
+                db.execSQL("CREATE UNIQUE INDEX IF NOT EXISTS index_usuarios_correo ON usuarios(correo)")
+            }
+        }
         @Volatile private var INSTANCE: CafeDatabase?=null
         fun obtener(context: Context): CafeDatabase = INSTANCE ?: synchronized(this) {
             INSTANCE ?: Room.databaseBuilder(context.applicationContext,CafeDatabase::class.java,"cafecampus.db")
-                .addMigrations(MIGRACION_1_2).build().also { INSTANCE=it }
+                .addMigrations(MIGRACION_1_2,MIGRACION_2_3).build().also { INSTANCE=it }
         }
     }
 }

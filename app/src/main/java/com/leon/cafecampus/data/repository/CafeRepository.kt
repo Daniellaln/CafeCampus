@@ -4,6 +4,8 @@ import com.leon.cafecampus.data.local.entity.*
 import com.leon.cafecampus.data.local.relation.PedidoConDetalle
 import com.leon.cafecampus.model.*
 interface CafeRepository {
+    suspend fun registrarEstudiante(nombre: String,correo: String,clave: String): Usuario
+    suspend fun obtenerUsuario(id: Int): Usuario?
     suspend fun login(correo: String,clave: String): Usuario?
     fun observarProductos(): Flow<List<Producto>>
     suspend fun guardarProducto(p: Producto)
