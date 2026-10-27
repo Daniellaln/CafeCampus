@@ -1,3 +1,5 @@
+> Actualización14: Comenzar abre inicio de sesión y Crear cuenta abre registro. Compilación verificada; capturas y19pruebas heredadas corresponden a13. La captura00 conserva el texto anterior del enlace.
+
 # CafeCampus · fase2 completa
 
 App Android de cafetería con estudiante y administrador, MVVM + CafeRepository interface + Room. La fase1 queda intacta; esta rama conserva sus contratos y desarrolla las seis mejoras propuestas en el Word.

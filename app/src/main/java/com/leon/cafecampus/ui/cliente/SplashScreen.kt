@@ -23,7 +23,7 @@ import com.leon.cafecampus.ui.theme.*
 import com.leon.cafecampus.viewmodel.*
 import com.leon.cafecampus.model.*
 
-@Composable fun SplashScreen(comenzar: ()->Unit) {
+@Composable fun SplashScreen(comenzar: ()->Unit,crearCuenta: ()->Unit) {
     BoxWithConstraints(Modifier.fillMaxSize()) {
         val aire=maxHeight*.25f
         Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(horizontal=24.dp),verticalArrangement=Arrangement.spacedBy(20.dp)) {
@@ -33,7 +33,7 @@ import com.leon.cafecampus.model.*
             Text("Elige lo que te gusta. Pide desde aquí y recoge en tu cafetería.",style=MaterialTheme.typography.bodyLarge,color=MaterialTheme.colorScheme.onSurfaceVariant)
             Spacer(Modifier.height(8.dp))
             CafeButton("Comenzar",onClick=comenzar)
-            TextButton(onClick=comenzar,modifier=Modifier.fillMaxWidth()) { Text("Ya tengo una cuenta") }
+            TextButton(onClick=crearCuenta,modifier=Modifier.fillMaxWidth()) { Text("Crear cuenta") }
             Spacer(Modifier.height(16.dp))
         }
     }
