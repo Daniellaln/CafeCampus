@@ -5,6 +5,10 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.foundation.interaction.*
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.luminance
+import androidx.compose.foundation.interaction.*
+import androidx.compose.animation.*
+import androidx.compose.animation.core.*
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.*
 import androidx.compose.material.icons.Icons
@@ -33,7 +37,10 @@ fun dinero(n: Double)="S/ %.2f".format(Locale.US,n)
         windowInsets=WindowInsets(0),colors=TopAppBarDefaults.centerAlignedTopAppBarColors(containerColor=CampusBlue,titleContentColor=Color.White,navigationIconContentColor=Color.White,actionIconContentColor=Color.White))
 }
 @Composable fun CafeButton(texto: String,enabled: Boolean=true,onClick: ()->Unit) {
-    Button(onClick=onClick,enabled=enabled,modifier=Modifier.fillMaxWidth().heightIn(min=56.dp),shape=RoundedCornerShape(16.dp),contentPadding=PaddingValues(horizontal=18.dp,vertical=15.dp)) { Text(texto,style=MaterialTheme.typography.labelLarge) }
+    val interaction=remember { MutableInteractionSource() }
+    val pressed by interaction.collectIsPressedAsState()
+    val scale by animateFloatAsState(if(pressed) .975f else 1f,spring(dampingRatio=1f,stiffness=650f),label="Respuesta del botón")
+    Button(onClick=onClick,enabled=enabled,interactionSource=interaction,modifier=Modifier.sombraCampus(16.dp,MaterialTheme.colorScheme.background.luminance()<.2f).graphicsLayer { scaleX=scale;scaleY=scale }.fillMaxWidth().heightIn(min=56.dp),shape=RoundedCornerShape(16.dp),contentPadding=PaddingValues(horizontal=18.dp,vertical=15.dp)) { Text(texto,style=MaterialTheme.typography.labelLarge) }
 }
 @Composable fun CafeTextField(valor: String,cambio: (String)->Unit,etiqueta: String,secreto: Boolean=false,teclado: KeyboardType=KeyboardType.Text) {
     OutlinedTextField(value=valor,onValueChange=cambio,label={Text(etiqueta)},modifier=Modifier.fillMaxWidth(),singleLine=true,shape=RoundedCornerShape(14.dp),
@@ -43,7 +50,7 @@ fun dinero(n: Double)="S/ %.2f".format(Locale.US,n)
 }
 // Open content plane: a divider groups records without enclosing every section.
 @Composable fun Tarjeta(modifier: Modifier=Modifier,content: @Composable ColumnScope.()->Unit) {
-    Column(modifier.fillMaxWidth().padding(vertical=10.dp),verticalArrangement=Arrangement.spacedBy(12.dp)) {
+    Column(modifier.fillMaxWidth().animateContentSize(androidx.compose.animation.core.tween(180)).padding(vertical=10.dp),verticalArrangement=Arrangement.spacedBy(12.dp)) {
         content()
         HorizontalDivider(Modifier.padding(top=6.dp),color=MaterialTheme.colorScheme.outlineVariant.copy(alpha=.65f))
     }
@@ -51,8 +58,12 @@ fun dinero(n: Double)="S/ %.2f".format(Locale.US,n)
 @Composable fun ErrorTexto(texto: String?) { if(texto!=null) Surface(color=MaterialTheme.colorScheme.errorContainer,shape=MaterialTheme.shapes.small) { Text(texto,Modifier.fillMaxWidth().padding(12.dp),color=MaterialTheme.colorScheme.onErrorContainer,style=MaterialTheme.typography.bodyMedium) } }
 @Composable fun Vacio(texto: String) {
     Column(Modifier.fillMaxWidth().padding(vertical=28.dp,horizontal=16.dp),horizontalAlignment=Alignment.CenterHorizontally,verticalArrangement=Arrangement.spacedBy(12.dp)) {
-        Surface(shape=CircleShape,color=MaterialTheme.colorScheme.primaryContainer) { Icon(Icons.AutoMirrored.Filled.ReceiptLong,null,Modifier.padding(20.dp).size(28.dp),tint=MaterialTheme.colorScheme.onPrimaryContainer) }
-        Text(texto,style=MaterialTheme.typography.titleSmall,color=MaterialTheme.colorScheme.onSurfaceVariant)
+        if(texto.startsWith("Cargando")) CircularProgressIndicator(Modifier.size(28.dp),strokeWidth=2.dp)
+        else Box(Modifier.size(116.dp),contentAlignment=Alignment.Center) {
+            Surface(shape=CircleShape,color=MaterialTheme.colorScheme.secondaryContainer,modifier=Modifier.size(88.dp)) {}
+            FotoLibre("cafe",Modifier.fillMaxSize());PetalosCampus(Modifier.fillMaxSize())
+        }
+        Text(texto,style=MaterialTheme.typography.titleSmall,color=MaterialTheme.colorScheme.onSurfaceVariant,textAlign=androidx.compose.ui.text.style.TextAlign.Center)
     }
 }
 fun fotoProducto(icono: String): Int = when(icono) { "cafe"->R.drawable.cafe_foto;"plato"->R.drawable.plato_foto;"jugo"->R.drawable.jugo_foto;"pan"->R.drawable.pan_foto;"botella"->R.drawable.botella_foto;else->R.drawable.dulce_foto }
@@ -95,13 +106,14 @@ fun coloresEstado(e: EstadoPedido): Pair<Color,Color> = when(e) {
     val contacto=remember { MutableInteractionSource() }
     val tacto=recordarTacto(contacto)
     val pulsado by contacto.collectIsPressedAsState()
-    val escala=if(pulsado) .975f else 1f
+    val escala by animateFloatAsState(if(pulsado) .975f else 1f,spring(dampingRatio=1f,stiffness=600f),label="Presión del producto")
     val oscuro=MaterialTheme.colorScheme.background.luminance()<.2f
     val altura=(304f*androidx.compose.ui.platform.LocalDensity.current.fontScale.coerceAtLeast(1f)).dp
     Surface(onClick=click,interactionSource=contacto,modifier=Modifier.fillMaxWidth().height(altura).sombraCampus(26.dp,oscuro).deformacionLiquida(tacto,.5f).testTag("catalogo_${p.id}").semantics { contentDescription="Ver ${p.nombre}" }.graphicsLayer { scaleX=escala;scaleY=escala },shape=RoundedCornerShape(26.dp),
         color=if(oscuro) Color(0xE51F324E) else Color(0xDCF4F1FA),contentColor=MaterialTheme.colorScheme.onSurface,shadowElevation=0.dp,border=BorderStroke(1.dp,if(oscuro) Color.White.copy(alpha=.22f) else Color.White.copy(alpha=.85f))) {
         Box {
-            Image(painterResource(R.drawable.papel_campus),null,Modifier.matchParentSize().lenteCampus(tacto.intensidad.value,tacto.punto.value).alpha(if(oscuro) .08f else .22f),contentScale=ContentScale.Crop)
+            Image(painterResource(R.drawable.papel_campus),null,Modifier.matchParentSize().lenteCampus(tacto.intensidad.value,tacto.punto.value).alpha(if(oscuro) .08f else .18f),contentScale=ContentScale.Crop)
+
 
             PetalosCampus(Modifier.size(76.dp).align(Alignment.TopEnd))
             Column(Modifier.fillMaxSize().padding(14.dp),verticalArrangement=Arrangement.spacedBy(8.dp)) {
@@ -128,9 +140,10 @@ fun coloresEstado(e: EstadoPedido): Pair<Color,Color> = when(e) {
     val pasos=listOf(EstadoPedido.RECIBIDO,EstadoPedido.PREPARANDO,EstadoPedido.LISTO,EstadoPedido.ENTREGADO)
     val notas=listOf("Tu pedido llegó a la cocina","Están cocinando tu pedido","Puedes pasar a recogerlo","¡Buen provecho!")
     pasos.forEachIndexed { i,p ->
+        val tono by animateColorAsState(if(i<=estado.ordinal) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.surfaceVariant,tween(220),label="Estado del pedido")
         Row(Modifier.fillMaxWidth().heightIn(min=82.dp),horizontalArrangement=Arrangement.spacedBy(16.dp)) {
             Column(horizontalAlignment=Alignment.CenterHorizontally) {
-                Surface(shape=CircleShape,color=if(i<=estado.ordinal) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.surfaceVariant,modifier=Modifier.size(36.dp)) { Box(contentAlignment=Alignment.Center) { if(i<estado.ordinal) Icon(Icons.Default.Check,null,tint=MaterialTheme.colorScheme.onPrimary,modifier=Modifier.size(19.dp)) else Text("${i+1}",color=if(i<=estado.ordinal) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurfaceVariant,style=MaterialTheme.typography.labelLarge) } }
+                Surface(shape=CircleShape,color=tono,modifier=Modifier.size(36.dp)) { Box(contentAlignment=Alignment.Center) { if(i<estado.ordinal) Icon(Icons.Default.Check,null,tint=MaterialTheme.colorScheme.onPrimary,modifier=Modifier.size(19.dp)) else Text("${i+1}",color=if(i<=estado.ordinal) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurfaceVariant,style=MaterialTheme.typography.labelLarge) } }
                 if(i<3) Box(Modifier.width(2.dp).height(48.dp).background(if(i<estado.ordinal) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.outlineVariant))
             }
             Column(verticalArrangement=Arrangement.spacedBy(4.dp)) { Text(p.etiqueta,style=MaterialTheme.typography.titleMedium,color=if(i<=estado.ordinal) MaterialTheme.colorScheme.onSurface else MaterialTheme.colorScheme.onSurfaceVariant);Text(notas[i],style=MaterialTheme.typography.bodySmall,color=MaterialTheme.colorScheme.onSurfaceVariant) }
@@ -174,7 +187,14 @@ fun coloresEstado(e: EstadoPedido): Pair<Color,Color> = when(e) {
     // Stable opaque ground. Glass is reserved for individual catalogue items.
     Box(modifier.background(MaterialTheme.colorScheme.background))
 }
-@Composable private fun FlotacionCampus(): Float = 0f
+@Composable private fun FlotacionCampus(): Float {
+    val contexto=androidx.compose.ui.platform.LocalContext.current
+    val habilitado=remember(contexto) { android.provider.Settings.Global.getFloat(contexto.contentResolver,android.provider.Settings.Global.ANIMATOR_DURATION_SCALE,1f)>0f }
+    if(!habilitado) return 0f
+    val transicion=rememberInfiniteTransition(label="Escena viva")
+    val y by transicion.animateFloat(-3f,3f,infiniteRepeatable(tween(4400,easing=FastOutSlowInEasing),RepeatMode.Reverse),label="Flotación de la escena")
+    return y
+}
 
 
 @Composable fun BotonCristal(descripcion: String,onClick: ()->Unit,contenido: @Composable ()->Unit) {

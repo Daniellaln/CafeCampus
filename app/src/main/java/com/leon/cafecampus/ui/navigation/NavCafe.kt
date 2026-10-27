@@ -6,6 +6,8 @@ import androidx.compose.ui.graphics.layer.drawLayer
 import androidx.compose.ui.graphics.rememberGraphicsLayer
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.layout.positionInRoot
+import androidx.compose.animation.*
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.ui.unit.dp
 import androidx.compose.material.icons.Icons
@@ -71,7 +73,7 @@ import com.leon.cafecampus.ui.theme.CafeTheme
         Scaffold(containerColor=androidx.compose.ui.graphics.Color.Transparent,contentColor=MaterialTheme.colorScheme.onBackground,bottomBar={ if(barra) NavegacionLiquida(destinos.map { it.second to it.third },destinos.indexOfFirst { ruta==it.first || (it.first==Rutas.PEDIDOS && ruta==Rutas.SEGUIMIENTO) }.coerceAtLeast(0),{ indice ->
             nav.navigate(destinos[indice].first) { popUpTo(if(admin) Rutas.PANEL else Rutas.MENU) { inclusive=false };launchSingleTop=true }
         },plano,origen) }) { padding ->
-            NavHost(nav,startDestination=Rutas.SPLASH,modifier=Modifier.padding(padding)) {
+            NavHost(nav,startDestination=Rutas.SPLASH,modifier=Modifier.fillMaxSize().onGloballyPositioned { origen=it.positionInRoot() }.drawWithContent { plano.record { this@drawWithContent.drawContent() };drawLayer(plano) }.padding(top=padding.calculateTopPadding(),bottom=if(ruta==Rutas.MENU) 0.dp else padding.calculateBottomPadding()),enterTransition={fadeIn(tween(200))+slideInHorizontally(tween(240)) { it/16 }},exitTransition={fadeOut(tween(160))},popEnterTransition={fadeIn(tween(200))},popExitTransition={fadeOut(tween(160))+slideOutHorizontally(tween(200)) { it/16 }}) {
                 composable(Rutas.SPLASH) { if(cargando) Box(Modifier.fillMaxSize(),contentAlignment=Alignment.Center) { CircularProgressIndicator() } else SplashScreen { nav.navigate(Rutas.LOGIN) } }
                 composable(Rutas.LOGIN) { LoginScreen(sesion) { if(!nav.popBackStack()) nav.navigate(Rutas.SPLASH) { popUpTo(Rutas.LOGIN) { inclusive=true } } } }
                 composable(Rutas.MENU) { MenuScreen(menu,{nav.navigate("producto/$it")},usuario?.nombre ?: "Estudiante",carrito.sumOf { it.cantidad },abierto) { nav.navigate(Rutas.CONFIRMAR) } }

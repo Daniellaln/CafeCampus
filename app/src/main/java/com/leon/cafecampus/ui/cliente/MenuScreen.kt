@@ -69,7 +69,7 @@ import com.leon.cafecampus.viewmodel.*
         LazyVerticalGrid(columns=GridCells.Fixed(2),modifier=Modifier.weight(1f),contentPadding=PaddingValues(start=20.dp,end=20.dp,top=8.dp,bottom=128.dp),horizontalArrangement=Arrangement.spacedBy(14.dp),verticalArrangement=Arrangement.spacedBy(20.dp)) {
             if(estadoMenu.cargando) item(span={GridItemSpan(maxLineSpan)}) { Vacio("Cargando menú…") }
             else if(productos.isEmpty()) item(span={GridItemSpan(maxLineSpan)}) { Vacio("No encontramos productos. Prueba otra búsqueda.") }
-            items(productos,key={it.id}) { p -> Box(Modifier) { ProductoCard(p) { onProducto(p.id) } } }
+            items(productos,key={it.id}) { p -> Box(Modifier.animateItem()) { ProductoCard(p) { onProducto(p.id) } } }
         }
     }
     if(categorias) ModalBottomSheet(sheetState=rememberModalBottomSheetState(skipPartiallyExpanded=true),onDismissRequest={categorias=false},containerColor=MaterialTheme.colorScheme.background,shape=RoundedCornerShape(topStart=30.dp,topEnd=30.dp)) {

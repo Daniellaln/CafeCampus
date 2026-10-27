@@ -1,6 +1,7 @@
 package com.leon.cafecampus.ui.cliente
 
 import androidx.compose.foundation.*
+import androidx.compose.animation.AnimatedContent
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.*
 import androidx.compose.foundation.lazy.grid.*
@@ -46,7 +47,7 @@ import com.leon.cafecampus.model.*
             Row(Modifier.fillMaxWidth(),horizontalArrangement=Arrangement.SpaceBetween,verticalAlignment=Alignment.CenterVertically) {
                 Text("Cantidad",style=MaterialTheme.typography.titleMedium)
                 Surface(color=MaterialTheme.colorScheme.surface,shape=RoundedCornerShape(14.dp)) { Row(verticalAlignment=Alignment.CenterVertically) {
-                    IconButton(onClick={cantidad--},enabled=cantidad>1) { Icon(Icons.Default.Remove,"Disminuir cantidad") };Text("$cantidad",style=MaterialTheme.typography.titleMedium,modifier=Modifier.padding(horizontal=12.dp));IconButton(onClick={cantidad++},enabled=cantidad<99) { Icon(Icons.Default.Add,"Aumentar cantidad",tint=MaterialTheme.colorScheme.primary) }
+                    IconButton(onClick={cantidad--},enabled=cantidad>1) { Icon(Icons.Default.Remove,"Disminuir cantidad") };AnimatedContent(targetState=cantidad,label="Cantidad elegida") { valor -> Text("$valor",style=MaterialTheme.typography.titleMedium,modifier=Modifier.padding(horizontal=12.dp)) };IconButton(onClick={cantidad++},enabled=cantidad<99) { Icon(Icons.Default.Add,"Aumentar cantidad",tint=MaterialTheme.colorScheme.primary) }
                 } }
             }
             CafeTextField(nota,{nota=it},"Nota para la cocina")
