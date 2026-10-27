@@ -29,14 +29,19 @@ import com.leon.cafecampus.model.*
     val error by vm.error.collectAsStateWithLifecycle()
     val enviando by vm.enviando.collectAsStateWithLifecycle()
     val creado by vm.creado.collectAsStateWithLifecycle()
+    var reloj by remember { mutableLongStateOf(System.currentTimeMillis()) }
+    val horarios=remember(reloj) { opcionesRecojo(reloj) }
+    var avisoHorario by remember { mutableStateOf<String?>(null) }
     var hora by rememberSaveable { mutableStateOf("Ahora") }
     var pago by rememberSaveable { mutableStateOf("CAJA") }
     var nota by rememberSaveable { mutableStateOf("") }
+    LaunchedEffect(Unit) { while(true) { kotlinx.coroutines.delay(30000);reloj=System.currentTimeMillis() } }
+    LaunchedEffect(horarios) { if(hora !in horarios) { hora="Ahora";avisoHorario="Actualizamos los horarios disponibles. Elige cuándo recoger." } }
     LaunchedEffect(creado) { creado?.let { menu.vaciar();seguir(it);vm.consumirCreado() } }
-    Scaffold(containerColor=MaterialTheme.colorScheme.background,topBar={AppTopBar("Confirmar pedido",volver)},bottomBar={ Surface(color=MaterialTheme.colorScheme.surface,shadowElevation=6.dp) {
+    Scaffold(containerColor=androidx.compose.ui.graphics.Color.Transparent,topBar={AppTopBar("Confirmar pedido",volver)},bottomBar={ Surface(color=MaterialTheme.colorScheme.surface,shadowElevation=6.dp) {
         Column(Modifier.padding(horizontal=20.dp,vertical=12.dp),verticalArrangement=Arrangement.spacedBy(8.dp)) {
             Row(Modifier.fillMaxWidth(),horizontalArrangement=Arrangement.SpaceBetween) { Text("Total a pagar",style=MaterialTheme.typography.titleMedium);Text(dinero(menu.total()),style=MaterialTheme.typography.titleLarge,color=MaterialTheme.colorScheme.primary) }
-            CafeButton(if(enviando) "Confirmando…" else "Confirmar pedido",items.isNotEmpty() && abierto && !enviando) { vm.confirmar(items,hora,pago,nota) }
+            CafeButton(if(enviando) "Confirmando…" else "Confirmar pedido",items.isNotEmpty() && abierto && !enviando) { if(hora in opcionesRecojo()) vm.confirmar(items,hora,pago,nota) else { reloj=System.currentTimeMillis();hora="Ahora";avisoHorario="La hora seleccionada ya pasó. Elige otra hora." } }
             TextButton(onClick=volver,enabled=!enviando,modifier=Modifier.fillMaxWidth()) { Text("Seguir pidiendo") }
         }
     }}) { padding ->
@@ -48,16 +53,16 @@ import com.leon.cafecampus.model.*
                     Row(verticalAlignment=Alignment.CenterVertically,horizontalArrangement=Arrangement.spacedBy(10.dp)) {
                         ProductoIcono(item.producto.icono,Modifier.size(64.dp))
                         Column(Modifier.weight(1f),verticalArrangement=Arrangement.spacedBy(3.dp)) { Text(item.producto.nombre,style=MaterialTheme.typography.titleSmall);Text("${item.cantidad} unidades · ${dinero(item.subtotal)}",style=MaterialTheme.typography.bodySmall,color=MaterialTheme.colorScheme.onSurfaceVariant) }
-                        IconButton(onClick={menu.quitar(item.producto.id)},enabled=!enviando) { Icon(Icons.Default.Close,"Quitar ${item.producto.nombre}",tint=MaterialTheme.colorScheme.onSurfaceVariant) }
+                        IconButton(onClick={menu.quitar(item.producto.id)},enabled=!enviando) { Icon(IconosCafe.Close,"Quitar ${item.producto.nombre}",tint=MaterialTheme.colorScheme.onSurfaceVariant) }
                     }
                 }
             }
-            Column(verticalArrangement=Arrangement.spacedBy(8.dp)) { Seccion("Hora de recojo","Elige cuándo pasar por tu pedido.");Row(Modifier.horizontalScroll(rememberScrollState()),horizontalArrangement=Arrangement.spacedBy(8.dp)) { listOf("Ahora","10:30","11:00","11:30").forEach { FilterChip(selected=hora==it,onClick={hora=it},label={Text(it)},shape=RoundedCornerShape(12.dp)) } } }
+            Column(verticalArrangement=Arrangement.spacedBy(8.dp)) { Seccion("Hora de recojo","Elige cuándo pasar por tu pedido.");Row(Modifier.horizontalScroll(rememberScrollState()),horizontalArrangement=Arrangement.spacedBy(8.dp)) { horarios.forEach { FilterChip(selected=hora==it,onClick={hora=it;avisoHorario=null},label={Text(it)},shape=RoundedCornerShape(12.dp)) } } }
             Column(verticalArrangement=Arrangement.spacedBy(8.dp)) { Seccion("Forma de pago");Row(horizontalArrangement=Arrangement.spacedBy(10.dp)) { listOf("CAJA" to "Pagar en caja","YAPE" to "Yape / Plin").forEach { (id,t) -> FilterChip(selected=pago==id,onClick={pago=id},label={Text(t)},shape=RoundedCornerShape(12.dp)) } } }
             CafeTextField(nota,{nota=it},"Nota para la cocina")
             Tarjeta { Row(Modifier.fillMaxWidth(),horizontalArrangement=Arrangement.SpaceBetween) { Text("Subtotal",color=MaterialTheme.colorScheme.onSurfaceVariant);Text(dinero(menu.total())) };Row(Modifier.fillMaxWidth(),horizontalArrangement=Arrangement.SpaceBetween) { Text("Servicio",color=MaterialTheme.colorScheme.onSurfaceVariant);Text("S/ 0.00") } }
             if(!abierto) ErrorTexto("Cafetería cerrada")
-            ErrorTexto(avisoBolsa);ErrorTexto(error);Spacer(Modifier.height(8.dp))
+            ErrorTexto(avisoHorario);ErrorTexto(avisoBolsa);ErrorTexto(error);Spacer(Modifier.height(8.dp))
         }
     }
 }

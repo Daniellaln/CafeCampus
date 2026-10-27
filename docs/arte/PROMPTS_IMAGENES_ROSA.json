@@ -1,0 +1,38 @@
+[
+  {
+    "name": "cafe_rosa",
+    "prompt": "Photorealistic high-end feminine cafe editorial food photography, matching a luminous blush pink and cherry blossom CafeCampus app. Pearl blush, dusty rose, ivory, deep natural greens and appetizing food colors. Soft bright daylight, realistic optical depth, detailed porcelain and food texture. No lettering, text, logos, watermark, UI, icons or devices. Landscape 4:3 food photo: one large beautiful warm ivory speckled ceramic cup of black americano coffee, delicate steam, handle right, on small round light wood coaster with three coffee beans, pink linen table and cherry blossoms softly blurred behind. Cup completely visible and fills 65 percent of frame. Three-quarter low overhead editorial view. Food centered, luxurious yet believable. This is an opaque complete photographic scene, not a cutout.",
+    "local_original": "cafe_rosa.png",
+    "app_resource": "app/src/main/res/drawable-nodpi/cafe_rosa.png"
+  },
+  {
+    "name": "chicha_rosa",
+    "prompt": "Photorealistic high-end feminine cafe editorial food photography, matching a luminous blush pink and cherry blossom CafeCampus app. Pearl blush, dusty rose, ivory, deep natural greens and appetizing food colors. Soft bright daylight, realistic optical depth, detailed porcelain and food texture. No lettering, text, logos, watermark, UI, icons or devices. Landscape 4:3 food photo: one clear tumbler filled with intensely burgundy Peruvian chicha morada, translucent ice cubes and lime wheel on rim. A small ear of purple corn, two cinnamon sticks and a lime wedge arranged at the lower edges, no grapes. Pink linen table, delicate cherry blossoms softly blurred behind. Glass fully visible and fills 70 percent of frame, centered. Food editorial view. Opaque complete photographic scene.",
+    "local_original": "chicha_rosa.png",
+    "app_resource": "app/src/main/res/drawable-nodpi/chicha_rosa.png"
+  },
+  {
+    "name": "dulce_rosa",
+    "prompt": "Photorealistic high-end feminine cafe editorial food photograph. Landscape 4:3, pink linen table, softly blurred delicate pink cherry blossoms and natural green foliage in the background, bright soft daylight, premium realistic appetizing detail, centered food fully visible with breathing space, not a cutout. No text, logos, watermarks, UI, devices or people. Three golden Peruvian beef empanadas on a simple ivory plate. One cut open to reveal finely diced beef and vegetables, crisp beautifully crimped baked edges. Small crumbs only. Food fills 65 percent frame.",
+    "local_original": "dulce_rosa.png",
+    "app_resource": "app/src/main/res/drawable-nodpi/dulce_rosa.png"
+  },
+  {
+    "name": "jugo_rosa",
+    "prompt": "Photorealistic high-end feminine cafe editorial food photograph. Landscape 4:3, pink linen table, softly blurred delicate pink cherry blossoms and natural green foliage in the background, bright soft daylight, premium realistic appetizing detail, centered food fully visible with breathing space, not a cutout. No text, logos, watermarks, UI, devices or people. One tall clear cylindrical glass of freshly squeezed orange juice, tiny condensation, with whole orange and half orange in the foreground, a single green leaf. Entire glass visible and centered, scene fills 65 percent frame.",
+    "local_original": "jugo_rosa.png",
+    "app_resource": "app/src/main/res/drawable-nodpi/jugo_rosa.png"
+  },
+  {
+    "name": "pan_rosa",
+    "prompt": "Photorealistic high-end feminine cafe editorial food photograph. Landscape 4:3, pink linen table, softly blurred delicate pink cherry blossoms and natural green foliage in the background, bright soft daylight, premium realistic appetizing detail, centered food fully visible with breathing space, not a cutout. No text, logos, watermarks, UI, devices or people. A freshly made chicken sandwich on a small ivory plate, two soft bread halves filled with shredded chicken and fresh lettuce and tomato. Cross section appetizing, neatly prepared, a light pink linen napkin at side. Food fills 65 percent frame.",
+    "local_original": "pan_rosa.png",
+    "app_resource": "app/src/main/res/drawable-nodpi/pan_rosa.png"
+  },
+  {
+    "name": "plato_rosa",
+    "prompt": "Photorealistic premium editorial cafe lunch food photograph, landscape 4:3. A clean ivory plate with Peruvian chicken rice lunch, golden grilled chicken fillet, white rice and a crisp lettuce and tomato side salad, a small bowl of light soup subtly behind. Pink linen table, softly blurred delicate cherry blossoms and natural green foliage, bright soft daylight, realistic appetizing food, entire plate visible centered with generous breathing space. No text, logos, people, watermark, UI or devices.",
+    "local_original": "plato_rosa.png",
+    "app_resource": "app/src/main/res/drawable-nodpi/plato_rosa.png"
+  }
+]

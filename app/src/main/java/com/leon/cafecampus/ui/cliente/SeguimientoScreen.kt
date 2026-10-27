@@ -33,7 +33,7 @@ import com.leon.cafecampus.model.*
             if(p==null) Vacio("Cargando pedido…") else {
                 Surface(color=MaterialTheme.colorScheme.primary,shape=RoundedCornerShape(20.dp),contentColor=MaterialTheme.colorScheme.onPrimary) {
                     Column(Modifier.fillMaxWidth().padding(20.dp),verticalArrangement=Arrangement.spacedBy(10.dp)) {
-                        Row(Modifier.fillMaxWidth(),horizontalArrangement=Arrangement.SpaceBetween,verticalAlignment=Alignment.CenterVertically) { Text("Pedido #${p.pedido.id.toString().padStart(4,'0')}",style=MaterialTheme.typography.headlineSmall);Icon(Icons.Default.ShoppingBag,null,Modifier.size(28.dp)) }
+                        Row(Modifier.fillMaxWidth(),horizontalArrangement=Arrangement.SpaceBetween,verticalAlignment=Alignment.CenterVertically) { Text("Pedido #${p.pedido.id.toString().padStart(4,'0')}",style=MaterialTheme.typography.headlineSmall);Icon(IconosCafe.ShoppingBag,null,Modifier.size(28.dp)) }
                         Text(if(p.pedido.horaRecojo=="Ahora") "Recojo lo antes posible" else "Recojo a las ${p.pedido.horaRecojo}",style=MaterialTheme.typography.bodyMedium)
                         Text("Tiempo estimado: 10–15 min",style=MaterialTheme.typography.bodySmall)
                     }

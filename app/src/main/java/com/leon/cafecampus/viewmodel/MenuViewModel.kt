@@ -13,9 +13,11 @@ class MenuViewModel(private val repo: CafeRepository, private val saved: SavedSt
     val busqueda=_busqueda.asStateFlow()
     fun buscar(texto: String) { _busqueda.value=texto }
     private fun normalizar(texto: String): String = java.text.Normalizer.normalize(texto,java.text.Normalizer.Form.NFD).replace("\\p{M}".toRegex(),"").lowercase(java.util.Locale.ROOT)
+    private val favoritos=MutableStateFlow<Set<Int>>(emptySet())
+    fun actualizarFavoritos(ids: Set<Int>) { favoritos.value=ids }
     data class EstadoMenu(val productos: List<Producto> = emptyList(),val cargando: Boolean=true)
-    val estadoMenu=combine(repo.observarProductos(),categoria,busqueda) { ps,c,b ->
-        EstadoMenu(ps.filter { (c=="Todo" || it.categoria==c) && normalizar(it.nombre).contains(normalizar(b.trim())) },false)
+    val estadoMenu=combine(repo.observarProductos(),categoria,busqueda,favoritos) { ps,c,b,fs ->
+        EstadoMenu(ps.filter { (c=="Todo" || (c=="Favoritos" && it.id in fs) || it.categoria==c) && normalizar(it.nombre).contains(normalizar(b.trim())) },false)
     }.stateIn(viewModelScope,SharingStarted.WhileSubscribed(5000),EstadoMenu())
     val filtrados=estadoMenu.map { it.productos }.stateIn(viewModelScope,SharingStarted.WhileSubscribed(5000),emptyList())
     private val _carrito=MutableStateFlow<List<ItemCarrito>>(emptyList())

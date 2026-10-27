@@ -33,7 +33,7 @@ import com.leon.cafecampus.model.*
     CafeTheme(rol,oscuro) {
         Surface(color=MaterialTheme.colorScheme.background,modifier=Modifier.fillMaxSize()) {
             Column(Modifier.fillMaxSize().imePadding().verticalScroll(rememberScrollState()).padding(24.dp),verticalArrangement=Arrangement.spacedBy(18.dp)) {
-                Row(verticalAlignment=Alignment.CenterVertically,horizontalArrangement=Arrangement.spacedBy(12.dp)) { VolverCampus(volver);Icon(Icons.Default.Coffee,null,tint=MaterialTheme.colorScheme.primary);Text("CafeCampus",style=MaterialTheme.typography.titleSmall) }
+                Row(verticalAlignment=Alignment.CenterVertically,horizontalArrangement=Arrangement.spacedBy(12.dp)) { VolverCampus(volver);Icon(IconosCafe.Coffee,null,tint=MaterialTheme.colorScheme.primary);Text("CafeCampus",style=MaterialTheme.typography.titleSmall) }
                 HeroCampus("Tu próxima\npausa.","Tu cafetería, a un toque.",Modifier.heightIn(min=224.dp))
                 Column(verticalArrangement=Arrangement.spacedBy(5.dp)) { Text("Bienvenido",style=MaterialTheme.typography.headlineLarge);Text("Ingresa para continuar",color=MaterialTheme.colorScheme.onSurfaceVariant,style=MaterialTheme.typography.bodyMedium) }
                 SingleChoiceSegmentedButtonRow(Modifier.fillMaxWidth()) { Rol.entries.forEachIndexed { i,r -> SegmentedButton(selected=rol==r,onClick={rol=r;vm.limpiarError()},shape=SegmentedButtonDefaults.itemShape(i,2,baseShape=RoundedCornerShape(14.dp))) { Text(if(r==Rol.CLIENTE) "Estudiante" else "Administrador",style=MaterialTheme.typography.labelMedium) } } }
@@ -42,7 +42,7 @@ import com.leon.cafecampus.model.*
                 ErrorTexto(error)
                 CafeButton(if(cargando) "Ingresando…" else "Ingresar",!cargando) { vm.login(correo,clave,rol) }
                 Row(horizontalArrangement=Arrangement.spacedBy(10.dp),verticalAlignment=Alignment.Top) {
-                    Icon(Icons.Default.SwapHoriz,null,tint=MaterialTheme.colorScheme.primary,modifier=Modifier.size(20.dp))
+                    Icon(IconosCafe.SwapHoriz,null,tint=MaterialTheme.colorScheme.primary,modifier=Modifier.size(20.dp))
                     Text("Modo práctica: cambia entre estudiante y administrador desde tu perfil.",style=MaterialTheme.typography.bodySmall,color=MaterialTheme.colorScheme.onSurfaceVariant)
                 }
                 LazoCampus(Modifier.fillMaxWidth().height(70.dp))

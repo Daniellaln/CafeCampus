@@ -20,9 +20,9 @@ fun Modifier.sombraCampus(radio: Dp=24.dp,oscuro: Boolean=false): Modifier = dra
     val rect=RectF(margen.toFloat(),margen.toFloat(),margen+size.width,margen+size.height)
     val pintura=Paint(Paint.ANTI_ALIAS_FLAG)
     pintura.color=android.graphics.Color.BLACK
-    pintura.setShadowLayer(11.dp.toPx(),6.dp.toPx(),8.dp.toPx(),if(oscuro) 0x78000000 else 0x426B7895)
+    pintura.setShadowLayer(11.dp.toPx(),6.dp.toPx(),8.dp.toPx(),if(oscuro) 0x78000000 else 0x423E4653)
     canvas.drawRoundRect(rect,radio.toPx(),radio.toPx(),pintura)
-    pintura.setShadowLayer(8.dp.toPx(),(-5).dp.toPx(),(-5).dp.toPx(),if(oscuro) 0x163C5070 else 0xD9FFFFFF.toInt())
+    pintura.setShadowLayer(8.dp.toPx(),(-5).dp.toPx(),(-5).dp.toPx(),if(oscuro) 0x163F4C62 else 0xD9FFFFFF.toInt())
     canvas.drawRoundRect(rect,radio.toPx(),radio.toPx(),pintura)
     pintura.clearShadowLayer()
     pintura.xfermode=PorterDuffXfermode(PorterDuff.Mode.CLEAR)

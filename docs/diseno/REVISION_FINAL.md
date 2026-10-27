@@ -1,31 +1,14 @@
-disposition: fix
+# Revisión visual independiente · cafetería blanca
 
-La revisión delegada se interrumpió por el límite de uso. Esta revisión se realiza en la sesión principal siguiendo el procedimiento alternativo de Impeccable; no se atribuye a un revisor independiente.
+21 de octubre de2026. Agente cafe_finish_reviewer, protocolo Impeccable, capturas nativas de teléfono; no detector web ni medición comp-diff compatibles con esta adaptación. La última instrucción de Daniella prevalece sobre el fondo rosa de referencia.
 
-## persistence
+Disposición inicial literal: **fix**.
 
-PRODUCT.md y el contrato Campus fresco están presentes. Trabajo code-led, dirección explícita de Daniella sobre semilla8742811b; no existe un comp vinculante. DESIGN.md y su sidecar describen el código nuevo. Los20 PNG tienen procedencia incorporada y el escaneo registra cero faltantes. No se ejecuta detector web en esta app nativa.
+Persistencia: pass. PRODUCT.md, DESIGN.md y contrato coherentes; selección directa documentada y siete capturas válidas.
+Fidelidad: composición, fotografía, material e iconos conformes. Adaptaciones justificadas: fondo blanco de cafetería, tarjetas sin texto auxiliar y administrador azul. No tarjetas interiores. Texto nítido e inset de gestos conservado.
 
-## fidelity
+Único hallazgo material: la bolsa mostraba10:30,11:00 y11:30 a las12:31. Se pidió generar opciones futuras, retirar vencidas y marcar mañana cuando correspondiera.
 
-| Elemento solicitado | Evaluación | Evidencia |
-| --- | --- | --- |
-| Saludo Daniella sin recorte | match | phone.png y phone-font.png |
-| Catálogo uniforme sin recuadro interior | match | phone.png y phone-dark.png |
-| Categorías desplegables, sin lateral fijo | match | 20_categorias.png y MenuScreen |
-| Flores, cerámica rosa/lila y cobalto/marfil | match | phone.png, phone-perfil.png y phone-bolsa.png |
-| Liquid Glass dinámico localizado | adaptation | Código AGSL/Animatable, prueba de arrastre y grabación de la app; adaptación Android con límites de API |
-| Texto nativo y datos reales | match | Campo Compose, prueba Room y panel capturado |
-| Sombras coherentes en oscuro | contradicted | El selector conserva realce blanco del tema claro |
+Corrección: HorariosRecojo calcula tres citas futuras con margen15min, redondeo30 y día Hoy/Mañana. Refresco30s y validación previa a confirmar evitan comprar con elección vencida. Se añadió prueba de mediodía y cruce de fin de año. El resultado y la recaptura se registran en VEREDICTO_FINAL.md.
 
-## ceiling
-
-La profundidad combina fotografía con alfa, sombras exteriores y una capa óptica con deformación y navegación funcional. No se presenta una captura como prueba de rendimiento físico ni equivalencia total con Apple. Se conserva el ámbito revisado de teléfono Android.
-
-## material_fixes
-
-1. Pasar el estado oscuro a SombraCampus en selector y avatar: el realce claro produce un halo blanco ajeno al material oscuro.
-
-## keep
-
-Conservar el saludo con aire, tarjetas uniformes sin panel interno, flores discretas, búsqueda desde la lupa y gota de navegación con arrastre.
+La revisión conserva cafetería blanca, fotografía rosa de producto, tarjetas uniformes, gestión azul y difusión localizada del cristal. No acredita rendimiento físico.

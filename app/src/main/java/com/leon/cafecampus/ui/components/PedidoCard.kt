@@ -33,7 +33,7 @@ import com.leon.cafecampus.data.local.relation.PedidoConDetalle
         Text(p.detalles.joinToString(" · ") { "${it.cantidad} × ${it.nombreProducto}" },style=MaterialTheme.typography.bodySmall,color=MaterialTheme.colorScheme.onSurfaceVariant)
         HorizontalDivider(color=MaterialTheme.colorScheme.outlineVariant.copy(alpha=.6f))
         Row(Modifier.fillMaxWidth(),horizontalArrangement=Arrangement.SpaceBetween) {
-            Row(horizontalArrangement=Arrangement.spacedBy(6.dp),verticalAlignment=Alignment.CenterVertically) { Icon(Icons.Default.Schedule,null,Modifier.size(16.dp),tint=MaterialTheme.colorScheme.primary);Text("Recojo ${p.pedido.horaRecojo}",style=MaterialTheme.typography.bodySmall) }
+            Row(horizontalArrangement=Arrangement.spacedBy(6.dp),verticalAlignment=Alignment.CenterVertically) { Icon(IconosCafe.AccessTime,null,Modifier.size(16.dp),tint=MaterialTheme.colorScheme.primary);Text("Recojo ${p.pedido.horaRecojo}",style=MaterialTheme.typography.bodySmall) }
             Text(dinero(p.pedido.total),color=MaterialTheme.colorScheme.primary,fontWeight=FontWeight.Bold)
         }
         if(admin && p.pedido.nota.isNotBlank()) Text("Nota: ${p.pedido.nota}",style=MaterialTheme.typography.bodySmall)

@@ -1,0 +1,1 @@
+Iconos geométricos originales trazados para CafeCampus. SVG editable de24 unidades, trazo1.7, extremos/uniones redondos. IconosCafe.kt usa los mismos paths como ImageVector nativo; no se requiere rasterizar SVG. No se usan iconos generados como imágenes bitmap.

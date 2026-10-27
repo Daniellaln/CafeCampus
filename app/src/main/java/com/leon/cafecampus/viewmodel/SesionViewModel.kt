@@ -13,6 +13,9 @@ class SesionViewModel(private val repo: CafeRepository,private val prefs: Prefer
     val error=_error.asStateFlow()
     private val _cargando=MutableStateFlow(true)
     val cargando=_cargando.asStateFlow()
+    @OptIn(ExperimentalCoroutinesApi::class)
+    val favoritos=usuarioActual.flatMapLatest { u -> if(u==null) flowOf(emptySet<Int>()) else prefs.favoritos(u.id) }.stateIn(viewModelScope,SharingStarted.Eagerly,emptySet())
+    fun alternarFavorito(producto: Int) { val u=_usuarioActual.value ?: return;viewModelScope.launch { try { prefs.alternarFavorito(u.id,producto) } catch(e: Exception) { _error.value="No se pudo guardar el favorito" } } }
     val modoOscuro=prefs.modoOscuro.stateIn(viewModelScope,SharingStarted.Eagerly,false)
     val recibirPedidos=prefs.recibirPedidos.stateIn(viewModelScope,SharingStarted.Eagerly,true)
     init { viewModelScope.launch {

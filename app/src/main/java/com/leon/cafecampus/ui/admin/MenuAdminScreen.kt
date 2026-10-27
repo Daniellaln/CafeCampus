@@ -25,9 +25,9 @@ import com.leon.cafecampus.data.local.entity.*
     val error by vm.error.collectAsStateWithLifecycle()
     val ocupado by vm.ocupado.collectAsStateWithLifecycle()
     var eliminar by remember { mutableStateOf<Producto?>(null) }
-    Scaffold(containerColor=MaterialTheme.colorScheme.background,topBar={AppTopBar("Gestión del menú")},floatingActionButton={ExtendedFloatingActionButton(onClick=nuevo,icon={Icon(Icons.Default.Add,"Agregar producto")},text={Text("Nuevo producto")},containerColor=MaterialTheme.colorScheme.primary,contentColor=MaterialTheme.colorScheme.onPrimary)}) { padding ->
+    Scaffold(containerColor=androidx.compose.ui.graphics.Color.Transparent,topBar={AppTopBar("Gestión del menú")},floatingActionButton={ExtendedFloatingActionButton(onClick=nuevo,icon={Icon(IconosCafe.Add,"Agregar producto")},text={Text("Nuevo producto")},containerColor=MaterialTheme.colorScheme.primary,contentColor=MaterialTheme.colorScheme.onPrimary)}) { padding ->
         LazyColumn(Modifier.padding(padding),contentPadding=PaddingValues(start=20.dp,end=20.dp,bottom=96.dp),verticalArrangement=Arrangement.spacedBy(14.dp)) {
-            item { Seccion("Un menú para disfrutar.","Disponibilidad, precios y detalles al día.") }
+            item { EscenaCampus("Catálogo","Disponibilidad y precios.","catalogo") }
             item { Categorias(categoria,vm::categoria);ErrorTexto(error) }
             if(productos.isEmpty()) item { Vacio("No hay productos en esta categoría") }
             items(productos,key={it.id}) { p -> Tarjeta {
@@ -38,8 +38,8 @@ import com.leon.cafecampus.data.local.entity.*
                 Row(Modifier.fillMaxWidth(),verticalAlignment=Alignment.CenterVertically) {
                     DisponibilidadChip(p.disponible,!ocupado) { vm.alternarDisponibilidad(p) }
                     Spacer(Modifier.weight(1f))
-                    IconButton(onClick={editar(p.id)},enabled=!ocupado) { Icon(Icons.Default.Edit,"Editar ${p.nombre}",tint=MaterialTheme.colorScheme.primary) }
-                    IconButton(onClick={eliminar=p},enabled=!ocupado) { Icon(Icons.Default.DeleteOutline,"Eliminar ${p.nombre}",tint=MaterialTheme.colorScheme.error) }
+                    IconButton(onClick={editar(p.id)},enabled=!ocupado) { Icon(IconosCafe.Edit,"Editar ${p.nombre}",tint=MaterialTheme.colorScheme.primary) }
+                    IconButton(onClick={eliminar=p},enabled=!ocupado) { Icon(IconosCafe.Delete,"Eliminar ${p.nombre}",tint=MaterialTheme.colorScheme.error) }
                 }
             } }
         }

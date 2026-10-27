@@ -133,5 +133,23 @@ class DatosAceptacionTest {
         val vacio=kotlinx.coroutines.withTimeout(5000) { vm.estadoMenu.first { !it.cargando && it.productos.isEmpty() } }
         assertFalse(vacio.cargando)
     }
+    @Test fun favoritosPersistenSeparadosPorUsuario() = runBlocking {
+        val contexto=InstrumentationRegistry.getInstrumentation().targetContext
+        val prefs=com.leon.cafecampus.data.prefs.PreferenciasStore(contexto)
+        if(7 in prefs.favoritos(991001).first()) prefs.alternarFavorito(991001,7)
+        prefs.alternarFavorito(991001,7)
+        assertEquals(setOf(7),prefs.favoritos(991001).first())
+        assertFalse(7 in prefs.favoritos(991002).first())
+        val otraInstancia=com.leon.cafecampus.data.prefs.PreferenciasStore(contexto)
+        assertEquals(setOf(7),otraInstancia.favoritos(991001).first())
+        otraInstancia.alternarFavorito(991001,7)
+        assertTrue(prefs.favoritos(991001).first().isEmpty())
+    }
 
+    @Test fun horariosFuturosIncluyenDiaAlCruzarMedianoche() {
+        val reloj=java.util.Calendar.getInstance().apply { set(2026,9,21,12,31,0);set(java.util.Calendar.MILLISECOND,0) }
+        assertEquals(listOf("Ahora","Hoy, 13:00","Hoy, 13:30","Hoy, 14:00"),opcionesRecojo(reloj.timeInMillis))
+        reloj.set(2026,11,31,23,50,0)
+        assertEquals(listOf("Ahora","Mañana, 00:30","Mañana, 01:00","Mañana, 01:30"),opcionesRecojo(reloj.timeInMillis))
+    }
 }

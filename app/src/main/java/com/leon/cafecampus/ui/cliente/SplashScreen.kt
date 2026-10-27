@@ -29,12 +29,12 @@ import com.leon.cafecampus.model.*
         FotoCampus(Modifier.fillMaxWidth().height(heroHeight).align(Alignment.TopCenter))
         AdornoFloral(Modifier.width(160.dp).height(180.dp).align(Alignment.TopEnd).offset(x=20.dp,y=heroHeight-60.dp))
         Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(horizontal=24.dp),verticalArrangement=Arrangement.spacedBy(18.dp)) {
-            Row(Modifier.padding(top=18.dp),verticalAlignment=Alignment.CenterVertically,horizontalArrangement=Arrangement.spacedBy(8.dp)) { Icon(Icons.Default.Coffee,null,tint=CampusBlue,modifier=Modifier.size(22.dp));Text("CafeCampus",style=MaterialTheme.typography.titleMedium,color=CampusInk) }
+            Row(Modifier.padding(top=18.dp),verticalAlignment=Alignment.CenterVertically,horizontalArrangement=Arrangement.spacedBy(8.dp)) { Icon(IconosCafe.Coffee,null,tint=CampusBlue,modifier=Modifier.size(22.dp));Text("CafeCampus",style=MaterialTheme.typography.titleMedium,color=CampusInk) }
             Spacer(Modifier.height((heroHeight-90.dp).coerceAtLeast(100.dp)))
             Text("Tu pausa,\nbien elegida.",style=MaterialTheme.typography.displayMedium,color=Color.White)
             Text("Elige lo que te gusta. Pide desde aquí y recoge en tu cafetería.",style=MaterialTheme.typography.bodyLarge,color=Color.White.copy(alpha=.9f))
             Row(horizontalArrangement=Arrangement.spacedBy(16.dp),verticalAlignment=Alignment.CenterVertically) {
-                Surface(color=MaterialTheme.colorScheme.secondaryContainer,shape=RoundedCornerShape(10.dp)) { Icon(Icons.Default.Restaurant,null,Modifier.padding(10.dp).size(20.dp),tint=MaterialTheme.colorScheme.onSecondaryContainer) }
+                Surface(color=MaterialTheme.colorScheme.secondaryContainer,shape=RoundedCornerShape(10.dp)) { Icon(IconosCafe.Restaurant,null,Modifier.padding(10.dp).size(20.dp),tint=MaterialTheme.colorScheme.onSecondaryContainer) }
                 Text("Tu campus. Tu cafetería. Tu momento.",style=MaterialTheme.typography.bodySmall,color=Color.White.copy(alpha=.9f))
             }
             Button(onClick=comenzar,modifier=Modifier.fillMaxWidth().heightIn(min=56.dp),shape=RoundedCornerShape(18.dp),colors=ButtonDefaults.buttonColors(containerColor=CampusCitron,contentColor=CampusInk)) { Text("Comenzar",style=MaterialTheme.typography.labelLarge) }

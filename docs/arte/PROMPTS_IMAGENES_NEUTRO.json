@@ -1,0 +1,32 @@
+[
+  {
+    "name": "fondo_cafe_blanco",
+    "prompt": "Photorealistic portrait 9:16 background photograph for a contemporary neighborhood cafe app, neutral luminous white environment, quiet and fresh, not pink and not brown themed. In upper right corner only: a small elegant ivory porcelain cappuccino on a saucer on a white cafe counter, delicate white blossom branches and a hint of an actual airy cafe window in soft blur. Lower two corners: tiny white blossoms with natural green leaves, very restrained. Left 70 percent and middle 75 percent remain nearly white matte negative space with natural subtle daylight shadows for native app content placed later. A few natural coffee beans near the far top right cup, not scattered across the page. Real cafe atmosphere, white ceramic and glass, gentle morning light. No people, no text, no logo, no UI, no icons, no gradients, no artificial sparkles. No pink backdrop.",
+    "local_original": "fondo_cafe_blanco.png",
+    "app_resource": "app/src/main/res/drawable-nodpi/fondo_cafe_blanco.png"
+  },
+  {
+    "name": "fondo_gestor",
+    "prompt": "Photorealistic portrait 9:16 very restrained background for a cafe management app. Almost white cool gray cafe worktop with a very small neatly arranged cropped operational still life at the upper right corner: slim cobalt blue order clipboard with blank white paper, stainless steel pen and an ivory espresso cup, subtle shadow of a cafe window. The left and centre 85 percent and bottom remain clean nearly white cool neutral negative space, designed behind real data tables added later. Sophisticated, sober, operational, clean editorial photography. No flowers, no pink, no readable text, no numbers, no logo, no UI, no people, no charts or fake dashboard.",
+    "local_original": "fondo_gestor.png",
+    "app_resource": "app/src/main/res/drawable-nodpi/fondo_gestor.png"
+  },
+  {
+    "name": "gestor_panel",
+    "prompt": "Photorealistic editorial isolated still life for a sober modern cafe manager app. Cobalt blue, white, brushed steel, natural paper. Realistic materials and subtle transparent contact shadows. All objects fully visible, compact landscape 3:2 grouping, genuinely transparent alpha background. No people, no flowers, no pink, no UI, no numbers, no readable text, no logo, no watermark. A neat blank white operational clipboard with cobalt blue clip, steel pen, an ivory espresso cup on a small cobalt saucer, and one compact silver service bell. Manager's morning control desk, carefully composed triangular arrangement.",
+    "local_original": "gestor_panel.png",
+    "app_resource": "app/src/main/res/drawable-nodpi/gestor_panel.png"
+  },
+  {
+    "name": "gestor_pedidos",
+    "prompt": "Photorealistic editorial isolated still life for a sober modern cafe manager app. Cobalt blue, white, brushed steel, natural paper. Realistic materials and subtle transparent contact shadows. All objects fully visible, compact landscape 3:2 grouping, genuinely transparent alpha background. No people, no flowers, no pink, no UI, no numbers, no readable text, no logo, no watermark. A compact stainless steel order rail holding three completely blank cream receipt slips, a small silver service bell, and a closed cobalt takeaway food box with no branding. Clearly communicates cafe order preparation and pickup.",
+    "local_original": "gestor_pedidos.png",
+    "app_resource": "app/src/main/res/drawable-nodpi/gestor_pedidos.png"
+  },
+  {
+    "name": "gestor_catalogo",
+    "prompt": "Photorealistic editorial isolated still life for a sober modern cafe manager app. Cobalt blue, white, brushed steel, natural paper. Realistic materials and subtle transparent contact shadows. All objects fully visible, compact landscape 3:2 grouping, genuinely transparent alpha background. No people, no flowers, no pink, no UI, no numbers, no readable text, no logo, no watermark. An orderly inventory grouping: two clear glass jars of coffee beans and tea with completely blank small white labels, a cobalt blue notebook with blank cover, a small brushed metal measuring scoop and one ivory espresso cup. Cafe stock and product management, elegant and functional.",
+    "local_original": "gestor_catalogo.png",
+    "app_resource": "app/src/main/res/drawable-nodpi/gestor_catalogo.png"
+  }
+]

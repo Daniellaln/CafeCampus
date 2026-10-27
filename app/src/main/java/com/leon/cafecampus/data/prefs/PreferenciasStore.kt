@@ -18,5 +18,10 @@ class PreferenciasStore(context: Context) {
     suspend fun guardarPerfil(rol: Rol) { store.edit { it[perfil]=rol.name } }
     suspend fun guardarModoOscuro(b: Boolean) { store.edit { it[oscuro]=b } }
     suspend fun guardarRecibirPedidos(b: Boolean) { store.edit { it[recibir]=b } }
+    fun favoritos(usuario: Int): Flow<Set<Int>> = datos.map { p -> p[stringSetPreferencesKey("favoritos_$usuario")]?.mapNotNull { it.toIntOrNull() }?.toSet() ?: emptySet() }
+    suspend fun alternarFavorito(usuario: Int,producto: Int) {
+        val clave=stringSetPreferencesKey("favoritos_$usuario")
+        store.edit { p -> val ids=p[clave] ?: emptySet();p[clave]=if(producto.toString() in ids) ids-producto.toString() else ids+producto.toString() }
+    }
     suspend fun cerrarSesion() { store.edit { it.remove(perfil) } }
 }

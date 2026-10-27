@@ -1,13 +1,13 @@
-disposition: ship
-
-Revisión realizada en la sesión principal siguiendo el procedimiento alternativo, tras interrupción de la revisión delegada por límite de uso. Este veredicto puntúa la corrección identificada en REVISION_FINAL.md; no se presenta como revisión independiente.
+# Veredicto independiente posterior a la corrección
 
 ## verdict
 
-1. Sombras del selector y avatar adaptadas al modo oscuro: resuelto. phone-dark.png muestra el selector sin el halo blanco. MenuScreen y AjustesScreen pasan la luminancia del tema a SombraCampus; los parámetros claros permanecen en el tema claro. La compilación posterior aprobó.
-
-No se observaron regresiones en el catálogo oscuro recapturado. Se mantienen tarjetas uniformes, texto legible, pétalos y navegación.
+resolved — phone-bolsa.png muestra reloj12:43 y opciones futuras «Hoy,13:00», «Hoy,13:30» y «Hoy,14:00». Desaparecieron los horarios vencidos; las etiquetas caben sin recorte. Sin regresiones visibles introducidas por este cambio.
 
 ## remaining
 
-clear. Alcance: corrección de sombras en teléfono, con las limitaciones ópticas y de hardware registradas en LIQUID_GLASS.md. No acredita equivalencia nativa con Apple ni rendimiento de teléfono físico.
+clear. Este ship cubre únicamente el fix puntuado de horarios de recogida.
+
+disposition: ship
+
+El primer pase completo y su único hallazgo constan en REVISION_FINAL.md. El segundo pase puntúa esa corrección; no afirma una nueva auditoría completa ni rendimiento físico.

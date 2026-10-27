@@ -36,6 +36,8 @@ import com.leon.cafecampus.ui.theme.CafeTheme
     val prefs=remember { PreferenciasStore(app) }
     val sesion: SesionViewModel=viewModel(factory=CafeViewModelFactory { SesionViewModel(app.repository,prefs) { app.inicializacion.await() } })
     val menu: MenuViewModel=viewModel(factory=viewModelFactory { initializer { MenuViewModel(app.repository,createSavedStateHandle()) } })
+    val favoritos by sesion.favoritos.collectAsStateWithLifecycle()
+    LaunchedEffect(favoritos) { menu.actualizarFavoritos(favoritos) }
     val usuario by sesion.usuarioActual.collectAsStateWithLifecycle()
     val cargando by sesion.cargando.collectAsStateWithLifecycle()
     val oscuro by sesion.modoOscuro.collectAsStateWithLifecycle()
@@ -63,20 +65,22 @@ import com.leon.cafecampus.ui.theme.CafeTheme
     }
     LaunchedEffect(repetido) { if(repetido) { nav.navigate(Rutas.CONFIRMAR);menu.consumirRepetido() } }
     CafeTheme(if(admin) Rol.ADMIN else Rol.CLIENTE,oscuro) {
-        val destinos=if(admin) listOf(Triple(Rutas.PANEL,"Panel",Icons.Default.BarChart),Triple(Rutas.ADMIN_PEDIDOS,"Pedidos",Icons.Default.ReceiptLong),Triple(Rutas.ADMIN_MENU,"Menú",Icons.Default.Coffee),Triple(Rutas.AJUSTES,"Ajustes",Icons.Default.Settings))
-            else listOf(Triple(Rutas.MENU,"Menú",Icons.Default.Home),Triple(Rutas.PEDIDOS,"Pedidos",Icons.Default.ReceiptLong),Triple(Rutas.PERFIL,"Perfil",Icons.Default.PersonOutline))
+        val destinos=if(admin) listOf(Triple(Rutas.PANEL,"Panel",IconosCafe.BarChart),Triple(Rutas.ADMIN_PEDIDOS,"Pedidos",IconosCafe.ReceiptLong),Triple(Rutas.ADMIN_MENU,"Menú",IconosCafe.Coffee),Triple(Rutas.AJUSTES,"Ajustes",IconosCafe.Settings))
+            else listOf(Triple(Rutas.MENU,"Menú",IconosCafe.Home),Triple(Rutas.PEDIDOS,"Pedidos",IconosCafe.ReceiptLong),Triple(Rutas.PERFIL,"Perfil",IconosCafe.PersonOutline))
         val plano=rememberGraphicsLayer()
         var origen by remember { mutableStateOf(Offset.Zero) }
         val barra=usuario!=null && ruta in listOf(Rutas.MENU,Rutas.PEDIDOS,Rutas.PERFIL,Rutas.SEGUIMIENTO,Rutas.PANEL,Rutas.ADMIN_PEDIDOS,Rutas.ADMIN_MENU,Rutas.AJUSTES)
+        val fondoCristal=recordarFondoCristal()
+        CompositionLocalProvider(LocalFondoCristal provides fondoCristal) {
         Box(Modifier.fillMaxSize()) {
         FondoCampus(Modifier.matchParentSize())
         Scaffold(containerColor=androidx.compose.ui.graphics.Color.Transparent,contentColor=MaterialTheme.colorScheme.onBackground,bottomBar={ if(barra) NavegacionLiquida(destinos.map { it.second to it.third },destinos.indexOfFirst { ruta==it.first || (it.first==Rutas.PEDIDOS && ruta==Rutas.SEGUIMIENTO) }.coerceAtLeast(0),{ indice ->
             nav.navigate(destinos[indice].first) { popUpTo(if(admin) Rutas.PANEL else Rutas.MENU) { inclusive=false };launchSingleTop=true }
         },plano,origen) }) { padding ->
-            NavHost(nav,startDestination=Rutas.SPLASH,modifier=Modifier.fillMaxSize().onGloballyPositioned { origen=it.positionInRoot() }.drawWithContent { plano.record { this@drawWithContent.drawContent() };drawLayer(plano) }.padding(top=padding.calculateTopPadding(),bottom=if(ruta==Rutas.MENU) 0.dp else padding.calculateBottomPadding()),enterTransition={fadeIn(tween(200))+slideInHorizontally(tween(240)) { it/16 }},exitTransition={fadeOut(tween(160))},popEnterTransition={fadeIn(tween(200))},popExitTransition={fadeOut(tween(160))+slideOutHorizontally(tween(200)) { it/16 }}) {
+            NavHost(nav,startDestination=Rutas.SPLASH,modifier=Modifier.fillMaxSize().onGloballyPositioned { origen=it.positionInRoot() }.drawWithContent { plano.record { drawLayer(fondoCristal.capa);this@drawWithContent.drawContent() };drawLayer(plano) }.padding(top=padding.calculateTopPadding(),bottom=if(ruta==Rutas.MENU) 0.dp else padding.calculateBottomPadding()),enterTransition={fadeIn(tween(200))+slideInHorizontally(tween(240)) { it/16 }},exitTransition={fadeOut(tween(160))},popEnterTransition={fadeIn(tween(200))},popExitTransition={fadeOut(tween(160))+slideOutHorizontally(tween(200)) { it/16 }}) {
                 composable(Rutas.SPLASH) { if(cargando) Box(Modifier.fillMaxSize(),contentAlignment=Alignment.Center) { CircularProgressIndicator() } else SplashScreen { nav.navigate(Rutas.LOGIN) } }
                 composable(Rutas.LOGIN) { LoginScreen(sesion) { if(!nav.popBackStack()) nav.navigate(Rutas.SPLASH) { popUpTo(Rutas.LOGIN) { inclusive=true } } } }
-                composable(Rutas.MENU) { MenuScreen(menu,{nav.navigate("producto/$it")},usuario?.nombre ?: "Estudiante",carrito.sumOf { it.cantidad },abierto) { nav.navigate(Rutas.CONFIRMAR) } }
+                composable(Rutas.MENU) { MenuScreen(menu,{nav.navigate("producto/$it")},usuario?.nombre ?: "Estudiante",carrito.sumOf { it.cantidad },abierto,bolsa={ nav.navigate(Rutas.CONFIRMAR) },favoritos=favoritos,alternarFavorito=sesion::alternarFavorito) }
                 composable(Rutas.PRODUCTO,arguments=listOf(navArgument("id") { type=NavType.IntType })) { DetalleProductoScreen(it.arguments?.getInt("id") ?: 0,menu) { nav.popBackStack() } }
                 composable(Rutas.CONFIRMAR) { ConfirmarPedidoScreen(menu,cliente,abierto,{nav.popBackStack()}) { nav.navigate("seguimiento/$it") { popUpTo(Rutas.CONFIRMAR) { inclusive=true } } } }
                 composable(Rutas.SEGUIMIENTO,arguments=listOf(navArgument("id") { type=NavType.IntType })) { SeguimientoScreen(it.arguments?.getInt("id") ?: 0,cliente) { if(!nav.popBackStack()) raiz(Rutas.MENU) } }
@@ -89,6 +93,7 @@ import com.leon.cafecampus.ui.theme.CafeTheme
                 composable(Rutas.FORMULARIO,arguments=listOf(navArgument("id") { type=NavType.IntType;defaultValue=0 })) { FormularioProductoScreen((it.arguments?.getInt("id") ?: 0).takeIf { id -> id>0 },menuAdmin) { nav.popBackStack() } }
                 composable(Rutas.AJUSTES) { AjustesScreen(sesion) }
             }
+        }
         }
         }
     }

@@ -50,6 +50,7 @@ fun Modifier.deformacionLiquida(tacto: TactoLiquido,amplitud: Float=1f): Modifie
 // One refracting plane. The selected droplet is a change of thickness, not a nested panel.
 @Composable fun NavegacionLiquida(items: List<Pair<String,ImageVector>>,actual: Int,elegir: (Int)->Unit,plano: GraphicsLayer,origen: Offset) {
     val oscuro=MaterialTheme.colorScheme.background.luminance()<.2f
+    val veloOscuro=MaterialTheme.colorScheme.surface.copy(alpha=.46f)
     val posicion=remember { Animatable(actual.toFloat()) }
     val alcance=rememberCoroutineScope()
     val animar=movimientoLiquido()
@@ -61,7 +62,7 @@ fun Modifier.deformacionLiquida(tacto: TactoLiquido,amplitud: Float=1f): Modifie
     LaunchedEffect(actual,arrastrando,animar) { if(!arrastrando) { if(animar) posicion.animateTo(actual.toFloat(),spring(dampingRatio=.66f,stiffness=370f)) else posicion.snapTo(actual.toFloat()) } }
     val deformacion=(abs(posicion.velocity)/15f).coerceIn(0f,1f)
     val contacto=if(arrastrando) .8f else deformacion
-    Box(Modifier.padding(horizontal=16.dp,vertical=10.dp).fillMaxWidth().height(82.dp).testTag("navegacion_liquida").sombraCampus(30.dp,oscuro).onGloballyPositioned { sitio=it.positionInRoot();ancho=it.size.width.toFloat() }
+    Box(Modifier.navigationBarsPadding().padding(horizontal=16.dp,vertical=10.dp).fillMaxWidth().height(72.dp).testTag("navegacion_liquida").sombraCampus(30.dp,oscuro).onGloballyPositioned { sitio=it.positionInRoot();ancho=it.size.width.toFloat() }
         .draggable(rememberDraggableState { delta ->
             valorArrastre=(valorArrastre+delta/(ancho/items.size)).coerceIn(0f,(items.size-1).toFloat())
             alcance.launch { posicion.snapTo(valorArrastre) }
@@ -71,18 +72,19 @@ fun Modifier.deformacionLiquida(tacto: TactoLiquido,amplitud: Float=1f): Modifie
         })) {
         Box(Modifier.matchParentSize().clip(RoundedCornerShape(30.dp))) {
             // Capture of the actual page, not a screenshot or an unrelated texture.
-            Box(Modifier.matchParentSize().lenteCampus(contacto).drawWithContent {
+            Box(Modifier.matchParentSize().blur(if(oscuro) 0.dp else 14.dp,BlurredEdgeTreatment.Unbounded).lenteCampus(contacto).drawWithContent {
                 translate(origen.x-sitio.x,origen.y-sitio.y) { drawLayer(plano) }
             })
             Canvas(Modifier.matchParentSize()) {
-                drawRoundRect(if(oscuro) Color(0xDE20314C) else Color(0xB8F7F4FA),cornerRadius=androidx.compose.ui.geometry.CornerRadius(30.dp.toPx()))
+                drawRoundRect(if(oscuro) veloOscuro else Color.White.copy(alpha=.22f),cornerRadius=androidx.compose.ui.geometry.CornerRadius(30.dp.toPx()))
                 drawRoundRect(Brush.linearGradient(listOf(Color.White.copy(alpha=.85f),Color.White.copy(alpha=.12f),Color.White.copy(alpha=.45f))),topLeft=Offset(.5.dp.toPx(),.5.dp.toPx()),size=androidx.compose.ui.geometry.Size(size.width-1.dp.toPx(),size.height-1.dp.toPx()),cornerRadius=androidx.compose.ui.geometry.CornerRadius(30.dp.toPx()),style=Stroke(1.dp.toPx()))
             }
+            Canvas(Modifier.matchParentSize().reflejosRosa(30.dp)) {}
             GotaSeleccion(posicion.value,posicion.velocity,items.size,oscuro,contacto,Modifier.matchParentSize())
         }
         Row(Modifier.fillMaxSize(),verticalAlignment=Alignment.CenterVertically) {
             items.forEachIndexed { i,(titulo,icono) ->
-                Column(Modifier.weight(1f).fillMaxHeight().selectable(selected=actual==i,role=Role.Tab,onClick={escoger(i)}).padding(vertical=13.dp),horizontalAlignment=Alignment.CenterHorizontally,verticalArrangement=Arrangement.spacedBy(5.dp)) {
+                Column(Modifier.weight(1f).fillMaxHeight().selectable(selected=actual==i,role=Role.Tab,onClick={escoger(i)}).padding(vertical=9.dp),horizontalAlignment=Alignment.CenterHorizontally,verticalArrangement=Arrangement.spacedBy(5.dp)) {
                     Icon(icono,null,Modifier.size(24.dp),tint=if(actual==i) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant)
                     Text(titulo,style=MaterialTheme.typography.labelSmall,color=if(actual==i) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant)
                 }
@@ -91,14 +93,16 @@ fun Modifier.deformacionLiquida(tacto: TactoLiquido,amplitud: Float=1f): Modifie
     }
 }
 @Composable private fun GotaSeleccion(posicion: Float,velocidad: Float,total: Int,oscuro: Boolean,presion: Float,modifier: Modifier) {
+    val tinta=MaterialTheme.colorScheme.primary.copy(alpha=.10f)
     if(Build.VERSION.SDK_INT>=33) GotaAgsl(posicion,velocidad,total,oscuro,presion,modifier)
     else Canvas(modifier) {
         val celda=size.width/total;val extension=min(abs(velocidad)*2.dp.toPx(),12.dp.toPx())
-        drawRoundRect(if(oscuro) Color(0x70585B91) else Color(0x8FE8D8EB),Offset((posicion+.5f)*celda-celda*.42f-extension/2,8.dp.toPx()),androidx.compose.ui.geometry.Size(celda*.84f+extension,64.dp.toPx()),androidx.compose.ui.geometry.CornerRadius(28.dp.toPx()))
+        drawRoundRect(tinta,Offset((posicion+.5f)*celda-celda*.42f-extension/2,8.dp.toPx()),androidx.compose.ui.geometry.Size(celda*.84f+extension,54.dp.toPx()),androidx.compose.ui.geometry.CornerRadius(28.dp.toPx()))
     }
 }
 @androidx.annotation.RequiresApi(33)
 @Composable private fun GotaAgsl(posicion: Float,velocidad: Float,total: Int,oscuro: Boolean,presion: Float,modifier: Modifier) {
+    val tono=MaterialTheme.colorScheme.primary
     val shader=remember { android.graphics.RuntimeShader("""
         uniform float2 tam;
         uniform float centro;
@@ -106,6 +110,7 @@ fun Modifier.deformacionLiquida(tacto: TactoLiquido,amplitud: Float=1f): Modifie
         uniform float ancho;
         uniform float fuerza;
         uniform float noche;
+        uniform float3 tono;
         float redonda(float2 p,float2 b,float r) {float2 q=abs(p)-b+r;return length(max(q,0.0))+min(max(q.x,q.y),0.0)-r;}
         float unir(float a,float b,float k) {float h=clamp(.5+.5*(b-a)/k,0.0,1.0);return mix(b,a,h)-k*h*(1.0-h);}
         float forma(float2 p) {
@@ -118,9 +123,9 @@ fun Modifier.deformacionLiquida(tacto: TactoLiquido,amplitud: Float=1f): Modifie
             float2 n=normalize(float2(forma(p+float2(1,0))-forma(p-float2(1,0)),forma(p+float2(0,1))-forma(p-float2(0,1)))+float2(.001));
             float borde=exp(-abs(d)*.32);
             float luz=pow(max(dot(n,normalize(float2(-.55,-.85))),0.0),3.0)*borde;
-            float3 base=mix(float3(.86,.77,.9),float3(.36,.40,.61),noche);
+            float3 base=mix(float3(.98),tono,.20+.12*noche);
             float3 color=mix(base,float3(1.0),luz*.88);
-            float alpha=(.25+.46*borde+.08*fuerza)*mascara;
+            float alpha=(.13+.60*borde+.06*fuerza)*mascara;
             return half4(half3(color*alpha),half(alpha));
         }
     """) }
@@ -132,6 +137,7 @@ fun Modifier.deformacionLiquida(tacto: TactoLiquido,amplitud: Float=1f): Modifie
         shader.setFloatUniform("ancho",celda)
         shader.setFloatUniform("fuerza",presion)
         shader.setFloatUniform("noche",if(oscuro) 1f else 0f)
+        shader.setFloatUniform("tono",tono.red,tono.green,tono.blue)
         drawRect(ShaderBrush(shader))
     }
 }

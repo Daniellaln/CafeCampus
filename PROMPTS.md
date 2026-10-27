@@ -1,3 +1,5 @@
+> La ampliación visual más reciente está en [PROMPTS_REDISENIO.md](PROMPTS_REDISENIO.md). Los bloques siguientes documentan las mejoras anteriores de fase2 y no sustituyen la dirección final de cafetería blanca y administración azul.
+
 # Prompts por funcionalidad para Gemini en Android Studio
 
 Usa **un solo bloque a la vez**. Espera la respuesta, revisa, sincroniza, compila y ejecuta antes del siguiente. Si Gemini falla, vuelve a enviar únicamente el bloque actual. No pegues todo este documento en una solicitud.
