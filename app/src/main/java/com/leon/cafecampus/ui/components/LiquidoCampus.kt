@@ -72,7 +72,7 @@ fun Modifier.deformacionLiquida(tacto: TactoLiquido,amplitud: Float=1f): Modifie
         })) {
         Box(Modifier.matchParentSize().clip(RoundedCornerShape(30.dp))) {
             // Capture of the actual page, not a screenshot or an unrelated texture.
-            Box(Modifier.matchParentSize().blur(if(oscuro) 0.dp else 14.dp,BlurredEdgeTreatment.Unbounded).lenteCampus(contacto).drawWithContent {
+            Box(Modifier.matchParentSize().blur(if(oscuro) 0.dp else 14.dp,BlurredEdgeTreatment.Unbounded).lenteCampus(contacto).clip(RoundedCornerShape(30.dp)).drawWithContent {
                 translate(origen.x-sitio.x,origen.y-sitio.y) { drawLayer(plano) }
             })
             Canvas(Modifier.matchParentSize()) {
@@ -82,9 +82,9 @@ fun Modifier.deformacionLiquida(tacto: TactoLiquido,amplitud: Float=1f): Modifie
             Canvas(Modifier.matchParentSize().reflejosRosa(30.dp)) {}
             GotaSeleccion(posicion.value,posicion.velocity,items.size,oscuro,contacto,Modifier.matchParentSize())
         }
-        Row(Modifier.fillMaxSize(),verticalAlignment=Alignment.CenterVertically) {
+        Row(Modifier.fillMaxSize().clip(RoundedCornerShape(30.dp)),verticalAlignment=Alignment.CenterVertically) {
             items.forEachIndexed { i,(titulo,icono) ->
-                Column(Modifier.weight(1f).fillMaxHeight().selectable(selected=actual==i,role=Role.Tab,onClick={escoger(i)}).padding(vertical=9.dp),horizontalAlignment=Alignment.CenterHorizontally,verticalArrangement=Arrangement.spacedBy(5.dp)) {
+                Column(Modifier.weight(1f).fillMaxHeight().selectable(selected=actual==i,interactionSource=remember { MutableInteractionSource() },indication=null,role=Role.Tab,onClick={escoger(i)}).padding(vertical=9.dp),horizontalAlignment=Alignment.CenterHorizontally,verticalArrangement=Arrangement.spacedBy(5.dp)) {
                     Icon(icono,null,Modifier.size(24.dp),tint=if(actual==i) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant)
                     Text(titulo,style=MaterialTheme.typography.labelSmall,color=if(actual==i) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant)
                 }

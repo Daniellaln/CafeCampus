@@ -43,6 +43,6 @@ import com.leon.cafecampus.data.local.entity.*
         item { GraficoPedidos(horas) }
         item { Row(Modifier.fillMaxWidth(),horizontalArrangement=Arrangement.SpaceBetween,verticalAlignment=Alignment.CenterVertically) { Text("Nuevos pedidos",style=MaterialTheme.typography.titleMedium); TextButton(onClick={pedidos.estadoSeleccionado.value=EstadoPedido.RECIBIDO;verTodos()}) { Text("Ver todos") } }; ErrorTexto(error) }
         if(recientes.isEmpty()) item { Vacio("No hay nuevos pedidos") }
-        items(recientes.take(5),key={it.pedido.id}) { p -> PedidoCard(p,admin=true,abrir={abrir(p.pedido.id)}) { Button(onClick={pedidos.avanzar(p)},enabled=!ocupado) { Text("Preparar") } } }
+        items(recientes.take(5),key={it.pedido.id}) { p -> PedidoCard(p,admin=true,abrir={abrir(p.pedido.id)}) { CafeButton("Preparar",!ocupado) { pedidos.avanzar(p) } } }
     }
 }

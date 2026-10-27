@@ -38,11 +38,11 @@ fun dinero(n: Double)="S/ %.2f".format(Locale.US,n)
 }
 @Composable fun CafeButton(texto: String,enabled: Boolean=true,onClick: ()->Unit) {
     CristalRosa(Modifier.fillMaxWidth().height(56.dp),28.dp,enabled=enabled,accion=onClick) {
-        Row(Modifier.fillMaxWidth().padding(horizontal=20.dp,vertical=17.dp),verticalAlignment=Alignment.CenterVertically,horizontalArrangement=Arrangement.SpaceBetween) { Text(texto,style=MaterialTheme.typography.labelLarge,color=MaterialTheme.colorScheme.primary);Icon(IconosCafe.ArrowForward,null,Modifier.size(22.dp),tint=MaterialTheme.colorScheme.primary) }
+        Row(Modifier.fillMaxWidth().alpha(if(enabled) 1f else .38f).padding(horizontal=20.dp,vertical=17.dp),verticalAlignment=Alignment.CenterVertically,horizontalArrangement=Arrangement.SpaceBetween) { Text(texto,style=MaterialTheme.typography.labelLarge,color=MaterialTheme.colorScheme.primary);Icon(IconosCafe.ArrowForward,null,Modifier.size(22.dp),tint=MaterialTheme.colorScheme.primary) }
     }
 }
-@Composable fun CafeTextField(valor: String,cambio: (String)->Unit,etiqueta: String,secreto: Boolean=false,teclado: KeyboardType=KeyboardType.Text) {
-    OutlinedTextField(value=valor,onValueChange=cambio,label={Text(etiqueta)},modifier=Modifier.fillMaxWidth(),singleLine=true,shape=RoundedCornerShape(14.dp),
+@Composable fun CafeTextField(valor: String,cambio: (String)->Unit,etiqueta: String,secreto: Boolean=false,teclado: KeyboardType=KeyboardType.Text,icono: androidx.compose.ui.graphics.vector.ImageVector?=null) {
+    OutlinedTextField(value=valor,onValueChange=cambio,leadingIcon=if(icono!=null) ({ Icon(icono,null,tint=MaterialTheme.colorScheme.onSurfaceVariant) }) else null,label={Text(etiqueta)},modifier=Modifier.fillMaxWidth(),singleLine=true,shape=RoundedCornerShape(14.dp),
         visualTransformation=if(secreto) PasswordVisualTransformation() else VisualTransformation.None,
         keyboardOptions=androidx.compose.foundation.text.KeyboardOptions(keyboardType=teclado),
         colors=OutlinedTextFieldDefaults.colors(unfocusedContainerColor=MaterialTheme.colorScheme.surface,focusedContainerColor=MaterialTheme.colorScheme.surface,unfocusedBorderColor=MaterialTheme.colorScheme.outlineVariant))
@@ -58,10 +58,7 @@ fun dinero(n: Double)="S/ %.2f".format(Locale.US,n)
 @Composable fun Vacio(texto: String) {
     Column(Modifier.fillMaxWidth().padding(vertical=28.dp,horizontal=16.dp),horizontalAlignment=Alignment.CenterHorizontally,verticalArrangement=Arrangement.spacedBy(12.dp)) {
         if(texto.startsWith("Cargando")) CircularProgressIndicator(Modifier.size(28.dp),strokeWidth=2.dp)
-        else Box(Modifier.size(116.dp),contentAlignment=Alignment.Center) {
-            Surface(shape=CircleShape,color=MaterialTheme.colorScheme.secondaryContainer,modifier=Modifier.size(88.dp)) {}
-            FotoLibre("cafe",Modifier.fillMaxSize());PetalosCampus(Modifier.fillMaxSize())
-        }
+        else Box(Modifier.size(76.dp).background(MaterialTheme.colorScheme.secondaryContainer,CircleShape),contentAlignment=Alignment.Center) { Icon(IconosCafe.Coffee,null,Modifier.size(34.dp),tint=MaterialTheme.colorScheme.primary) }
         Text(texto,style=MaterialTheme.typography.titleSmall,color=MaterialTheme.colorScheme.onSurfaceVariant,textAlign=androidx.compose.ui.text.style.TextAlign.Center)
     }
 }
@@ -75,17 +72,7 @@ fun fotoProducto(icono: String): Int = when(icono) { "cafe"->R.drawable.cafe_ros
 @Composable fun FotoCampus(modifier: Modifier=Modifier) { Image(painterResource(R.drawable.campus_fresco_hero),null,modifier,contentScale=ContentScale.Crop) }
 @Composable fun Citricos(modifier: Modifier=Modifier) { Image(painterResource(R.drawable.citrus_particulas),null,modifier,contentScale=ContentScale.Fit) }
 @Composable fun HeroCampus(titulo: String,subtitulo: String,modifier: Modifier=Modifier,accion: String?=null,onAccion: ()->Unit={}) {
-    val flota=FlotacionCampus()
-    val densidad=androidx.compose.ui.platform.LocalDensity.current.density
-    BoxWithConstraints(modifier.fillMaxWidth().heightIn(min=224.dp).clip(RoundedCornerShape(bottomStart=34.dp,bottomEnd=34.dp)).background(MaterialTheme.colorScheme.surface.copy(alpha=.2f))) {
-        Image(painterResource(R.drawable.fondo_cafe_blanco),null,Modifier.matchParentSize(),contentScale=ContentScale.Crop)
-        ImagenEscena("bolsa",Modifier.width(maxWidth*.58f).height(210.dp).align(Alignment.BottomEnd).offset(x=24.dp,y=5.dp).graphicsLayer { translationY=flota*densidad;rotationZ=-3f })
-        Column(Modifier.fillMaxWidth(.55f).padding(start=20.dp,top=22.dp,bottom=24.dp),verticalArrangement=Arrangement.spacedBy(12.dp)) {
-            Text(titulo,color=MaterialTheme.colorScheme.onSurface,style=MaterialTheme.typography.headlineLarge)
-            Text(subtitulo,color=MaterialTheme.colorScheme.onSurfaceVariant,style=MaterialTheme.typography.bodySmall)
-            if(accion!=null) FilledTonalButton(onClick=onAccion,colors=ButtonDefaults.filledTonalButtonColors(containerColor=CampusCitron,contentColor=CampusInk),shape=RoundedCornerShape(14.dp),modifier=Modifier.heightIn(min=48.dp)) { Text(accion,style=MaterialTheme.typography.labelMedium) }
-        }
-    }
+    EscenaCampus(titulo,subtitulo,"acceso",modifier)
 }
 
 @Composable fun Disponible(disponible: Boolean) {
@@ -162,25 +149,30 @@ fun coloresEstado(e: EstadoPedido): Pair<Color,Color> = when(e) {
 }
 @Composable fun Seccion(titulo: String,subtitulo: String?=null,modifier: Modifier=Modifier) { Column(modifier,verticalArrangement=Arrangement.spacedBy(5.dp)) { Text(titulo,style=MaterialTheme.typography.titleMedium);if(subtitulo!=null) Text(subtitulo,style=MaterialTheme.typography.bodySmall,color=MaterialTheme.colorScheme.onSurfaceVariant) } }
 
-// Native text and generated cutouts share a compact contextual header.
+// The photography is one composed background per task, never a floating cutout.
 @Composable fun EscenaCampus(titulo: String,subtitulo: String,escena: String,modifier: Modifier=Modifier) {
     val admin=LocalAdminCampus.current
-    Row(modifier.fillMaxWidth().heightIn(min=if(admin) 94.dp else 136.dp).padding(horizontal=if(admin) 8.dp else 0.dp),verticalAlignment=Alignment.CenterVertically,horizontalArrangement=Arrangement.spacedBy(12.dp)) {
-        Column(Modifier.weight(1f),verticalArrangement=Arrangement.spacedBy(7.dp)) { Text(titulo,style=if(admin) MaterialTheme.typography.titleLarge else MaterialTheme.typography.headlineSmall);Text(subtitulo,style=MaterialTheme.typography.bodySmall,color=MaterialTheme.colorScheme.onSurfaceVariant,maxLines=2) }
-        ImagenEscena(escena,Modifier.width(if(admin) 112.dp else 150.dp).height(if(admin) 94.dp else 136.dp))
+    Column(modifier.fillMaxWidth().heightIn(min=if(admin) 116.dp else 132.dp).padding(top=12.dp,bottom=18.dp),verticalArrangement=Arrangement.Center) {
+        Text(titulo,Modifier.fillMaxWidth(if(admin) .72f else .70f),style=if(admin) MaterialTheme.typography.headlineMedium else MaterialTheme.typography.headlineLarge)
+        Spacer(Modifier.height(8.dp))
+        Text(subtitulo,Modifier.fillMaxWidth(.70f),style=MaterialTheme.typography.bodySmall,color=MaterialTheme.colorScheme.onSurfaceVariant)
     }
 }
-
-@Composable fun ImagenEscena(escena: String,modifier: Modifier=Modifier) {
-    val recurso=if(LocalAdminCampus.current) when(escena) { "panel"->R.drawable.gestor_panel;"catalogo"->R.drawable.gestor_catalogo;else->R.drawable.gestor_pedidos } else when(escena) { "bolsa"->R.drawable.bolsa_foto;"seguimiento"->R.drawable.seguimiento_foto;"historial"->R.drawable.historial_foto;"perfil"->R.drawable.perfil_foto;"cocina"->R.drawable.cocina_foto;else->R.drawable.panel_foto }
-    Image(painterResource(recurso),null,modifier,contentScale=ContentScale.Fit)
-}
-
-@Composable fun FondoCampus(modifier: Modifier=Modifier) {
+@Composable fun FondoCampus(modifier: Modifier=Modifier,ruta: String="") {
     val fondo=LocalFondoCristal.current
     val admin=LocalAdminCampus.current
+    val recurso=when {
+        ruta=="perfil" -> R.drawable.ambiente_perfil
+        ruta=="confirmar" -> R.drawable.ambiente_bolsa
+        ruta.startsWith("seguimiento") || ruta=="pedidos" -> R.drawable.ambiente_pedidos
+        ruta=="splash" || ruta=="registro" || (ruta=="login" && !admin) -> R.drawable.ambiente_acceso
+        admin && (ruta=="admin_pedidos" || ruta.startsWith("admin_detalle")) -> R.drawable.ambiente_despacho
+        admin && (ruta=="admin_menu" || ruta.startsWith("formulario")) -> R.drawable.ambiente_catalogo
+        admin -> R.drawable.ambiente_gestor
+        else -> R.drawable.fondo_cafe_blanco
+    }
     Box(modifier.then(if(fondo!=null) Modifier.capturarFondo(fondo) else Modifier).background(MaterialTheme.colorScheme.background)) {
-        Image(painterResource(if(admin) R.drawable.fondo_gestor else R.drawable.fondo_cafe_blanco),null,Modifier.matchParentSize().alpha(if(MaterialTheme.colorScheme.background.luminance()<.2f) .12f else if(admin) .42f else 1f),contentScale=ContentScale.Crop)
+        Image(painterResource(recurso),null,Modifier.matchParentSize().alpha(if(MaterialTheme.colorScheme.background.luminance()<.2f) .12f else 1f),contentScale=ContentScale.Crop)
     }
 }
 @Composable private fun FlotacionCampus(): Float {
@@ -193,10 +185,10 @@ fun coloresEstado(e: EstadoPedido): Pair<Color,Color> = when(e) {
 }
 
 
-@Composable fun BotonCristal(descripcion: String,onClick: ()->Unit,contenido: @Composable ()->Unit) {
-    CristalRosa(Modifier.size(56.dp),28.dp,descripcion,accion=onClick) { Box(Modifier.fillMaxSize(),contentAlignment=Alignment.Center) { contenido() } }
+@Composable fun BotonCristal(descripcion: String,onClick: ()->Unit,sombra: Boolean=true,contenido: @Composable ()->Unit) {
+    CristalRosa(Modifier.size(56.dp),28.dp,descripcion,sombra=sombra,accion=onClick) { Box(Modifier.fillMaxSize(),contentAlignment=Alignment.Center) { contenido() } }
 }
-@Composable fun VolverCampus(volver: ()->Unit) { BotonCristal("Volver",volver) { Icon(IconosCafe.ArrowBack,null,Modifier.size(25.dp),tint=MaterialTheme.colorScheme.onSurface) } }
+@Composable fun VolverCampus(volver: ()->Unit) { BotonCristal("Volver",volver,sombra=false) { Icon(IconosCafe.ArrowBack,null,Modifier.size(25.dp),tint=MaterialTheme.colorScheme.onSurface) } }
 @Composable fun BarraCampus(content: @Composable ()->Unit) {
     val oscuro=MaterialTheme.colorScheme.background.luminance()<.2f
     Box(Modifier.padding(horizontal=16.dp,vertical=10.dp).sombraCampus(28.dp,oscuro)) {

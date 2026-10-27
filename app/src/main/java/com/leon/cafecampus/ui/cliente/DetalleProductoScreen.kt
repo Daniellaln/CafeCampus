@@ -30,26 +30,30 @@ import com.leon.cafecampus.model.*
     var cantidad by rememberSaveable(id) { mutableIntStateOf(1) }
     var nota by rememberSaveable(id) { mutableStateOf("") }
     val error by vm.error.collectAsStateWithLifecycle()
-    Scaffold(containerColor=androidx.compose.ui.graphics.Color.Transparent,topBar={AppTopBar("Detalle del producto",volver)},bottomBar={if(p!=null) Surface(color=MaterialTheme.colorScheme.surface,shadowElevation=6.dp) {
+    Scaffold(containerColor=androidx.compose.ui.graphics.Color.Transparent,topBar={AppTopBar("Detalle del producto",volver)},bottomBar={if(p!=null) Surface(color=MaterialTheme.colorScheme.surface,shape=RoundedCornerShape(topStart=28.dp,topEnd=28.dp),shadowElevation=8.dp) {
         Column(Modifier.fillMaxWidth().padding(horizontal=20.dp,vertical=14.dp),verticalArrangement=Arrangement.spacedBy(10.dp)) {
-            Row(Modifier.fillMaxWidth(),horizontalArrangement=Arrangement.SpaceBetween,verticalAlignment=Alignment.CenterVertically) { Text("Total",style=MaterialTheme.typography.bodyMedium,color=MaterialTheme.colorScheme.onSurfaceVariant);Text(dinero(p.precio*cantidad),style=MaterialTheme.typography.titleLarge,color=MaterialTheme.colorScheme.primary) }
+            Row(Modifier.fillMaxWidth(),horizontalArrangement=Arrangement.SpaceBetween,verticalAlignment=Alignment.CenterVertically) { Column { Text("Total",style=MaterialTheme.typography.bodySmall,color=MaterialTheme.colorScheme.onSurfaceVariant);Text(dinero(p.precio*cantidad),style=MaterialTheme.typography.headlineMedium,color=MaterialTheme.colorScheme.onSurface) };Icon(IconosCafe.ShoppingBag,null,tint=MaterialTheme.colorScheme.primary) }
             CafeButton("Agregar al pedido",p.disponible) { if(vm.agregar(p,cantidad,nota)) volver() }
         }
     }}) { padding ->
         if(p==null) Vacio("Producto no disponible") else Column(Modifier.fillMaxSize().padding(padding).imePadding().verticalScroll(rememberScrollState()).padding(horizontal=20.dp),verticalArrangement=Arrangement.spacedBy(20.dp)) {
-            Box(Modifier.fillMaxWidth().height(280.dp).clip(RoundedCornerShape(22.dp)).background(MaterialTheme.colorScheme.primaryContainer.copy(alpha=0.7f)),contentAlignment=Alignment.Center) {
+            Box(Modifier.fillMaxWidth().height(300.dp).clip(RoundedCornerShape(22.dp)).background(MaterialTheme.colorScheme.primaryContainer.copy(alpha=0.7f)),contentAlignment=Alignment.Center) {
                 androidx.compose.foundation.Image(androidx.compose.ui.res.painterResource(fotoProducto(p.icono)),null,Modifier.fillMaxSize(),contentScale=ContentScale.Crop)
             }
             Row(Modifier.fillMaxWidth(),horizontalArrangement=Arrangement.spacedBy(12.dp),verticalAlignment=Alignment.Top) { Text(p.nombre,Modifier.weight(1f),style=MaterialTheme.typography.headlineMedium);Text(dinero(p.precio),style=MaterialTheme.typography.titleLarge,color=MaterialTheme.colorScheme.primary) }
             Row(horizontalArrangement=Arrangement.spacedBy(18.dp),verticalAlignment=Alignment.CenterVertically) { Disponible(p.disponible);Icon(IconosCafe.AccessTime,null,tint=MaterialTheme.colorScheme.onSurfaceVariant,modifier=Modifier.size(17.dp));Text("10–15 min",style=MaterialTheme.typography.bodySmall,color=MaterialTheme.colorScheme.onSurfaceVariant) }
             Text(p.descripcion,style=MaterialTheme.typography.bodyLarge,color=MaterialTheme.colorScheme.onSurfaceVariant)
+            HorizontalDivider(color=MaterialTheme.colorScheme.outlineVariant)
             Row(Modifier.fillMaxWidth(),horizontalArrangement=Arrangement.SpaceBetween,verticalAlignment=Alignment.CenterVertically) {
                 Text("Cantidad",style=MaterialTheme.typography.titleMedium)
-                Surface(color=MaterialTheme.colorScheme.surface,shape=RoundedCornerShape(14.dp)) { Row(verticalAlignment=Alignment.CenterVertically) {
-                    IconButton(onClick={cantidad--},enabled=cantidad>1) { Icon(IconosCafe.Remove,"Disminuir cantidad") };AnimatedContent(targetState=cantidad,label="Cantidad elegida") { valor -> Text("$valor",style=MaterialTheme.typography.titleMedium,modifier=Modifier.padding(horizontal=12.dp)) };IconButton(onClick={cantidad++},enabled=cantidad<99) { Icon(IconosCafe.Add,"Aumentar cantidad",tint=MaterialTheme.colorScheme.primary) }
-                } }
+                Row(verticalAlignment=Alignment.CenterVertically,horizontalArrangement=Arrangement.spacedBy(8.dp)) {
+                    CristalRosa(Modifier.size(48.dp),24.dp,"Disminuir cantidad",enabled=cantidad>1,accion={cantidad--}) { Icon(IconosCafe.Remove,null,Modifier.align(Alignment.Center).alpha(if(cantidad>1) 1f else .38f),tint=MaterialTheme.colorScheme.primary) }
+                    AnimatedContent(targetState=cantidad,label="Cantidad elegida") { valor -> Text("$valor",style=MaterialTheme.typography.titleLarge,modifier=Modifier.padding(horizontal=8.dp)) }
+                    CristalRosa(Modifier.size(48.dp),24.dp,"Aumentar cantidad",enabled=cantidad<99,accion={cantidad++}) { Icon(IconosCafe.Add,null,Modifier.align(Alignment.Center),tint=MaterialTheme.colorScheme.primary) }
+                }
             }
-            CafeTextField(nota,{nota=it},"Nota para la cocina")
+
+            CafeTextField(nota,{nota=it},"Nota para la cocina",icono=IconosCafe.ReceiptLong)
             ErrorTexto(error);Spacer(Modifier.height(8.dp))
         }
     }

@@ -74,7 +74,7 @@ import com.leon.cafecampus.ui.theme.CafeTheme
         val fondoCristal=recordarFondoCristal()
         CompositionLocalProvider(LocalFondoCristal provides fondoCristal) {
         Box(Modifier.fillMaxSize()) {
-        FondoCampus(Modifier.matchParentSize())
+        FondoCampus(Modifier.matchParentSize(),ruta ?: "")
         Scaffold(containerColor=androidx.compose.ui.graphics.Color.Transparent,contentColor=MaterialTheme.colorScheme.onBackground,bottomBar={ if(barra) NavegacionLiquida(destinos.map { it.second to it.third },destinos.indexOfFirst { ruta==it.first || (it.first==Rutas.PEDIDOS && ruta==Rutas.SEGUIMIENTO) }.coerceAtLeast(0),{ indice ->
             nav.navigate(destinos[indice].first) { popUpTo(if(admin) Rutas.PANEL else Rutas.MENU) { inclusive=false };launchSingleTop=true }
         },plano,origen) }) { padding ->

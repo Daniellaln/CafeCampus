@@ -36,7 +36,7 @@ import com.leon.cafecampus.model.*
         LazyColumn(contentPadding=PaddingValues(20.dp),verticalArrangement=Arrangement.spacedBy(14.dp)) {
             if(pedidos.isEmpty()) item { Vacio(if(historial) "Aún no tienes pedidos en el historial" else "No tienes pedidos activos") }
             items(pedidos,key={it.pedido.id}) { p -> PedidoCard(p,abrir={abrir(p.pedido.id)}) {
-                if(historial) OutlinedButton(onClick={repetir(p)},enabled=!ocupado,modifier=Modifier.fillMaxWidth().heightIn(min=48.dp),shape=RoundedCornerShape(12.dp)) { Icon(IconosCafe.Replay,null,Modifier.size(18.dp));Spacer(Modifier.width(8.dp));Text(if(ocupado) "Preparando tu bolsa…" else "Repetir pedido") }
+                if(historial) CafeButton(if(ocupado) "Preparando tu bolsa…" else "Repetir pedido",!ocupado) { repetir(p) }
             } }
         }
     }

@@ -24,7 +24,7 @@ import com.leon.cafecampus.data.local.entity.*
 
 import com.leon.cafecampus.data.local.relation.PedidoConDetalle
 @Composable fun PedidoCard(p: PedidoConDetalle,admin: Boolean=false,abrir: ()->Unit,acciones: @Composable ()->Unit = {}) {
-    Tarjeta(Modifier.clickable(onClick=abrir)) {
+    PapelInterior(Modifier.clickable(onClick=abrir)) {
         Row(Modifier.fillMaxWidth(),horizontalArrangement=Arrangement.SpaceBetween,verticalAlignment=Alignment.CenterVertically) {
             Text("Pedido #${p.pedido.id.toString().padStart(4,'0')}",style=MaterialTheme.typography.titleMedium)
             EstadoChip(EstadoPedido.valueOf(p.pedido.estado))

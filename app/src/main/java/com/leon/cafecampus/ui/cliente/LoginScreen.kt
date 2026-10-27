@@ -31,10 +31,13 @@ import com.leon.cafecampus.model.*
     val cargando by vm.cargando.collectAsStateWithLifecycle()
     val oscuro by vm.modoOscuro.collectAsStateWithLifecycle()
     CafeTheme(rol,oscuro) {
-        Surface(color=MaterialTheme.colorScheme.background,modifier=Modifier.fillMaxSize()) {
+        val fondo=recordarFondoCristal()
+        CompositionLocalProvider(LocalFondoCristal provides fondo) {
+        Box(Modifier.fillMaxSize()) {
+            FondoCampus(Modifier.matchParentSize(),"login")
             Column(Modifier.fillMaxSize().imePadding().verticalScroll(rememberScrollState()).padding(24.dp),verticalArrangement=Arrangement.spacedBy(18.dp)) {
                 Row(verticalAlignment=Alignment.CenterVertically,horizontalArrangement=Arrangement.spacedBy(12.dp)) { VolverCampus(volver);Icon(IconosCafe.Coffee,null,tint=MaterialTheme.colorScheme.primary);Text("CafeCampus",style=MaterialTheme.typography.titleSmall) }
-                HeroCampus("Tu próxima\npausa.","Tu cafetería, a un toque.",Modifier.heightIn(min=224.dp))
+                HeroCampus("Tu próxima\npausa.","Tu cafetería, a un toque.",Modifier.heightIn(min=172.dp))
                 Column(verticalArrangement=Arrangement.spacedBy(5.dp)) { Text("Bienvenido",style=MaterialTheme.typography.headlineLarge);Text("Ingresa para continuar",color=MaterialTheme.colorScheme.onSurfaceVariant,style=MaterialTheme.typography.bodyMedium) }
                 SingleChoiceSegmentedButtonRow(Modifier.fillMaxWidth()) { Rol.entries.forEachIndexed { i,r -> SegmentedButton(selected=rol==r,onClick={rol=r;vm.limpiarError()},shape=SegmentedButtonDefaults.itemShape(i,2,baseShape=RoundedCornerShape(14.dp))) { Text(if(r==Rol.CLIENTE) "Estudiante" else "Administrador",style=MaterialTheme.typography.labelMedium) } } }
                 CafeTextField(correo,{correo=it},"Correo",teclado=KeyboardType.Email)
@@ -48,6 +51,7 @@ import com.leon.cafecampus.model.*
                 if(rol==Rol.CLIENTE) TextButton(onClick={vm.limpiarError();registrar()},modifier=Modifier.fillMaxWidth()) { Text("Crear cuenta de estudiante") }
                 Spacer(Modifier.height(8.dp))
             }
+        }
         }
     }
 }

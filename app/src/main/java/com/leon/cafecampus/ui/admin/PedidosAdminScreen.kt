@@ -38,7 +38,7 @@ import com.leon.cafecampus.data.local.entity.*
             if(pedidos.isEmpty()) item { Vacio("No hay pedidos en este estado") }
             items(pedidos,key={it.pedido.id}) { p -> PedidoCard(p,admin=true,abrir={abrir(p.pedido.id)}) {
                 Row(horizontalArrangement=Arrangement.spacedBy(8.dp)) {
-                    vm.siguiente(p)?.let { siguiente -> Button(onClick={vm.avanzar(p)},enabled=!ocupado,modifier=Modifier.weight(1f)) { Text("Pasar a ${siguiente.etiqueta}") } }
+                    vm.siguiente(p)?.let { siguiente -> Box(Modifier.weight(1f)) { CafeButton("Pasar a ${siguiente.etiqueta}",!ocupado) { vm.avanzar(p) } } }
                     if(vm.puedeCancelar(p)) TextButton(onClick={vm.cancelar(p)},enabled=!ocupado) { Text("Cancelar",color=MaterialTheme.colorScheme.error) }
                 }
             } }

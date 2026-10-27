@@ -1,3 +1,5 @@
+> Histórico del commit09. La verificación definitiva de todas las funciones está en VERIFICACION_FINAL.md.
+
 # Verificación del rediseño
 
 21 de octubre de2026. JDK incluido con Android Studio, SDK35, Gradle8.11.1.

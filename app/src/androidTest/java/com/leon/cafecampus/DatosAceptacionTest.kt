@@ -177,4 +177,24 @@ class DatosAceptacionTest {
         assertEquals(2,pagos.sumOf { it.cantidad });assertEquals(26.0,pagos.sumOf { it.total },0.001)
         assertTrue(repo.observarReportePagos(fin,fin+86400000L).first().isEmpty())
     }
+    @Test fun migracionTresConservaCuentaYPedido() = runBlocking {
+        val context=InstrumentationRegistry.getInstrumentation().targetContext
+        val nombre="migracion_registro_prueba.db";context.deleteDatabase(nombre)
+        val helper=androidx.sqlite.db.framework.FrameworkSQLiteOpenHelperFactory().create(androidx.sqlite.db.SupportSQLiteOpenHelper.Configuration.builder(context).name(nombre).callback(object: androidx.sqlite.db.SupportSQLiteOpenHelper.Callback(2) {
+            override fun onCreate(db: androidx.sqlite.db.SupportSQLiteDatabase) {
+                db.execSQL("CREATE TABLE productos (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, nombre TEXT NOT NULL, descripcion TEXT NOT NULL, categoria TEXT NOT NULL, precio REAL NOT NULL, disponible INTEGER NOT NULL, icono TEXT NOT NULL)")
+                CafeDatabase.MIGRACION_1_2.migrate(db)
+                db.execSQL("INSERT INTO usuarios VALUES(1,'Daniella','LEGACY@CAMPUS.TEST','1234','CLIENTE')")
+                db.execSQL("INSERT INTO pedidos VALUES(1,1,'RECIBIDO','Ahora','CAJA','',4.0,1)")
+            }
+            override fun onUpgrade(db: androidx.sqlite.db.SupportSQLiteDatabase,oldVersion: Int,newVersion: Int) {}
+        }).build())
+        helper.writableDatabase;helper.close()
+        val nueva=Room.databaseBuilder(context,CafeDatabase::class.java,nombre).addMigrations(CafeDatabase.MIGRACION_2_3).build()
+        try {
+            assertEquals("legacy@campus.test",nueva.usuarioDao().buscar(1)!!.correo)
+            assertEquals(1,nueva.pedidoDao().observarUno(1).first()!!.pedido.id)
+            try { nueva.usuarioDao().insertar(Usuario(nombre="Otra",correo="legacy@campus.test",clave="123456",rol="CLIENTE"));fail("Índice único ausente") } catch(e: android.database.sqlite.SQLiteConstraintException) { }
+        } finally { nueva.close();context.deleteDatabase(nombre) }
+    }
 }

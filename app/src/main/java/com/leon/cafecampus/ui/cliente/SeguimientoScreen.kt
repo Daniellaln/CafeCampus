@@ -31,15 +31,10 @@ import com.leon.cafecampus.model.*
         Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(20.dp),verticalArrangement=Arrangement.spacedBy(24.dp)) {
             val p=pedido
             if(p==null) Vacio("Cargando pedido…") else {
-                Surface(color=MaterialTheme.colorScheme.primary,shape=RoundedCornerShape(20.dp),contentColor=MaterialTheme.colorScheme.onPrimary) {
-                    Column(Modifier.fillMaxWidth().padding(20.dp),verticalArrangement=Arrangement.spacedBy(10.dp)) {
-                        Row(Modifier.fillMaxWidth(),horizontalArrangement=Arrangement.SpaceBetween,verticalAlignment=Alignment.CenterVertically) { Text("Pedido #${p.pedido.id.toString().padStart(4,'0')}",style=MaterialTheme.typography.headlineSmall);Icon(IconosCafe.ShoppingBag,null,Modifier.size(28.dp)) }
-                        Text(if(p.pedido.horaRecojo=="Ahora") "Recojo lo antes posible" else "Recojo a las ${p.pedido.horaRecojo}",style=MaterialTheme.typography.bodyMedium)
-                        Text("Tiempo estimado: 10–15 min",style=MaterialTheme.typography.bodySmall)
-                    }
-                }
-                EscenaCampus("Tu pedido, paso a paso","Verás aquí cada cambio de la cafetería.","seguimiento")
-                StepperEstado(EstadoPedido.valueOf(p.pedido.estado))
+                EscenaCampus("Tu pedido,\npaso a paso","Verás aquí cada cambio de la cafetería.","seguimiento")
+                Row(Modifier.fillMaxWidth(),horizontalArrangement=Arrangement.SpaceBetween,verticalAlignment=Alignment.CenterVertically) { Text("Pedido #${p.pedido.id.toString().padStart(4,'0')}",style=MaterialTheme.typography.titleLarge);EstadoChip(EstadoPedido.valueOf(p.pedido.estado)) }
+                Row(horizontalArrangement=Arrangement.spacedBy(10.dp),verticalAlignment=Alignment.CenterVertically) { Icon(IconosCafe.AccessTime,null,tint=MaterialTheme.colorScheme.primary);Column { Text(if(p.pedido.horaRecojo=="Ahora") "Recojo lo antes posible" else "Recojo ${p.pedido.horaRecojo}",style=MaterialTheme.typography.bodyMedium);Text("Tiempo estimado: 10–15 min",style=MaterialTheme.typography.bodySmall,color=MaterialTheme.colorScheme.onSurfaceVariant) } }
+                PapelInterior { StepperEstado(EstadoPedido.valueOf(p.pedido.estado)) }
                 Tarjeta { p.detalles.forEach { d -> Row(Modifier.fillMaxWidth(),horizontalArrangement=Arrangement.spacedBy(10.dp)) { Text("${d.cantidad} × ${d.nombreProducto}",Modifier.weight(1f),style=MaterialTheme.typography.bodyMedium);Text(dinero(d.cantidad*d.precioUnitario),style=MaterialTheme.typography.bodyMedium) } };HorizontalDivider();Row(Modifier.fillMaxWidth(),horizontalArrangement=Arrangement.SpaceBetween) { Text("Total",style=MaterialTheme.typography.titleMedium);Text(dinero(p.pedido.total),color=MaterialTheme.colorScheme.primary,style=MaterialTheme.typography.titleLarge) } }
             }
         }

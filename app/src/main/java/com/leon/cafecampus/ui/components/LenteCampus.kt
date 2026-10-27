@@ -36,6 +36,7 @@ import androidx.compose.ui.unit.IntSize
         }
     """) }
     return Modifier.onSizeChanged { tam=it }.graphicsLayer {
+        clip=true
         shader.setFloatUniform("tam",tam.width.coerceAtLeast(1).toFloat(),tam.height.coerceAtLeast(1).toFloat())
         shader.setFloatUniform("fuerza",presion)
         shader.setFloatUniform("toque",if(punto==Offset.Zero) tam.width*.5f else punto.x,if(punto==Offset.Zero) tam.height*.5f else punto.y)

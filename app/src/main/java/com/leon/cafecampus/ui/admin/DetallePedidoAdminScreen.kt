@@ -33,8 +33,8 @@ import com.leon.cafecampus.data.local.entity.*
             val p=pedido
             if(p==null) Vacio("Cargando pedido…") else {
                 EscenaCampus("Listo para preparar.","Cada detalle cuenta.","cocina")
-                Tarjeta { Text("Pedido #${p.pedido.id.toString().padStart(4,'0')}",style=MaterialTheme.typography.headlineMedium); EstadoChip(EstadoPedido.valueOf(p.pedido.estado)); Text("Recojo ${p.pedido.horaRecojo} · ${p.pedido.pago}") }
-                Tarjeta {
+                PapelInterior { Text("Pedido #${p.pedido.id.toString().padStart(4,'0')}",style=MaterialTheme.typography.headlineMedium); EstadoChip(EstadoPedido.valueOf(p.pedido.estado)); Text("Recojo ${p.pedido.horaRecojo} · ${p.pedido.pago}") }
+                PapelInterior {
                     Text("Cliente",style=MaterialTheme.typography.labelMedium)
                     Text("${p.cliente.nombre} · Estudiante",fontWeight=FontWeight.Bold)
                     HorizontalDivider()

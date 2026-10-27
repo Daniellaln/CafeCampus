@@ -32,15 +32,15 @@ fun Modifier.reflejosRosa(radio: Dp,energia: Float=0f): Modifier=drawWithCache {
         drawArc(Color.White.copy(alpha=.7f),startAngle=195f,sweepAngle=65f,useCenter=false,topLeft=Offset(3.dp.toPx(),3.dp.toPx()),size=Size((r*2).coerceAtMost(size.width-6.dp.toPx()),(r*2).coerceAtMost(size.height-6.dp.toPx())),style=Stroke(2.dp.toPx(),cap=StrokeCap.Round))
     }
 }
-@Composable fun CristalRosa(modifier: Modifier=Modifier,radio: Dp=28.dp,descripcion: String?=null,seleccionado: Boolean=false,enabled: Boolean=true,accion: ()->Unit,contenido: @Composable BoxScope.()->Unit) {
+@Composable fun CristalRosa(modifier: Modifier=Modifier,radio: Dp=28.dp,descripcion: String?=null,seleccionado: Boolean=false,enabled: Boolean=true,sombra: Boolean=true,accion: ()->Unit,contenido: @Composable BoxScope.()->Unit) {
     val fuente=remember { MutableInteractionSource() };val tacto=recordarTacto(fuente)
     val oscuro=MaterialTheme.colorScheme.background.luminance()<.2f
     val fondo=LocalFondoCristal.current
     var sitio by remember { mutableStateOf(Offset.Zero) }
     val forma=RoundedCornerShape(radio)
     val tinta=if(seleccionado) MaterialTheme.colorScheme.primary.copy(alpha=if(oscuro) .16f else .075f) else Color.White.copy(alpha=if(oscuro) .035f else .025f)
-    Box(modifier.alpha(if(enabled) 1f else .38f).onGloballyPositioned { sitio=it.positionInRoot() }.deformacionLiquida(tacto).sombraCampus(radio,oscuro).clip(forma).background(tinta).clickable(interactionSource=fuente,indication=null,enabled=enabled,role=Role.Button,onClick=accion).semantics { if(descripcion!=null) contentDescription=descripcion }) {
-        if(fondo!=null) Box(Modifier.matchParentSize().lenteCampus(tacto.intensidad.value,tacto.punto.value).drawWithContent {
+    Box(modifier.onGloballyPositioned { sitio=it.positionInRoot() }.deformacionLiquida(tacto).then(if(sombra) Modifier.sombraCampus(radio,oscuro,.65f,luz=false) else Modifier).clip(forma).background(tinta).clickable(interactionSource=fuente,indication=null,enabled=enabled,role=Role.Button,onClick=accion).semantics { if(descripcion!=null) contentDescription=descripcion }) {
+        if(fondo!=null) Box(Modifier.matchParentSize().lenteCampus(tacto.intensidad.value,tacto.punto.value).clip(forma).drawWithContent {
             translate(fondo.origen.x-sitio.x,fondo.origen.y-sitio.y) { drawLayer(fondo.capa) }
         })
         Box(Modifier.matchParentSize().background(tinta).reflejosRosa(radio,tacto.intensidad.value))

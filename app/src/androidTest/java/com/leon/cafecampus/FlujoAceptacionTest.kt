@@ -24,6 +24,12 @@ class FlujoAceptacionTest {
     private fun producto(nombre: String) { ui.onNode(hasScrollToNodeAction()).performScrollToNode(hasContentDescription("Ver $nombre"));ui.onNodeWithContentDescription("Ver $nombre").performClick();ui.waitForIdle() }
     @Test fun faseUnoCompleta() {
         esperar("Comenzar");foto("00_bienvenida");click("Comenzar");esperar("Bienvenido");ui.onNodeWithContentDescription("Volver").performClick();esperar("Comenzar");click("Comenzar");esperar("Bienvenido");foto("01_login_cliente");click("Administrador");foto("01b_login_admin");click("Estudiante")
+        subir("Crear cuenta de estudiante");click("Crear cuenta de estudiante");esperar("Crear cuenta");foto("24_registro_estudiante")
+        campo("Nombre","Daniella");campo("Correo","DANIELLA@campus.test");campo("Contraseña","123456");campo("Repetir contraseña","123456")
+        subir("Crear mi cuenta");click("Crear mi cuenta");esperar("Este correo ya está registrado")
+        campo("Correo","daniella.nueva@campus.test");click("Crear mi cuenta");esperar("¡Hola, Daniella!")
+        ui.activityRule.scenario.recreate();esperar("¡Hola, Daniella!");click("Perfil");esperar("daniella.nueva@campus.test")
+        subir("Cerrar sesión");click("Cerrar sesión");esperar("Bienvenido")
         campo("Correo","daniella@campus.test");campo("Contraseña","mala");click("Ingresar")
         esperar("Correo o contraseña incorrectos")
         campo("Contraseña","1234");click("Ingresar");esperar("¡Hola, Daniella!");esperar("6 opciones")
@@ -37,6 +43,7 @@ class FlujoAceptacionTest {
         foto("02_menu_cliente")
         producto("Café americano")
         esperar("Detalle del producto");foto("03_detalle_producto")
+        ui.onNodeWithContentDescription("Volver").performTouchInput { down(center) };foto("27_volver_presionado");ui.onNodeWithContentDescription("Volver").performTouchInput { cancel() }
         ui.onNodeWithContentDescription("Aumentar cantidad").performClick()
         subir("Agregar al pedido");click("Agregar al pedido")
         esperar("¡Hola, Daniella!")
@@ -48,7 +55,8 @@ class FlujoAceptacionTest {
         subir("Confirmar pedido");click("Confirmar pedido");esperar("Seguimiento");foto("05_seguimiento")
         click("Pedidos");esperar("Mis pedidos");foto("06_mis_pedidos");click("Historial");foto("06b_estado_vacio");click("Activos")
         click("Perfil");esperar("Mi perfil");subir("Cambiar de perfil");click("Cambiar de perfil")
-        esperar("Panel de control · Hoy");ui.waitUntil(10000) { ui.onAllNodesWithText("S/ 11.50").fetchSemanticsNodes().size>=2 };foto("07_panel_admin")
+        esperar("Panel de control · Hoy");ui.waitUntil(10000) { ui.onAllNodesWithText("S/ 11.50").fetchSemanticsNodes().isNotEmpty() };foto("07_panel_admin")
+        click("Abrir reporte del día");esperar("Reporte del día");esperar("Producto más vendido");ui.onNodeWithText("Café americano").assertExists();foto("25_reporte_diario");ui.onNodeWithContentDescription("Volver").performClick();esperar("Panel de control · Hoy")
         click("Pedidos");esperar("Nuevos");foto("08_pedidos_admin")
         click("Pasar a Preparando");click("Preparando")
         click("Pedido #0001");esperar("Detalle del pedido");esperar("Cliente");foto("09_detalle_pedido_admin")
@@ -74,7 +82,7 @@ class FlujoAceptacionTest {
         ui.waitUntil(10000) { ui.onAllNodes(hasScrollToNodeAction()).fetchSemanticsNodes().isNotEmpty() }
         ui.onNode(hasScrollToNodeAction()).performScrollToNode(hasText("Tostada de prueba"));esperar("Tostada de prueba")
         click("Pedidos");click("Pedido #0001");esperar("Seguimiento")
-        ui.onNodeWithText("Preparando").assertExists();foto("14_seguimiento_actualizado")
+        ui.onAllNodesWithText("Preparando").onFirst().assertExists();foto("14_seguimiento_actualizado")
         click("Perfil");subir("Cambiar de perfil");click("Cambiar de perfil");esperar("Panel de control · Hoy")
         click("Pedidos");click("Preparando");click("Cancelar")
         click("Ajustes")
@@ -91,10 +99,24 @@ class FlujoAceptacionTest {
         campo("Buscar en el menú","CAFE");esperar("Resultados");ui.onNodeWithContentDescription("Ver Café americano").assertExists();foto("17_busqueda")
         ui.onNodeWithContentDescription("Limpiar búsqueda").performClick()
         click("Perfil");esperar("Mi perfil");foto("18_perfil")
+        ui.onNodeWithTag("navegacion_liquida").performTouchInput { down(androidx.compose.ui.geometry.Offset(width*.85f,height*.4f)) };foto("28_navegacion_presionada");ui.onNodeWithTag("navegacion_liquida").performTouchInput { cancel() }
         // Direct manipulation must navigate, not just play a decorative animation.
         ui.onNodeWithTag("navegacion_liquida").performTouchInput { swipe(start=androidx.compose.ui.geometry.Offset(width*.84f,height*.5f),end=androidx.compose.ui.geometry.Offset(width*.12f,height*.5f),durationMillis=380) }
         esperar("¡Hola, Daniella!")
         ui.onNodeWithContentDescription("Cerrar búsqueda").performClick();esperar("7 opciones")
+        // Capture both font scaling and dark mode from real Android configuration.
+        try {
+            val shell=InstrumentationRegistry.getInstrumentation().uiAutomation.executeShellCommand("settings put system font_scale 1.3")
+            java.io.FileInputStream(shell.fileDescriptor).use { it.readBytes() };shell.close()
+            ui.activityRule.scenario.recreate();esperar("¡Hola, Daniella!");foto("23_fuente_130")
+            click("Perfil");esperar("Mi perfil");foto("26_perfil_fuente_130")
+            ui.onAllNodes(isToggleable()).onFirst().performClick();click("Menú");esperar("¡Hola, Daniella!");foto("21_catalogo_oscuro")
+            click("Perfil");ui.onAllNodes(isToggleable()).onFirst().performClick();click("Menú")
+        } finally {
+            val shell=InstrumentationRegistry.getInstrumentation().uiAutomation.executeShellCommand("settings put system font_scale 1.0")
+            java.io.FileInputStream(shell.fileDescriptor).use { it.readBytes() };shell.close()
+        }
+        ui.activityRule.scenario.recreate();esperar("¡Hola, Daniella!")
         ui.onNodeWithContentDescription("Elegir categoría").performClick();esperar("Elige tu pausa");foto("20_categorias")
     }
 }

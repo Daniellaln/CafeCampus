@@ -17,16 +17,16 @@ import com.leon.cafecampus.ui.components.*
         Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(20.dp),verticalArrangement=Arrangement.spacedBy(22.dp)) {
             EscenaCampus("Así va tu cafetería.","Hoy · "+java.text.SimpleDateFormat("d MMM",java.util.Locale.forLanguageTag("es-PE")).format(java.util.Date(estado.inicio)),"panel")
             if(estado.cargando) Vacio("Cargando reporte…") else if(estado.error!=null) ErrorTexto(estado.error) else if(estado.cantidad==0) Vacio("Todavía no hay pedidos hoy") else {
-                Row(Modifier.fillMaxWidth(),horizontalArrangement=Arrangement.SpaceBetween,verticalAlignment=Alignment.CenterVertically) { Column { Text("Total del día",style=MaterialTheme.typography.bodyMedium);Text(dinero(estado.total),style=MaterialTheme.typography.headlineLarge,color=MaterialTheme.colorScheme.primary) };Text("${estado.cantidad} pedidos",style=MaterialTheme.typography.titleMedium) }
+                Row(Modifier.fillMaxWidth(),horizontalArrangement=Arrangement.SpaceBetween,verticalAlignment=Alignment.CenterVertically) { Column { Text("Total del día",style=MaterialTheme.typography.bodyMedium);Text(dinero(estado.total),style=MaterialTheme.typography.headlineLarge,color=MaterialTheme.colorScheme.primary) };Text(if(estado.cantidad==1) "1 pedido" else "${estado.cantidad} pedidos",style=MaterialTheme.typography.titleMedium) }
                 estado.productos.firstOrNull()?.let { p ->
                     Seccion("Producto más vendido")
                     Row(verticalAlignment=Alignment.CenterVertically,horizontalArrangement=Arrangement.spacedBy(16.dp)) {
-                        if(p.icono!=null) ProductoIcono(p.icono,Modifier.size(100.dp)) else Icon(IconosCafe.Inventory2,null,Modifier.size(48.dp))
-                        Column(Modifier.weight(1f),verticalArrangement=Arrangement.spacedBy(6.dp)) { Text(p.nombre,style=MaterialTheme.typography.titleLarge);Text("${p.unidades} unidades",style=MaterialTheme.typography.bodyMedium);Text(dinero(p.total),color=MaterialTheme.colorScheme.primary) }
+                        if(p.icono!=null) FotoProductoInterior(p.icono,Modifier.size(100.dp)) else Icon(IconosCafe.Inventory2,null,Modifier.size(48.dp))
+                        Column(Modifier.weight(1f),verticalArrangement=Arrangement.spacedBy(6.dp)) { Text(p.nombre,style=MaterialTheme.typography.titleLarge);Text(if(p.unidades==1) "1 unidad" else "${p.unidades} unidades",style=MaterialTheme.typography.bodyMedium);Text(dinero(p.total),color=MaterialTheme.colorScheme.primary) }
                     }
                 }
                 Seccion("Por forma de pago")
-                listOf("CAJA" to "Caja","YAPE" to "Yape / Plin").forEach { (id,nombre) -> val p=estado.pagos.find { it.pago==id };Tarjeta { Row(Modifier.fillMaxWidth(),verticalAlignment=Alignment.CenterVertically,horizontalArrangement=Arrangement.spacedBy(12.dp)) { Icon(IconosCafe.Payments,null,tint=MaterialTheme.colorScheme.primary);Column(Modifier.weight(1f)) { Text(nombre,style=MaterialTheme.typography.titleMedium);Text("${p?.cantidad ?: 0} pedidos",style=MaterialTheme.typography.bodySmall) };Text(dinero(p?.total ?: 0.0),style=MaterialTheme.typography.titleLarge) } } }
+                listOf("CAJA" to "Caja","YAPE" to "Yape / Plin").forEach { (id,nombre) -> val p=estado.pagos.find { it.pago==id };Tarjeta { Row(Modifier.fillMaxWidth(),verticalAlignment=Alignment.CenterVertically,horizontalArrangement=Arrangement.spacedBy(12.dp)) { Icon(IconosCafe.Payments,null,tint=MaterialTheme.colorScheme.primary);Column(Modifier.weight(1f)) { Text(nombre,style=MaterialTheme.typography.titleMedium);Text(if(p?.cantidad==1) "1 pedido" else "${p?.cantidad ?: 0} pedidos",style=MaterialTheme.typography.bodySmall) };Text(dinero(p?.total ?: 0.0),style=MaterialTheme.typography.titleLarge) } } }
                 Text("Datos del día local · sin pedidos cancelados",style=MaterialTheme.typography.bodySmall,color=MaterialTheme.colorScheme.onSurfaceVariant)
             }
         }

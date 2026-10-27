@@ -1,6 +1,6 @@
 ---
-name: CafeCampus — Cafetería blanca y cristal
-description: Cafetería Android luminosa, cristal claro y perfiles rosa y azul diferenciados.
+name: CafeCampus — Cafetería blanca, cristal e interiores
+description: Cafetería Android con ambientes completos por tarea, papel mate y acciones de cristal claro.
 colors:
   dark-primary: "#FFB0CF"
   dark-admin-primary: "#ABC1FF"
@@ -93,6 +93,7 @@ colors:
   dark-glass-navigation-admin: "rgba(26,41,64,0.46)"
   glass-search: "rgba(255,255,255,0.025)"
   dark-glass-search: "rgba(255,255,255,0.04)"
+  interior-paper: "rgba(253,253,252,0.96)"
 typography:
   display-large: {fontFamily: Manrope, fontSize: "48sp", lineHeight: "54sp", fontWeight: 700, letterSpacing: "0sp"}
   display-medium: {fontFamily: Manrope, fontSize: "42sp", lineHeight: "48sp", fontWeight: 700, letterSpacing: "0sp"}
@@ -120,7 +121,6 @@ rounded:
   extra-large: "28dp"
   navigation: "30dp"
   sheet: "30dp"
-  hero-bottom: "34dp"
 spacing:
   micro: "4dp"
   small: "8dp"
@@ -189,6 +189,22 @@ components:
     textColor: "{colors.cliente-primary}"
     rounded: "{rounded.capsule}"
     size: "48dp"
+  interior-paper:
+    backgroundColor: "{colors.interior-paper}"
+    textColor: "{colors.ink}"
+    rounded: "{rounded.large}"
+    padding: "18dp"
+    width: "100%"
+  interior-option:
+    backgroundColor: "{colors.glass-control}"
+    textColor: "{colors.cliente-primary}"
+    rounded: "{rounded.capsule}"
+    typography: "{typography.label-large}"
+    padding: "0 16dp"
+    height: "48dp"
+  profile-avatar:
+    backgroundColor: "{colors.secondary-container}"
+    size: "112dp"
 ---
 
 # Design System: CafeCampus
@@ -201,12 +217,15 @@ CafeCampus se sitúa en una cafetería real y luminosa: ambiente neutro, luz nat
 
 La carta se reconoce por fotografías grandes y tarjetas uniformes con nombre, precio y acciones por iconos, añadiendo Agotado cuando corresponde. Los controles son cristal claro con reflejos blancos curvos y fondo real capturado. El material es una adaptación Android: refracción AGSL desde API 33 y respuesta geométrica en API 24–32. Texto e iconos se componen nítidos por encima.
 
+Los interiores usan fondos fotográficos completos por tarea, con utilería integrada y sin recortes decorativos flotantes. El menú conserva su composición aprobada. Las superficies de papel mate ordenan identidad, bolsa y preferencias; los botones claros conservan el tacto y los reflejos del cristal. La foto aportada de Daniella pertenece exclusivamente a su cuenta semilla.
+
 **Key Characteristics:**
 - Ambiente de cafetería blanco y neutro, luz natural y flores blancas.
 - Acabados rosas del estudiante e identidad azul sobria del administrador.
 - Manrope local e iconos SVG originales compartidos con ImageVector.
 - Fotografía, nombre, precio, corazón y flecha en tarjetas uniformes.
 - Cristal claro que muestrea el fondo real, con luz curva y tacto líquido.
+- Interiores fotográficos por tarea y papel mate para identidad y decisiones.
 
 ## Colors
 
@@ -227,12 +246,13 @@ El mundo usa ambiente neutro y acabados diferenciados por perfil. El frontmatter
 
 ### Neutral
 - **Blanco de cafetería:** cliente-background y product-paper sostienen fotografía, luz y lectura.
-- **Blanco frío gestor:** admin-background y sus variantes acompañan fondo_gestor.
+- **Blanco frío gestor:** admin-background y sus variantes acompañan los ambientes propios de gestión.
 - **Tinta azul noche:** ink sostiene texto principal; muted y admin-muted diferencian lectura secundaria.
+- **Papel interior:** interior-paper es la superficie mate clara de lectura; en oscuro usa surface del perfil.
 - **Cristal claro:** glass-control es velo blanco mínimo y glass-selected-cliente/admin añade tinte ligero. Fondo capturado y reflejo construyen el material; el velo aislado no describe el resultado compuesto.
 - **Noche por perfil:** dark-background cálido oscuro para estudiante y dark-admin-background azul noche para gestor. La fotografía de fondo lleva alfa 12% en oscuro.
 
-Los estados Recibido, Preparando, Listo, Entregado y Cancelado conservan pares explícitos azul, ámbar, verde, gris y rojo con etiqueta. Disponible/Agotado mantiene significado textual o accesible. Algunos roles nocturnos administrativos (onSecondary, onPrimaryContainer, onSecondaryContainer y outline) todavía comparten valores del esquema rosa: se registran como deriva, no como regla para extender el sistema.
+Los estados Recibido, Preparando, Listo, Entregado y Cancelado conservan pares explícitos azul, ámbar, verde, gris y rojo con etiqueta. Disponible/Agotado mantiene significado textual o accesible. onSecondary y onPrimaryContainer nocturnos administrativos todavía comparten valores del esquema rosa: se registran como deriva, no como regla para extender el sistema. Outline administrativo y onSecondaryContainer oscuro ya tienen valores propios azules en la fuente actual.
 
 ### Named Rules
 **The Profile Accent Rule.** El estudiante usa fucsia y rosa ligero en acabados; administración usa azul y materiales propios de gestión. El fondo de cafetería permanece neutro.
@@ -264,13 +284,13 @@ La carta usa dos columnas iguales en LazyVerticalGrid, gaps de 10 dp, padding su
 
 La búsqueda crece desde 56 dp con spring; oculta la marca y muestra BasicTextField después del 65% de apertura. Cerrar limpia la consulta. Las pestañas rápidas son Todo, Bebidas, Snacks y Favoritos. La hoja conserva Todo, Desayunos, Almuerzos, Bebidas y Snacks: esquinas superiores 30 dp, padding lateral 24 dp e imágenes de 54 dp.
 
-Navegación de 72 dp con márgenes horizontal 16 dp y vertical 10 dp. NavCafe graba fondo y página en GraphicsLayer; permite superposición en menú y respeta Scaffold en otras rutas. EscenaCampus es una fila compacta: gestor mínimo 94 dp con imagen 112 × 94 dp y padding horizontal 8 dp; estudiante mínimo 136 dp e imagen 150 × 136 dp. HeroCampus de acceso mantiene mínimo 224 dp y texto al 55%. No hay breakpoints de tableta explícitos en el código muestreado.
+Navegación de 72 dp con márgenes horizontal 16 dp y vertical 10 dp, más navigationBarsPadding para respetar el área del sistema. NavCafe graba fondo y página en GraphicsLayer; permite superposición en menú y respeta Scaffold en otras rutas. EscenaCampus es una columna de texto sobre el ambiente, sin fotografía recortada lateral: mínimo 116 dp en gestor y 132 dp en estudiante, padding superior 12 dp e inferior 18 dp, ancho de título 72% o 70% respectivamente y subtítulo 70%. HeroCampus delega en esa misma composición. Detalle y bolsa conservan barras inferiores sólidas para total y confirmación; sus botones siguen siendo CristalRosa. No hay breakpoints de tableta explícitos en el código muestreado.
 
 ## Elevation & Depth
 
-CristalRosa usa blanco al 2.5% en reposo claro y 3.5% oscuro; seleccionado, primary al 7.5% claro o 16% oscuro. Obtiene LocalFondoCristal, registra su posición en raíz y dibuja la GraphicsLayer desplazada por diferencia de orígenes. La lente afecta esa capa; encima aparecen velo, reflejos y contenido. Disabled reduce el control a alfa 38% y desactiva la acción.
+CristalRosa usa blanco al 2.5% en reposo claro y 3.5% oscuro; seleccionado, primary al 7.5% claro o 16% oscuro. Obtiene LocalFondoCristal, registra su posición en raíz y dibuja la GraphicsLayer desplazada por diferencia de orígenes. La captura se recorta con la misma forma redondeada antes de componer la óptica, y la GraphicsLayer de lenteCampus tiene clip=true. Encima aparecen velo, reflejos y contenido. Disabled desactiva la acción; la fuente actual no reduce el alfa global del control.
 
-FondoCampus captura el ambiente propio del perfil. ProductoCard crea otro FondoCristal que graba exclusivamente fotografía y papel opaco; corazón, nombre, precio y flecha se componen después. Así cada control muestrea su contexto real sin recapturarse ni refractar glifos del producto. MaterialDeFondo usa el mismo mecanismo para búsqueda. La navegación recibe otra captura de la página real con fondo.
+FondoCampus captura el ambiente correspondiente a ruta y perfil. Siete fotografías completas ambiente_* integran la utilería en la escena; fondo_cafe_blanco permanece en menú y detalle del estudiante. ProductoCard crea otro FondoCristal que graba exclusivamente fotografía y papel opaco; corazón, nombre, precio y flecha se componen después. Así cada control muestrea su contexto real sin recapturarse ni refractar glifos del producto. MaterialDeFondo usa el mismo mecanismo para búsqueda. La navegación recibe otra captura de la página real con fondo; en claro aplica blur de 14 dp antes de la lente, con recorte redondeado de 30 dp. En oscuro ese blur es cero.
 
 reflejosRosa dibuja borde blanco de 1.5 dp con gradiente, luz vertical modulada por energía y arco superior de 2 dp (inicio 195°, barrido 65°). La reflexión luminosa curva sigue el control. ProductoCard usa papel opaco, borde blanco 1.2 dp (95% claro, 35% oscuro) y cero elevación nativa; la foto no pasa por lenteCampus.
 
@@ -280,6 +300,10 @@ Desde API 33, lenteCampus usa RuntimeShader/RenderEffect y desvía el muestreo s
 - **Exterior neutro claro:** principal ARGB 0x423E4653, radio 11 dp, offset (6, 8) dp; realce ARGB 0xD9FFFFFF, radio 8 dp, offset (-5, -5) dp.
 - **Exterior noche:** misma geometría, principal ARGB 0x78000000 y realce ARGB 0x163F4C62.
 - **Centro vacío:** SombraCampus usa bitmap con margen 30 dp y borra la silueta interior mediante PorterDuff CLEAR. No equivale directamente a box-shadow CSS o elevación nativa.
+- **Intensidad:** el parámetro intensidad multiplica el alfa de las sombras y trunca al entero; luz controla el realce exterior. Por defecto son 1 y true.
+- **Controles claros:** CristalRosa usa intensidad 0.65 y luz=false por defecto: conserva solo sombra exterior tenue, sin contraluz blanca externa. Su reflejo blanco interior sigue intacto.
+- **Volver sin sombra:** CristalRosa y BotonCristal exponen sombra=true; VolverCampus establece sombra=false para evitar que AppTopBar recorte su sombra exterior. Conserva lente, reflejos interiores y presión. Esta excepción no elimina la sombra 0.65 de los demás controles.
+- **Papel mate:** PapelInterior usa intensidad 0.45 y conserva luz=true; la sombra y el realce son más suaves que los valores base.
 
 ### Named Rules
 **The Real Backdrop Rule.** Los controles de cristal muestrean el fondo real de su contexto: ambiente en la página y foto/papel dentro del producto, alineados por coordenadas de raíz.
@@ -288,16 +312,16 @@ Desde API 33, lenteCampus usa RuntimeShader/RenderEffect y desvía el muestreo s
 
 **The Empty Shadow Rule.** Usar sombra exterior con centro transparente detrás del cristal para que su relleno no aparezca a través de la superficie.
 
-El tacto usa spring 0.58/430 (dampingRatio/stiffness), scaleX 1 + 0.025p y scaleY 1 - 0.048p; ProductoCard aplica amplitud 0.45. CafeButton reutiliza esa respuesta. Navegación usa 0.66/370 y búsqueda 0.72/350. HeroCampus flota entre -3 y 3 dp en tramos de 4400 ms. Escala de animación cero suprime presión/flotación y usa snap en búsqueda y posición seleccionada; se lee al recordarse la composición, sin observador posterior explícito.
+El tacto usa spring 0.58/430 (dampingRatio/stiffness), scaleX 1 + 0.025p y scaleY 1 - 0.048p; ProductoCard aplica amplitud 0.45. CafeButton reutiliza esa respuesta. Navegación usa 0.66/370 y búsqueda 0.72/350. Escala de animación cero suprime presión líquida y usa snap en búsqueda y posición seleccionada; se lee al recordarse la composición, sin observador posterior explícito.
 
 ## Shapes
 
-Escala del tema 8/12/16/22/28 dp. Producto con radio 20 dp; control de 56 dp con radio 28 dp; acciones de producto de 48 dp con radio 24 dp. Pestañas de 44 dp con radio 22 dp. Navegación y hoja usan 30 dp. El arco luminoso respeta cada silueta. HeroCampus conserva esquinas inferiores de 34 dp; las escenas actuales de contexto son filas abiertas.
+Escala del tema 8/12/16/22/28 dp. Producto con radio 20 dp; control de 56 dp con radio 28 dp; acciones de producto de 48 dp con radio 24 dp. Pestañas de 44 dp con radio 22 dp. Navegación y hoja usan 30 dp. El arco luminoso respeta cada silueta. PapelInterior usa radio 22 dp. FotoProductoInterior usa radio 14 dp; la foto principal de detalle usa 22 dp. AvatarPerfil es circular; el perfil estudiante lo presenta a 112 dp y gestor a 88 dp. Barras inferiores de detalle y bolsa redondean las esquinas superiores a 28 dp. Las escenas de contexto actuales son columnas abiertas.
 
 ## Components
 
 ### Buttons
-CafeButton es cristal claro de ancho completo, altura 56 dp, radio 28 dp, texto labelLarge y flecha de 22 dp en primary. Padding horizontal 20 dp y vertical 17 dp. Disabled: alfa 38%, acción desactivada. CristalRosa da tacto a botones, categorías y círculos; BotonCristal usa diámetro 56 dp y VolverCampus lo reutiliza en niveles secundarios. El color sigue el perfil.
+CafeButton es cristal claro de ancho completo, altura 56 dp, radio 28 dp, texto labelLarge y flecha de 22 dp en primary. Padding horizontal 20 dp y vertical 17 dp. Disabled desactiva la acción sin modificar el alfa global en la fuente actual. CristalRosa da tacto a botones, categorías y círculos; BotonCristal usa diámetro 56 dp y VolverCampus lo reutiliza en niveles secundarios con sombra=false: sin sombra exterior, conservando lente, reflejos y presión. El color sigue el perfil.
 
 ### Chips
 Pestañas de 44 dp, radio 22 dp y padding horizontal 15 dp: icono y texto primary en reposo y selección; seleccionar añade solo tinte ligero. Selector de hoja: 48 dp, radio 24 dp y ancho mínimo 112 dp. Categorias administrativo conserva FilterChip radio 12 dp y selección primary/onPrimary. EstadoChip usa radio 8 dp y padding 9 × 5 dp; Disponible, 9 × 4 dp, con etiquetas y colores semánticos.
@@ -305,21 +329,39 @@ Pestañas de 44 dp, radio 22 dp y padding horizontal 15 dp: icono y texto primar
 ### Cards / Containers
 ProductoCard muestra fotografía hasta el borde, nombre y precio. El corazón se superpone arriba a la derecha, inset 5 dp, icono vacío/relleno de 24 dp y objetivo 48 dp; su etiqueta cambia Guardar/Quitar. La flecha inferior mide 25 dp dentro de objetivo 48 dp y anuncia Ver detalles de [producto]. Tarjeta y flecha abren el mismo detalle. No aparecen categoría, descripción ni texto Ver detalles en el pie. Agotado aparece cuando corresponde.
 
-Favoritos se almacena con DataStore por id de usuario; SesionViewModel cambia el flujo al cambiar de cuenta y MenuViewModel combina favoritos, categoría y búsqueda. Tarjeta agrupa otros registros mediante espacio y divisor outlineVariant al 65%, sin caja exterior. FondoCampus usa fondo_cafe_blanco para estudiante y fondo_gestor para administración. BarraCampus conserva velo lila heredado y papel_campus; es deriva localizada, no material recomendado para nuevos controles claros.
+Favoritos se almacena con DataStore por id de usuario; SesionViewModel cambia el flujo al cambiar de cuenta y MenuViewModel combina favoritos, categoría y búsqueda. Tarjeta agrupa otros registros mediante espacio y divisor outlineVariant al 65%, sin caja exterior. Los ambientes se asignan por tarea y perfil según el apartado Fotografía y escenas. BarraCampus conserva velo lila heredado y papel_campus; es deriva localizada, no material recomendado para nuevos controles claros.
 
 ### Inputs / Fields
-CafeTextField mantiene OutlinedTextField radio 14 dp, surface sólido y outlineVariant sin foco; foco, teclado y contraseña son nativos. El buscador usa BasicTextField, cursor primary, cerrar/limpiar por iconos y descripción Buscar en el menú. Su cristal muestrea fondo real con MaterialDeFondo, blanco al 2.5% claro o 4% oscuro.
+CafeTextField mantiene OutlinedTextField radio 14 dp, surface sólido y outlineVariant sin foco; acepta un icono inicial opcional. Foco, teclado y contraseña son nativos. El buscador usa BasicTextField, cursor primary, cerrar/limpiar por iconos y descripción Buscar en el menú. Su cristal muestrea fondo real con MaterialDeFondo, blanco al 2.5% claro o 4% oscuro.
 
 ### Navigation
-Cliente: Menú, Pedidos, Perfil. Gestor: Panel, Pedidos, Menú, Ajustes. Role.Tab, iconos originales 24 dp y labelSmall; primary seleccionado y onSurfaceVariant en reposo. Click y arrastre horizontal eligen destino válido al soltar. Seguimiento mantiene Pedidos seleccionado. El plano real refractado recibe blanco 8% claro o surface 46% oscuro, reflejos y gota del perfil. AppTopBar es transparente, título onSurface y acciones primary.
+Cliente: Menú, Pedidos, Perfil. Gestor: Panel, Pedidos, Menú, Ajustes. Role.Tab, iconos originales 24 dp y labelSmall; primary seleccionado y onSurfaceVariant en reposo. Click y arrastre horizontal eligen destino válido al soltar. Seguimiento mantiene Pedidos seleccionado. El plano real refractado recibe blanco 8% claro o surface 46% oscuro, reflejos y gota del perfil. La fila de destinos está recortada a radio 30 dp; cada selectable usa su propio MutableInteractionSource y indication=null para evitar una huella rectangular, preservando Role.Tab y selección. La capa óptica también se recorta a esa silueta. AppTopBar es transparente, título onSurface y acciones primary.
 
 ### Iconografía original
 Treinta y cinco SVG editables en design/icons-svg comparten geometría con IconosCafe.kt. Lienzo 24 × 24, trazo 1.7, extremos y uniones redondeados; currentColor en SVG y tint de Compose aplican el perfil. Favorite es variante rellena de FavoriteBorder. Ambos perfiles usan la misma familia: búsqueda, bolsa, hogar, pedidos, perfil, gráfico, ajustes, filtros y gestión. Mantener etiqueta accesible cuando el icono sea la única acción visible.
 
-### Fotografía y escenas
-fondo_cafe_blanco sitúa la cafetería neutra con luz natural y flores blancas. Gestor utiliza fondo_gestor, gestor_panel, gestor_catalogo y gestor_pedidos. fotoProducto usa cafe_rosa, plato_rosa, jugo_rosa, pan_rosa, chicha_rosa y dulce_rosa; botella mapea a chicha_rosa. Las escenas secundarias del estudiante conservan recortes contextuales previos. El texto funcional permanece nativo.
+### Papel y opciones interiores
+PapelInterior agrupa contenido de lectura y elección con radio 22 dp, padding 18 dp y gap 14 dp. En claro usa papel casi blanco al 96% (mate visualmente); en oscuro usa surface sólido. Tiene sombra exterior neutra a intensidad 0.45, sin lente ni brillo de cristal. OpcionCristal conserva el material transparente, altura 48 dp, radio 24 dp, padding horizontal 16 dp e icono opcional de 21 dp. Selección usa primary en texto y tinte ligero; reposo usa onSurfaceVariant. Se usa en horarios de recojo y formas de pago, sin adoptar botones opacos de las referencias.
 
-Los ejemplos HTML/CSS del sidecar aproximan los componentes para inspección. Referencian fuentes e imágenes locales y llevan SVG inline del proyecto; no ejecutan GraphicsLayer, AGSL, persistencia o física Compose.
+### Perfil e identidad
+AjustesScreen alinea Mi perfil/Ajustes al margen, con 18 dp arriba, seguido de la escena textual. PapelInterior contiene avatar e identidad en fila con gap 18 dp: nombre titleLarge, correo bodySmall y rol labelMedium en primary. El avatar estudiante mide 112 dp; el administrativo 88 dp. AvatarPerfil usa círculo, borde blanco de 3 dp al 90% y foto interior con padding 4 dp, Crop y alineación CenterStart. Solo la cuenta estudiante con correo daniella@campus.test muestra daniella_perfil.png aportada por la usuaria; las demás cuentas muestran inicial. Su registro [FOTO_PERFIL_ORIGEN.json](docs/arte/FOTO_PERFIL_ORIGEN.json) la identifica como fotografía aportada, no generada por IA ni retocada. No reutilizar su cara como avatar genérico. Preferencias viven en otro PapelInterior con interruptores nativos y acciones de cuenta debajo.
+
+### Detalle y bolsa
+DetalleProductoScreen da protagonismo a la foto Crop de 300 dp, radio 22 dp. Nombre headlineMedium y precio titleLarge comparten fila; después aparecen disponibilidad, tiempo, descripción, cantidad y nota para cocina. Los controles menos/más son círculos de 48 dp con límites 1–99; la cantidad cambia con AnimatedContent. La barra inferior sólida de radio superior 28 dp y elevación 8 dp muestra total y CafeButton Agregar al pedido.
+
+ConfirmarPedidoScreen usa espaciado de 22 dp y papeles separados para productos, recojo y pago. Cada producto lleva foto Crop de 64 dp, radio 14 dp, nombre, unidades/subtotal y quitar accesible; divisores separan filas. Horarios desplazables y pago Caja/Yape-Plin se eligen mediante OpcionCristal. Nota y resumen conservan lectura nativa. La barra inferior sólida muestra total, acción Confirmar/Confirmando y Seguir pidiendo; errores de horario, bolsa, envío o cafetería cerrada aparecen como estados reales. La referencia guía la composición, mientras el cristal de los controles se preserva.
+
+### Acceso, registro y reporte
+SplashScreen utiliza marca alineada, aire superior equivalente al 25% de la altura disponible, titular displayMedium y acciones claras. Login usa ambiente de acceso, margen 24 dp, gap 18 dp, selector segmentado Estudiante/Administrador, correo y contraseña. RegistroScreen hereda este lenguaje y añade nombre, repetición y ayuda de contraseña; cargando y error son observables. Su fuente valida correo único en Room y persiste sesión por id; no se presenta la creación de cuenta como una simulación visual.
+
+ReporteScreen usa jerarquía azul: total del día headlineLarge, cantidad de pedidos y producto más vendido por unidades con imagen de 100 dp, nombre, unidades y total. Caja y Yape/Plin se presentan en filas abiertas Tarjeta. Los valores proceden de consultas Room en el intervalo del día local y excluyen cancelados; el estado puede ser carga, error, vacío o datos. La composición no lleva cifras ilustrativas fijas. La ampliación incluye las seis mejoras del producto: búsqueda, repetir pedido, gráfico real, registro, animaciones/vacíos y reporte diario, sin convertir su presencia en una afirmación de pruebas aprobadas.
+
+### Fotografía y escenas
+Los siete fondos completos son ambiente_acceso, ambiente_perfil, ambiente_bolsa, ambiente_pedidos, ambiente_gestor, ambiente_despacho y ambiente_catalogo. FondoCampus usa perfil para la cuenta, bolsa para confirmar, pedidos para historial/seguimiento, acceso para splash/registro/login estudiante, despacho para pedidos/detalles administrativos, catálogo para menú/formulario administrativo y gestor para las demás rutas del gestor. El menú y detalle estudiante mantienen fondo_cafe_blanco. En oscuro el fondo fotográfico conserva alfa 12% sobre el fondo del tema.
+
+La utilería se integra en esas fotografías completas: no superponer recortes PNG decorativos flotantes en los interiores. Las fotografías funcionales de comida y el avatar permanecen como contenido: cafe_rosa, plato_rosa, jugo_rosa, pan_rosa, chicha_rosa y dulce_rosa; botella mapea a chicha_rosa. EscenaCampus y HeroCampus ya no añaden recortes decorativos. Vacio usa icono Coffee de 34 dp sobre círculo de 76 dp y texto; carga usa indicador nativo. Los helpers gráficos antiguos que permanezcan definidos no son autoridad visual de los nuevos interiores.
+
+Los ejemplos HTML/CSS del sidecar aproximan componentes para inspección. Referencian fuentes e imágenes locales y llevan SVG inline del proyecto; no ejecutan GraphicsLayer, AGSL, persistencia, consultas Room o física Compose.
 
 ## Do's and Don'ts
 
@@ -330,6 +372,8 @@ Los ejemplos HTML/CSS del sidecar aproximan los componentes para inspección. Re
 - **Do** reducir las tarjetas a foto, nombre, precio, corazón y flecha, añadiendo Agotado cuando corresponda.
 - **Do** reutilizar geometría SVG/ImageVector y mantener etiquetas accesibles en acciones por iconos.
 - **Do** conservar favoritos persistentes separados por usuario y estados acompañados de texto.
+- **Do** integrar utilería en fondos interiores completos y ordenar lectura con PapelInterior mate.
+- **Do** limitar la foto de Daniella a su cuenta semilla y mostrar inicial para otras cuentas.
 
 ### Don't:
 - **Don't** devolver rosa dominante al fondo ni interpretar café como obligación de marrón.
@@ -337,6 +381,8 @@ Los ejemplos HTML/CSS del sidecar aproximan los componentes para inspección. Re
 - **Don't** trasladar flores y escenas personales del estudiante al gestor como identidad administrativa.
 - **Don't** capturar letras o botones del propio producto para usarlos como su fondo óptico.
 - **Don't** recuperar descripciones, categoría o texto Ver detalles en el pie de la tarjeta del catálogo.
+- **Don't** superponer recortes decorativos flotantes en los interiores.
+- **Don't** adoptar rellenos opacos de las referencias para sustituir los botones de cristal aprobados.
 - **Don't** afirmar material Apple nativo, equivalencia óptica entre versiones, pruebas finalizadas o rendimiento físico sin evidencia.
 
-No canonizado ni reparado en esta pasada: velo lila heredado de BarraCampus y algunos roles nocturnos compartidos con rosa en administrador. Este registro deriva de fuente real después de la compilación comunicada; no usa capturas antiguas ni declara terminadas las pruebas instrumentadas, revisión visual actual, auditoría de todas las escalas de fuente o rendimiento en teléfono físico. Tampoco afirma equivalencia óptica entre versiones Android.
+No canonizado ni reparado en esta pasada: velo lila heredado de BarraCampus y roles nocturnos onSecondary/onPrimaryContainer del administrador compartidos con rosa. La documentación deriva de fuente real del proyecto interiores, no de capturas antiguas. La coordinación comunica 19 pruebas instrumentadas aprobadas y 32 capturas reales; esta pasada documental no inspecciona esas imágenes ni certifica revisión física, toda escala de fuente o rendimiento físico. El veredicto del ajuste de recorte y sombras sigue pendiente al registrar esta actualización. Tampoco afirma equivalencia óptica entre versiones Android. PapelInterior claro usa alfa 96% en código, aunque su carácter visual sea mate: no se registra como opacidad matemática total.

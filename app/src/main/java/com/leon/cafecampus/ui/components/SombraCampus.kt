@@ -13,16 +13,17 @@ import androidx.compose.ui.unit.dp
 
 // The shadow bitmap is transparent INSIDE the shape. Native elevation was visible
 // through the translucent fill and produced an unwanted rectangular centre.
-fun Modifier.sombraCampus(radio: Dp=24.dp,oscuro: Boolean=false): Modifier = drawWithCache {
+fun Modifier.sombraCampus(radio: Dp=24.dp,oscuro: Boolean=false,intensidad: Float=1f,luz: Boolean=true): Modifier = drawWithCache {
     val margen=30.dp.toPx().toInt()
     val bitmap=Bitmap.createBitmap((size.width+2*margen).toInt().coerceAtLeast(1),(size.height+2*margen).toInt().coerceAtLeast(1),Bitmap.Config.ARGB_8888)
     val canvas=android.graphics.Canvas(bitmap)
     val rect=RectF(margen.toFloat(),margen.toFloat(),margen+size.width,margen+size.height)
     val pintura=Paint(Paint.ANTI_ALIAS_FLAG)
+    fun tenue(color: Int)=android.graphics.Color.argb((android.graphics.Color.alpha(color)*intensidad).toInt(),android.graphics.Color.red(color),android.graphics.Color.green(color),android.graphics.Color.blue(color))
     pintura.color=android.graphics.Color.BLACK
-    pintura.setShadowLayer(11.dp.toPx(),6.dp.toPx(),8.dp.toPx(),if(oscuro) 0x78000000 else 0x423E4653)
+    pintura.setShadowLayer(11.dp.toPx(),6.dp.toPx(),8.dp.toPx(),tenue(if(oscuro) 0x78000000 else 0x423E4653))
     canvas.drawRoundRect(rect,radio.toPx(),radio.toPx(),pintura)
-    pintura.setShadowLayer(8.dp.toPx(),(-5).dp.toPx(),(-5).dp.toPx(),if(oscuro) 0x163F4C62 else 0xD9FFFFFF.toInt())
+    pintura.setShadowLayer(8.dp.toPx(),(-5).dp.toPx(),(-5).dp.toPx(),if(luz) tenue(if(oscuro) 0x163F4C62 else 0xD9FFFFFF.toInt()) else 0)
     canvas.drawRoundRect(rect,radio.toPx(),radio.toPx(),pintura)
     pintura.clearShadowLayer()
     pintura.xfermode=PorterDuffXfermode(PorterDuff.Mode.CLEAR)

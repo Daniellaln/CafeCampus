@@ -1,3 +1,5 @@
+> Ampliación definitiva: [PROMPTS_EXTRAS_INTERIORES.md](PROMPTS_EXTRAS_INTERIORES.md). Contiene registro, reporte y composición de todas las pantallas con diferencia/reflexión.
+
 > La ampliación visual más reciente está en [PROMPTS_REDISENIO.md](PROMPTS_REDISENIO.md). Los bloques siguientes documentan las mejoras anteriores de fase2 y no sustituyen la dirección final de cafetería blanca y administración azul.
 
 # Prompts por funcionalidad para Gemini en Android Studio
