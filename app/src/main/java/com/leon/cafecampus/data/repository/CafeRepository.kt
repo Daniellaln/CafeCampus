@@ -7,6 +7,8 @@ interface CafeRepository {
     suspend fun registrarEstudiante(nombre: String,correo: String,clave: String): Usuario
     suspend fun obtenerUsuario(id: Int): Usuario?
     suspend fun login(correo: String,clave: String): Usuario?
+    fun observarReporteProductos(inicio: Long,fin: Long): Flow<List<ProductoReporte>>
+    fun observarReportePagos(inicio: Long,fin: Long): Flow<List<PagoReporte>>
     fun observarProductos(): Flow<List<Producto>>
     suspend fun guardarProducto(p: Producto)
     suspend fun eliminarProducto(p: Producto)

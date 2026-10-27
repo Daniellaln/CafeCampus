@@ -18,5 +18,9 @@ import com.leon.cafecampus.data.local.relation.PedidoConDetalle
     @Query("SELECT COALESCE(SUM(total), 0.0) FROM pedidos WHERE fecha >= :inicio AND estado != 'CANCELADO'") abstract fun ventasDesde(inicio: Long): Flow<Double>
     @Query("SELECT CAST(strftime('%H', fecha / 1000, 'unixepoch', 'localtime') AS INTEGER) AS hora, COUNT(*) AS cantidad FROM pedidos WHERE fecha >= :inicio AND fecha < :fin AND estado != 'CANCELADO' GROUP BY hora ORDER BY hora")
     abstract fun pedidosPorHora(inicio: Long,fin: Long): Flow<List<com.leon.cafecampus.model.PedidosPorHora>>
+    @Query("SELECT d.productoId AS productoId, MAX(d.nombreProducto) AS nombre, SUM(d.cantidad) AS unidades, SUM(d.cantidad*d.precioUnitario) AS total, MAX(pr.icono) AS icono FROM detalle_pedido d JOIN pedidos p ON p.id=d.pedidoId LEFT JOIN productos pr ON pr.id=d.productoId WHERE p.fecha >= :inicio AND p.fecha < :fin AND p.estado != 'CANCELADO' GROUP BY d.productoId ORDER BY unidades DESC, total DESC, nombre ASC")
+    abstract fun reporteProductos(inicio: Long,fin: Long): Flow<List<com.leon.cafecampus.model.ProductoReporte>>
+    @Query("SELECT pago, SUM(total) AS total, COUNT(*) AS cantidad FROM pedidos WHERE fecha >= :inicio AND fecha < :fin AND estado != 'CANCELADO' GROUP BY pago ORDER BY pago")
+    abstract fun reportePagos(inicio: Long,fin: Long): Flow<List<com.leon.cafecampus.model.PagoReporte>>
     @Query("SELECT COUNT(*) FROM pedidos WHERE estado = :estado") abstract fun cantidadPorEstado(estado: String): Flow<Int>
 }

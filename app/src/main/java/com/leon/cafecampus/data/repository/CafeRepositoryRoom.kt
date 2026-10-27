@@ -20,6 +20,8 @@ class CafeRepositoryRoom(private val db: CafeDatabase) : CafeRepository {
             catch(e: android.database.sqlite.SQLiteConstraintException) { throw IllegalArgumentException("Este correo ya está registrado",e) }
         }
     }
+    override fun observarReporteProductos(inicio: Long,fin: Long) = db.pedidoDao().reporteProductos(inicio,fin)
+    override fun observarReportePagos(inicio: Long,fin: Long) = db.pedidoDao().reportePagos(inicio,fin)
     override fun observarProductos() = db.productoDao().observarTodos()
     override suspend fun guardarProducto(p: Producto) {
         require(p.nombre.isNotBlank() && p.precio.isFinite() && p.precio>0) { "Nombre y precio válidos son obligatorios" }

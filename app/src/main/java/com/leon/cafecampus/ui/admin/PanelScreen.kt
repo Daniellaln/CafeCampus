@@ -22,7 +22,7 @@ import com.leon.cafecampus.viewmodel.*
 import com.leon.cafecampus.model.*
 import com.leon.cafecampus.data.local.entity.*
 
-@Composable fun PanelScreen(vm: PanelAdminViewModel,pedidos: PedidosAdminViewModel,abrir: (Int)->Unit,verTodos: ()->Unit) {
+@Composable fun PanelScreen(vm: PanelAdminViewModel,pedidos: PedidosAdminViewModel,abrir: (Int)->Unit,verTodos: ()->Unit,reporte: ()->Unit={}) {
     val nuevos by vm.nuevos.collectAsStateWithLifecycle()
     val preparando by vm.preparando.collectAsStateWithLifecycle()
     val listos by vm.listos.collectAsStateWithLifecycle()
@@ -33,6 +33,7 @@ import com.leon.cafecampus.data.local.entity.*
     val ocupado by pedidos.ocupado.collectAsStateWithLifecycle()
     LazyColumn(contentPadding=PaddingValues(20.dp),verticalArrangement=Arrangement.spacedBy(20.dp)) {
         item { EscenaCampus("Buen día, campus.","Panel de control · Hoy","panel") }
+        item { TextButton(onClick=reporte,modifier=Modifier.fillMaxWidth()) { Icon(IconosCafe.BarChart,null);Spacer(Modifier.width(8.dp));Text("Abrir reporte del día") } }
         item { Row(horizontalArrangement=Arrangement.spacedBy(8.dp)) {
             listOf(Triple(nuevos,"Nuevos",EstadoPedido.RECIBIDO),Triple(preparando,"Preparando",EstadoPedido.PREPARANDO),Triple(listos,"Listos",EstadoPedido.LISTO)).forEach { (n,t,e) ->
                 EstadoContador(n,e,Modifier.weight(1f)) { pedidos.estadoSeleccionado.value=e;verTodos() }

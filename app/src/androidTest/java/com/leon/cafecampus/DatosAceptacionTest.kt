@@ -161,4 +161,20 @@ class DatosAceptacionTest {
         try { repo.registrarEstudiante("Daniella","invalido","123456");fail("Correo inválido") } catch(e: IllegalArgumentException) { assertTrue(e.message!!.contains("correo")) }
         assertEquals(3,db.usuarioDao().contar())
     }
+    @Test fun reporteUsaUnidadesPreciosHistoricosYPagosDelDia() = runBlocking {
+        val productos=repo.observarProductos().first();val cafe=productos.first { it.icono=="cafe" };val chicha=productos.first { it.icono=="botella" }
+        val inicio=java.util.Calendar.getInstance().apply { set(java.util.Calendar.HOUR_OF_DAY,0);set(java.util.Calendar.MINUTE,0);set(java.util.Calendar.SECOND,0);set(java.util.Calendar.MILLISECOND,0) }.timeInMillis
+        val fin=inicio+86400000L
+        repo.crearPedido(1,listOf(ItemCarrito(cafe,2)),"Ahora","CAJA","")
+        repo.crearPedido(1,listOf(ItemCarrito(cafe,1),ItemCarrito(chicha,4)),"Ahora","YAPE","")
+        val cancelado=repo.crearPedido(1,listOf(ItemCarrito(cafe,99)),"Ahora","YAPE","").toInt();repo.cambiarEstado(cancelado,EstadoPedido.CANCELADO)
+        val anterior=repo.crearPedido(1,listOf(ItemCarrito(cafe,99)),"Ahora","CAJA","")
+        db.openHelper.writableDatabase.execSQL("UPDATE pedidos SET fecha=? WHERE id=?",arrayOf(inicio-1,anterior))
+        repo.guardarProducto(cafe.copy(precio=99.0))
+        val ranking=repo.observarReporteProductos(inicio,fin).first();val pagos=repo.observarReportePagos(inicio,fin).first()
+        assertEquals(chicha.id,ranking.first().productoId);assertEquals(4,ranking.first().unidades)
+        assertEquals(8.0,pagos.first { it.pago=="CAJA" }.total,0.001);assertEquals(18.0,pagos.first { it.pago=="YAPE" }.total,0.001)
+        assertEquals(2,pagos.sumOf { it.cantidad });assertEquals(26.0,pagos.sumOf { it.total },0.001)
+        assertTrue(repo.observarReportePagos(fin,fin+86400000L).first().isEmpty())
+    }
 }

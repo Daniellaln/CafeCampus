@@ -51,6 +51,7 @@ import com.leon.cafecampus.ui.theme.CafeTheme
     val entry by nav.currentBackStackEntryAsState()
     val ruta=entry?.destination?.route
     val cliente: PedidosClienteViewModel=viewModel(key="pedidos_cliente_${usuario?.id ?: 0}",factory=CafeViewModelFactory { PedidosClienteViewModel(app.repository,usuario?.id ?: 0,prefs) })
+    val reporte: ReporteViewModel=viewModel(factory=CafeViewModelFactory { ReporteViewModel(app.repository) })
     val panel: PanelAdminViewModel=viewModel(factory=CafeViewModelFactory { PanelAdminViewModel(app.repository) })
     val pedidosAdmin: PedidosAdminViewModel=viewModel(factory=CafeViewModelFactory { PedidosAdminViewModel(app.repository) })
     val menuAdmin: MenuAdminViewModel=viewModel(factory=CafeViewModelFactory { MenuAdminViewModel(app.repository) })
@@ -87,7 +88,8 @@ import com.leon.cafecampus.ui.theme.CafeTheme
                 composable(Rutas.SEGUIMIENTO,arguments=listOf(navArgument("id") { type=NavType.IntType })) { SeguimientoScreen(it.arguments?.getInt("id") ?: 0,cliente) { if(!nav.popBackStack()) raiz(Rutas.MENU) } }
                 composable(Rutas.PEDIDOS) { MisPedidosScreen(cliente,abrir={nav.navigate("seguimiento/$it")},repetir={menu.repetir(it)},aviso=avisoRepetir,ocupado=repitiendo) }
                 composable(Rutas.PERFIL) { AjustesScreen(sesion,cliente=true) }
-                composable(Rutas.PANEL) { PanelScreen(panel,pedidosAdmin,{nav.navigate("admin_detalle/$it")},{nav.navigate(Rutas.ADMIN_PEDIDOS)}) }
+                composable(Rutas.PANEL) { PanelScreen(panel,pedidosAdmin,{nav.navigate("admin_detalle/$it")},{nav.navigate(Rutas.ADMIN_PEDIDOS)},reporte={nav.navigate(Rutas.REPORTE)}) }
+                composable(Rutas.REPORTE) { ReporteScreen(reporte) { nav.popBackStack() } }
                 composable(Rutas.ADMIN_PEDIDOS) { PedidosAdminScreen(pedidosAdmin) { nav.navigate("admin_detalle/$it") } }
                 composable(Rutas.ADMIN_DETALLE,arguments=listOf(navArgument("id") { type=NavType.IntType })) { DetallePedidoAdminScreen(it.arguments?.getInt("id") ?: 0,pedidosAdmin) { nav.popBackStack() } }
                 composable(Rutas.ADMIN_MENU) { MenuAdminScreen(menuAdmin,{nav.navigate("formulario?id=$it")},{nav.navigate("formulario")}) }
