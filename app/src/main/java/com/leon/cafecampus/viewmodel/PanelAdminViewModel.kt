@@ -19,5 +19,15 @@ class PanelAdminViewModel(repo: CafeRepository) : ViewModel() {
     val listos=repo.observarCantidadPorEstado(EstadoPedido.LISTO).stateIn(viewModelScope,SharingStarted.WhileSubscribed(5000),0)
     @OptIn(ExperimentalCoroutinesApi::class)
     val ventasHoy=inicioDia.flatMapLatest(repo::observarVentasHoy).stateIn(viewModelScope,SharingStarted.WhileSubscribed(5000),0.0)
+    @OptIn(ExperimentalCoroutinesApi::class)
+    val porHora=inicioDia.flatMapLatest { inicio ->
+        val fin=Calendar.getInstance().apply { timeInMillis=inicio;add(Calendar.DAY_OF_YEAR,1) }.timeInMillis
+        repo.observarPedidosPorHora(inicio,fin)
+    }.map { datos ->
+        val indices=datos.map { it.hora }
+        val desde=minOf(8,indices.minOrNull() ?: 8)
+        val hasta=maxOf(18,indices.maxOrNull() ?: 18)
+        (desde..hasta).map { h -> com.leon.cafecampus.model.PedidosPorHora(h,datos.find { it.hora==h }?.cantidad ?: 0) }
+    }.stateIn(viewModelScope,SharingStarted.WhileSubscribed(5000),emptyList())
     val recientes=repo.observarPedidosPorEstado(EstadoPedido.RECIBIDO).stateIn(viewModelScope,SharingStarted.WhileSubscribed(5000),emptyList())
 }

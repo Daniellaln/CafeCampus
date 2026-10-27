@@ -15,5 +15,6 @@ interface CafeRepository {
     fun observarPedido(id: Int): Flow<PedidoConDetalle?>
     suspend fun cambiarEstado(pedidoId: Int,estado: EstadoPedido)
     fun observarVentasHoy(inicioDia: Long): Flow<Double>
+    fun observarPedidosPorHora(inicio: Long,fin: Long): Flow<List<PedidosPorHora>>
     fun observarCantidadPorEstado(estado: EstadoPedido): Flow<Int>
 }

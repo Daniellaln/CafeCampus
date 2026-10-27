@@ -16,5 +16,7 @@ import com.leon.cafecampus.data.local.relation.PedidoConDetalle
     @Transaction @Query("SELECT * FROM pedidos WHERE estado = :estado ORDER BY fecha DESC") abstract fun observarPorEstado(estado: String): Flow<List<PedidoConDetalle>>
     @Transaction @Query("SELECT * FROM pedidos WHERE id = :id ORDER BY fecha DESC") abstract fun observarUno(id: Int): Flow<PedidoConDetalle?>
     @Query("SELECT COALESCE(SUM(total), 0.0) FROM pedidos WHERE fecha >= :inicio AND estado != 'CANCELADO'") abstract fun ventasDesde(inicio: Long): Flow<Double>
+    @Query("SELECT CAST(strftime('%H', fecha / 1000, 'unixepoch', 'localtime') AS INTEGER) AS hora, COUNT(*) AS cantidad FROM pedidos WHERE fecha >= :inicio AND fecha < :fin AND estado != 'CANCELADO' GROUP BY hora ORDER BY hora")
+    abstract fun pedidosPorHora(inicio: Long,fin: Long): Flow<List<com.leon.cafecampus.model.PedidosPorHora>>
     @Query("SELECT COUNT(*) FROM pedidos WHERE estado = :estado") abstract fun cantidadPorEstado(estado: String): Flow<Int>
 }

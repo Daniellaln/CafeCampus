@@ -26,6 +26,7 @@ import com.leon.cafecampus.data.local.entity.*
     val nuevos by vm.nuevos.collectAsStateWithLifecycle()
     val preparando by vm.preparando.collectAsStateWithLifecycle()
     val listos by vm.listos.collectAsStateWithLifecycle()
+    val horas by vm.porHora.collectAsStateWithLifecycle()
     val ventas by vm.ventasHoy.collectAsStateWithLifecycle()
     val recientes by vm.recientes.collectAsStateWithLifecycle()
     val error by pedidos.error.collectAsStateWithLifecycle()
@@ -38,6 +39,7 @@ import com.leon.cafecampus.data.local.entity.*
             }
         } }
         item { Surface(color=MaterialTheme.colorScheme.primary,shape=MaterialTheme.shapes.medium) { Column(Modifier.fillMaxWidth().padding(18.dp)) { Text("Ventas del día"); Text(dinero(ventas),style=MaterialTheme.typography.headlineMedium,fontWeight=FontWeight.Bold) } } }
+        item { GraficoPedidos(horas) }
         item { Row(Modifier.fillMaxWidth(),horizontalArrangement=Arrangement.SpaceBetween,verticalAlignment=Alignment.CenterVertically) { Text("Nuevos pedidos",style=MaterialTheme.typography.titleMedium); TextButton(onClick={pedidos.estadoSeleccionado.value=EstadoPedido.RECIBIDO;verTodos()}) { Text("Ver todos") } }; ErrorTexto(error) }
         if(recientes.isEmpty()) item { Vacio("No hay nuevos pedidos") }
         items(recientes.take(5),key={it.pedido.id}) { p -> PedidoCard(p,admin=true,abrir={abrir(p.pedido.id)}) { Button(onClick={pedidos.avanzar(p)},enabled=!ocupado) { Text("Preparar") } } }

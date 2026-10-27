@@ -77,6 +77,20 @@ class DatosAceptacionTest {
         val ids=(1..2).map { repo.crearPedido(1,items(),"Ahora","CAJA","").toInt().also { id -> db.openHelper.writableDatabase.execSQL("UPDATE pedidos SET fecha = ? WHERE id = ?",arrayOf(it*1000,id)) } }
         assertEquals(ids.reversed(),repo.observarPedidosCliente(1).first().map { it.pedido.id })
     }
+    @Test fun graficoAgrupaHoraYRespetaLimitesYCancelados() = runBlocking {
+        val inicio=java.util.Calendar.getInstance().apply { set(2026,8,17,0,0,0);set(java.util.Calendar.MILLISECOND,0) }.timeInMillis
+        val fin=inicio+24*60*60*1000
+        suspend fun pedido(fecha: Long,cancelado: Boolean=false) {
+            val id=repo.crearPedido(1,items(),"Ahora","CAJA","").toInt()
+            db.openHelper.writableDatabase.execSQL("UPDATE pedidos SET fecha = ? WHERE id = ?",arrayOf(fecha,id))
+            if(cancelado) repo.cambiarEstado(id,EstadoPedido.CANCELADO)
+        }
+        pedido(inicio);pedido(inicio+9*3600000);pedido(inicio+9*3600000+1000)
+        pedido(inicio+9*3600000,true);pedido(inicio-1);pedido(fin)
+        val datos=repo.observarPedidosPorHora(inicio,fin).first()
+        assertEquals(listOf(PedidosPorHora(0,1),PedidosPorHora(9,2)),datos)
+    }
+
     @Test fun busquedaIgnoraTildesYCombinaCategoria() = runBlocking {
         lateinit var vm: com.leon.cafecampus.viewmodel.MenuViewModel
         InstrumentationRegistry.getInstrumentation().runOnMainSync { vm=com.leon.cafecampus.viewmodel.MenuViewModel(repo,androidx.lifecycle.SavedStateHandle());vm.buscar("CAFE") }
