@@ -9,7 +9,15 @@ class MenuViewModel(private val repo: CafeRepository, private val saved: SavedSt
     val productos=repo.observarProductos().stateIn(viewModelScope,SharingStarted.WhileSubscribed(5000),emptyList())
     private val _categoria=MutableStateFlow("Todo")
     val categoria=_categoria.asStateFlow()
-    val filtrados=combine(productos,categoria) { ps,c -> ps.filter { c=="Todo" || it.categoria==c } }.stateIn(viewModelScope,SharingStarted.WhileSubscribed(5000),emptyList())
+    private val _busqueda=MutableStateFlow("")
+    val busqueda=_busqueda.asStateFlow()
+    fun buscar(texto: String) { _busqueda.value=texto }
+    private fun normalizar(texto: String): String = java.text.Normalizer.normalize(texto,java.text.Normalizer.Form.NFD).replace("\\p{M}".toRegex(),"").lowercase(java.util.Locale.ROOT)
+    data class EstadoMenu(val productos: List<Producto> = emptyList(),val cargando: Boolean=true)
+    val estadoMenu=combine(repo.observarProductos(),categoria,busqueda) { ps,c,b ->
+        EstadoMenu(ps.filter { (c=="Todo" || it.categoria==c) && normalizar(it.nombre).contains(normalizar(b.trim())) },false)
+    }.stateIn(viewModelScope,SharingStarted.WhileSubscribed(5000),EstadoMenu())
+    val filtrados=estadoMenu.map { it.productos }.stateIn(viewModelScope,SharingStarted.WhileSubscribed(5000),emptyList())
     private val _carrito=MutableStateFlow<List<ItemCarrito>>(emptyList())
     val carrito=_carrito.asStateFlow()
     private val _error=MutableStateFlow<String?>(null)

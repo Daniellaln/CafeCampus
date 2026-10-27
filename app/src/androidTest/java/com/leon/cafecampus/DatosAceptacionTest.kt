@@ -77,4 +77,30 @@ class DatosAceptacionTest {
         val ids=(1..2).map { repo.crearPedido(1,items(),"Ahora","CAJA","").toInt().also { id -> db.openHelper.writableDatabase.execSQL("UPDATE pedidos SET fecha = ? WHERE id = ?",arrayOf(it*1000,id)) } }
         assertEquals(ids.reversed(),repo.observarPedidosCliente(1).first().map { it.pedido.id })
     }
+    @Test fun busquedaIgnoraTildesYCombinaCategoria() = runBlocking {
+        lateinit var vm: com.leon.cafecampus.viewmodel.MenuViewModel
+        InstrumentationRegistry.getInstrumentation().runOnMainSync { vm=com.leon.cafecampus.viewmodel.MenuViewModel(repo,androidx.lifecycle.SavedStateHandle());vm.buscar("CAFE") }
+        val resultado=kotlinx.coroutines.withTimeout(5000) { vm.filtrados.first { it.isNotEmpty() } }
+        assertEquals(listOf("Café americano"),resultado.map { it.nombre })
+        InstrumentationRegistry.getInstrumentation().runOnMainSync { vm.categoria("Snacks") }
+        kotlinx.coroutines.withTimeout(5000) { vm.filtrados.first { it.isEmpty() } }
+        InstrumentationRegistry.getInstrumentation().runOnMainSync { vm.buscar("") }
+        val categoria=kotlinx.coroutines.withTimeout(5000) { vm.filtrados.first { it.isNotEmpty() } }
+        assertTrue(categoria.all { it.categoria=="Snacks" })
+    }
+    @Test fun cargaNoSeConfundeConCatalogoVacio() = runBlocking {
+        val original=repo
+        val lento=object: CafeRepository by original {
+            override fun observarProductos()=kotlinx.coroutines.flow.flow { kotlinx.coroutines.delay(250);emit(original.observarProductos().first()) }
+        }
+        lateinit var vm: com.leon.cafecampus.viewmodel.MenuViewModel
+        InstrumentationRegistry.getInstrumentation().runOnMainSync { vm=com.leon.cafecampus.viewmodel.MenuViewModel(lento,androidx.lifecycle.SavedStateHandle()) }
+        assertTrue(vm.estadoMenu.value.cargando)
+        val listo=kotlinx.coroutines.withTimeout(5000) { vm.estadoMenu.first { !it.cargando } }
+        assertEquals(6,listo.productos.size)
+        InstrumentationRegistry.getInstrumentation().runOnMainSync { vm.buscar("producto inexistente") }
+        val vacio=kotlinx.coroutines.withTimeout(5000) { vm.estadoMenu.first { !it.cargando && it.productos.isEmpty() } }
+        assertFalse(vacio.cargando)
+    }
+
 }
