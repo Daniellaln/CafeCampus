@@ -1,39 +1,20 @@
-# Verificación de la fase 1
+# Verificación de la fase 2
 
-Fecha: 21 de octubre de 2026.
-Entorno: Windows, JDK de Android Studio, SDK 35, emulador Pixel 8 Pro con Android 17 (API 37).
+Fecha: 21 de octubre de 2026. JDK de Android Studio, SDK35, emulador Pixel8Pro Android17/API37. El destino visual revisado es teléfono; no se afirma prueba en tableta o teléfono físico.
 
 ## Resultados ejecutados
 
-- Compilación individual de las entregas 01 a 12: aprobada.
-- Compilación APK de la aplicación final: aprobada.
-- Prueba unitaria incluida en la plantilla inicial: aprobada.
-- Pruebas instrumentadas: 10 ejecutadas, 0 fallidas (8 de datos, 1 recorrido de interfaz y 1 comprobación del paquete).
-- Lint Android: 0 errores. Advierte sobre versiones antiguas exigidas por la guía, migración de verificadores de Navigation, catálogo de versiones sin uso y etiqueta redundante de la plantilla.
+- 14 pruebas instrumentadas aprobadas: 12 de datos/ViewModel, un recorrido de interfaz y una comprobación de paquete.
+- El recorrido completo valida acceso y volver, compra, recreación de Activity, cambio de perfil, administración, cancelación, repetición, filtros y búsqueda.
+- La prueba de Liquid Glass arrastra la barra desde Perfil hasta Menú y comprueba el destino real; abre y cierra el buscador transformable y verifica limpieza. Comprueba la categoría mediante una acción accesible única, sin confundirla con el texto de los productos.
+- Lint: cero errores y 60 advertencias. Se conserva el entorno del laboratorio; hay avisos de dependencias, verificadores de versiones anteriores, recursos y convenciones. No se actualizaron dependencias para ocultarlos.
+- La verificación final por carpeta consta en VERIFICACION.md, fuera del proyecto. Compilar carpetas no equivale a ejecutar cada una en todos los dispositivos.
+- Los 20 recursos de arte pasan el escaneo de procedencia incorporada. Las capturas muestran la app real y datos ficticios.
 
-## Aceptación del laboratorio
+## Cobertura de datos
 
-| Prueba | Resultado observado |
-| --- | --- |
-| Clave incorrecta | Muestra Correo o contraseña incorrectos y permanece en login |
-| Dos productos y confirmar | Pedido Recibido, 2 cafés + 1 chicha, total S/ 11.50 |
-| Producto agotado | Se deshabilita Agregar al pedido y se rechaza también desde Repository |
-| Cambiar a Preparando | Al regresar al estudiante, el seguimiento muestra Preparando |
-| Cancelar | El pedido pasa al Historial con estado Cancelado |
-| Cambiar precio | Los detalles históricos conservan nombre y precio anteriores, incluso al eliminar el producto |
-| Ventas del día | Excluye cancelados; sin pedidos devuelve 0.0 |
-| Cerrar por completo y abrir | Perfil CLIENTE restaurado sin login; pedido cancelado S/ 11.50, café actual S/ 7.00 y su precio histórico S/ 4.00 conservados |
-| Texto al 130 % | Menú usable, categorías y productos se desplazan; fuente del emulador restaurada al 100 % |
-| Rotar o recrear Activity | El carrito conserva cantidades y productos; ajustes conservan tema y apertura |
-| Crear producto | El producto nuevo aparece en la categoría Snacks del estudiante |
-| Cafetería cerrada | Se muestra el aviso y se bloquea la confirmación |
-| Transacción fallida | Un conflicto de líneas revierte también el pedido |
-| Relaciones e índices | Room KSP compila las relaciones y claves; borrar un pedido elimina sus detalles |
+Room en memoria verifica transacciones y rollback, relación pedido/detalles, eliminación en cascada, precio/nombre históricos, disponibilidad al confirmar, orden temporal, semilla idempotente y login. MenuViewModel verifica tildes/mayúsculas/categoría, carga sin falso vacío y repetición con precios actuales, omisiones y rechazo si no queda ningún producto. El gráfico comprueba hora local, inicio inclusivo y fin exclusivo del día y exclusión de cancelados.
 
-Las pruebas no simulan llamadas de red ni pagos reales. Cada perfil trabaja con la misma base local. Las capturas provienen del recorrido de interfaz, con cuentas y pedidos ficticios.
+La prueba de interfaz requiere una instalación de prueba sin pedidos anteriores y modifica únicamente los datos ficticios de esa app. No se borra la base de la usuaria al aplicar estas carpetas. No se ha medido rendimiento de las animaciones en hardware físico; una captura estática no lo acredita. La óptica AGSL se verificó en API37, con alternativa compilada para API24–32.
 
-Para repetir el recorrido de interfaz, empieza con una instalación de prueba limpia: espera el Splash sin perfil recordado y sin pedidos previos. La prueba crea y modifica sus propios datos.
-
-## Correspondencia visual
-
-La aplicación toma colores, estructura, componentes y representaciones de productos de los mockups. Se usan controles nativos Material 3 y desplazamiento para mantener objetivos táctiles accesibles. Se omitieron acciones sin contrato de fase 1, documentadas en el README; no se presentan funciones de búsqueda, registro o gráfico como implementadas.
+Después del recorrido aprobado se ajustó únicamente la selección de tintas de sombra del selector y avatar en tema oscuro. Se recompiló y se volvió a capturar el catálogo oscuro para confirmar el ajuste; no se modificó la lógica funcional.
